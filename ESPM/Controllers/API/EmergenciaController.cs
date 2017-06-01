@@ -29,11 +29,16 @@ namespace ESPM.Controllers.API
         {
             if (ModelState.IsValid)
             {
+                // Usar qualquer coisa assim para o hash da chave
+                // SHA1 sha = new SHA1CryptoServiceProvider();
+                // string result = sha.ComputeHash(Encoding.UTF8.GetBytes(emergencia.OutrosDetalhesPessoa)).ToString();
+
                 // Momento em que o pedido foi recebido
                 DateTime recebido = DateTime.Now;
 
-                // Verificar se a chave utilizada é válida (Confirmar se a comparação com o null funciona)
-                if(db.Autorizacoes.Where(a => !a.Teste && !a.Revogada && a.Id == emergencia.Chave && (a.Validade == null || a.Validade < recebido)).Count() != 1)
+                // Depois mudar isto com o hash e isso...
+                Autorizacao aut = db.Autorizacoes.Where(a => !a.Teste && !a.Revogada && a.Aplicacao.Id == emergencia.Aplicacao && (a.Validade == null || a.Validade < recebido)).FirstOrDefault();
+                if (aut == null)
                     return BadRequest("A chave utilizada não é válida");
 
                 // Validação do pedido aqui
@@ -41,43 +46,33 @@ namespace ESPM.Controllers.API
                 // Devolver BadRequest caso contrário
 
                 // Criar o novo pedido
-                Pedido pedido = new Pedido();
-
-                // Associar a autorização usada
-                pedido.Autorizacao = db.Autorizacoes.Where(a => a.Id == emergencia.Chave).FirstOrDefault();
-
-                // Usar o tempo recebido ou o atual
-                if (emergencia.Tempo != null)
-                    pedido.Tempo = (DateTime)emergencia.Tempo;
-                else
-                    pedido.Tempo = recebido;
-
-                // Será a melhor maneira?
-                // Ver a questão dos int? e das strings vazias
-                // Adicionar pessoa se existirem informações de pessoa
-                if (emergencia.Nome != null || emergencia.Contacto != null || emergencia.Idade != null || emergencia.Condicao != null)
+                Pedido pedido = new Pedido()
                 {
-                    pedido.Pessoa = new Pessoa()
-                    {
-                        Nome = emergencia.Nome,
-                        Contacto = emergencia.Contacto,
-                        Idade = emergencia.Idade,
-                        Condicao = emergencia.Condicao
-                    };
-                }
+                    // Associar a autorização usada
+                    Autorizacao = aut,
+                    // Usar o tempo recebido ou o atual
+                    Tempo = (emergencia.Tempo == null ? recebido : (DateTime)emergencia.Tempo),
+                    Nome = emergencia.Nome,
+                    Contacto = emergencia.Contacto,
+                    Idade = emergencia.Idade,
+                    OutrosDetalhesPessoa = emergencia.OutrosDetalhesPessoa
+                };
 
                 // Adicionar descrição se existir descrição
                 if(emergencia.Descricao != null)
                 {
-                    pedido.Descricoes.Add(new Descricao()
+                    pedido.Descricoes = new List<Descricao>
                     {
-                        Tempo = pedido.Tempo,
-                        Texto = emergencia.Descricao
-                    });
+                        new Descricao()
+                        {
+                            Tempo = pedido.Tempo,
+                            Texto = emergencia.Descricao
+                        }
+                    };
                 }
 
                 // Adicionar localização se existir localização
-                if(emergencia.Latitude != null && emergencia.Longitude != null)
+                if (emergencia.Latitude != null && emergencia.Longitude != null)
                 {
                     pedido.Localizacoes = new List<Localizacao>
                     {

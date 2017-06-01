@@ -219,13 +219,20 @@
     <Compile Include="Models\Localizacao.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Pedido.cs" />
-    <Compile Include="Models\Pessoa.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Imagens\Estados\1.png" />
+    <Content Include="Content\Imagens\Estados\2.png" />
+    <Content Include="Content\Imagens\Estados\3.png" />
+    <Content Include="Content\Imagens\Estados\4.png" />
+    <Content Include="Content\Imagens\Estados\5.png" />
+    <Content Include="Content\Imagens\Estados\6.png" />
+    <Content Include="Content\Imagens\Estados\7.png" />
+    <Content Include="Content\Imagens\Estados\8.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />

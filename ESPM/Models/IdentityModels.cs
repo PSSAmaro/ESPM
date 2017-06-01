@@ -45,6 +45,5 @@ namespace ESPM.Models
         public DbSet<Imagem> Imagens { get; set; }
         public DbSet<Localizacao> Localizacoes { get; set; }
         public DbSet<Pedido> Pedidos { get; set; }
-        public DbSet<Pessoa> Pessoas { get; set; }
     }
 }

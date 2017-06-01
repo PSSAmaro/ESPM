@@ -22,9 +22,18 @@ namespace ESPM.Models
         // Se não houver informação de tempo no pedido é o momento em que é recebido
         // Falta definir o valor predefinido como a hora atual
         public DateTime Tempo { get; set; }
-        
-        // Pessoa que precisa de ajuda
-        public virtual Pessoa Pessoa { get; set; }
+
+        // Nome da pessoa que precisa de ajuda
+        public string Nome { get; set; }
+
+        // Contacto da pessoa que precisa de ajuda
+        public int? Contacto { get; set; }
+
+        // Idade da pessoa que precisa de ajuda
+        public int? Idade { get; set; }
+
+        // Outras informações relevantes sobre a pessoa que precisa de ajuda
+        public string OutrosDetalhesPessoa { get; set; }
 
         // Histórico de descrições do pedido de ajuda
         public virtual List<Descricao> Descricoes { get; set; }

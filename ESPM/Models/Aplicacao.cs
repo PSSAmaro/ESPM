@@ -11,7 +11,7 @@ namespace ESPM.Models
     public class Aplicacao
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         // Utilizador responsável por esta aplicação, com acesso ao sistema de teste
         [Required]

@@ -10,7 +10,7 @@ namespace ESPM.Models
     public class EmergenciaViewModel
     {
         // Chave privada da aplicação
-        public Guid Chave { get; set; }
+        public Guid Aplicacao { get; set; }
 
         // Momento em que o pedido foi enviado
         // Talvez mudar para unix time?
@@ -26,7 +26,7 @@ namespace ESPM.Models
         public int? Idade { get; set; }
 
         // Outros detalhes da condição da pessoa que precisa de ajuda
-        public string Condicao { get; set; }
+        public string OutrosDetalhesPessoa { get; set; }
 
         // Descrição da situação
         public string Descricao { get; set; }

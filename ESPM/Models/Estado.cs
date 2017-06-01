@@ -16,6 +16,9 @@ namespace ESPM.Models
         [Required]
         public string Nome { get; set; }
 
+        [Required]
+        public int Familia { get; set; }
+
         // Lista de estados dos quais é possível chegar a este estado
         public virtual List<Estado> Anteriores { get; set; }
 

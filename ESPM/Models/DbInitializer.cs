@@ -16,7 +16,9 @@ namespace ESPM.Models
             var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
             var RoleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
 
-            // Criar role Aplicacao
+            // Criar roles: Admin, Operador e Aplicacao
+            RoleManager.Create(new IdentityRole("Admin"));
+            RoleManager.Create(new IdentityRole("Operador"));
             RoleManager.Create(new IdentityRole("Aplicacao"));
 
             // Criar utilizador
@@ -38,16 +40,80 @@ namespace ESPM.Models
                 {
                     new Autorizacao()
                     {
+                        Validade = DateTime.Now.AddYears(1),
                         Teste = false,
                         Revogada = false
                     }
                 }
             });
 
-            // Adicionar estado inicial
-            db.Estados.Add(new Estado()
+            db.Estados.AddRange(new List<Estado>()
             {
-                Nome = "Alerta"
+                new Estado()
+                {
+                    Nome = "Alerta",
+                    Familia = 1
+                },
+                new Estado()
+                {
+                    Nome = "Análise",
+                    Familia = 1
+                },
+                new Estado()
+                {
+                    Nome = "Em Despacho",
+                    Familia = 1
+                },
+                new Estado()
+                {
+                    Nome = "Despacho 1º Alerta",
+                    Familia = 2
+                },
+                new Estado()
+                {
+                    Nome = "Chegada ao TO",
+                    Familia = 3
+                },
+                new Estado()
+                {
+                    Nome = "Em Curso",
+                    Familia = 3
+                },
+                new Estado()
+                {
+                    Nome = "Resolução",
+                    Familia = 4
+                },
+                new Estado()
+                {
+                    Nome = "Conclusão",
+                    Familia = 5
+                },
+                new Estado()
+                {
+                    Nome = "Falso Alerta",
+                    Familia = 6
+                },
+                new Estado()
+                {
+                    Nome = "Falso Alarme",
+                    Familia = 6
+                },
+                new Estado()
+                {
+                    Nome = "Anulada",
+                    Familia = 6
+                },
+                new Estado()
+                {
+                    Nome = "Vigilância",
+                    Familia = 7
+                },
+                new Estado()
+                {
+                    Nome = "Encerrada",
+                    Familia = 8
+                }
             });
 
             db.SaveChanges();

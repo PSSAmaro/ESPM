@@ -9,7 +9,7 @@ using System.Web;
 namespace ESPM.Models
 {
     // Inicializador temporário
-    public class DbInitializer : DropCreateDatabaseAlways<ApplicationDbContext>
+    public class DbInitializer : CreateDatabaseIfNotExists<ApplicationDbContext>
     {
         protected override void Seed(ApplicationDbContext db)
         {

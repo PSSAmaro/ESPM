@@ -9,8 +9,11 @@ namespace ESPM.Models
     // Por enquanto suporta 1 localização e não suporta imagens
     public class EmergenciaViewModel
     {
-        // Chave privada da aplicação
+        // Id da aplicação
         public Guid Aplicacao { get; set; }
+
+        // Hash criado com a chave da aplicação
+        public string Hash { get; set; }
 
         // Momento em que o pedido foi enviado
         // Talvez mudar para unix time?
@@ -36,6 +39,19 @@ namespace ESPM.Models
 
         // Longitude da localização detetada
         public float? Longitude { get; set; }
+
+        public override string ToString()
+        {
+            // Modificar se o modelo for modificado
+            // Ignorar tempo porque pode ser modificado no servidor
+            string str = Nome + Contacto + Idade + OutrosDetalhesPessoa + Descricao + Latitude + Longitude;
+
+            // Remover caracteres que podem ser ambíguos, procurar outros
+            foreach (string c in new string[] { ",", "." })
+                str = str.Replace(c, string.Empty);
+
+            return str;
+        }
     }
 
     public class RecebidoViewModel

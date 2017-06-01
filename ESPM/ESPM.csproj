@@ -199,6 +199,8 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\API\EmergenciaController.cs" />
+    <Compile Include="Controllers\API\PedidoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
@@ -208,6 +210,7 @@
     <Compile Include="Models\Aplicacao.cs" />
     <Compile Include="Models\Autorizacao.cs" />
     <Compile Include="Models\Descricao.cs" />
+    <Compile Include="Models\EmergenciaViewModels.cs" />
     <Compile Include="Models\Estado.cs" />
     <Compile Include="Models\EstadoDePedido.cs" />
     <Compile Include="Models\IdentityModels.cs" />

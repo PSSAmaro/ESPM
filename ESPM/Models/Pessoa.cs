@@ -20,9 +20,9 @@ namespace ESPM.Models
         public string Nome { get; set; }
 
         // Talvez deva ser obrigatório?
-        public int Contacto { get; set; }
+        public int? Contacto { get; set; }
 
-        public int Idade { get; set; }
+        public int? Idade { get; set; }
 
         // Outros detalhes da condição da pessoa
         public string Condicao { get; set; }

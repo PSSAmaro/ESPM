@@ -17,7 +17,7 @@ namespace ESPM.Models
         [Required]
         public Aplicacao Aplicacao { get; set; }
 
-        public DateTime Validade { get; set; }
+        public DateTime? Validade { get; set; }
 
         [Required]
         public bool Teste { get; set; }

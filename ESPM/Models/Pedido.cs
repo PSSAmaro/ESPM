@@ -13,16 +13,17 @@ namespace ESPM.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
-        // Aplicação de onde foi feito o pedido
+        // Autorização utilizada para o pedido
+        // É utilizada a autorização em vez da aplicação para ser mais fácil distinguir pedidos válidos, pedidos inválidos e pedidos de teste
         [Required]
-        public virtual Aplicacao Aplicacao { get; set; }
+        public virtual Autorizacao Autorizacao { get; set; }
 
         // Momento em que o pedido foi enviado
         // Se não houver informação de tempo no pedido é o momento em que é recebido
         // Falta definir o valor predefinido como a hora atual
         public DateTime Tempo { get; set; }
         
-        // Pessoa que fez o pedido/precisa de ajuda
+        // Pessoa que precisa de ajuda
         public virtual Pessoa Pessoa { get; set; }
 
         // Histórico de descrições do pedido de ajuda
@@ -44,17 +45,17 @@ namespace ESPM.Models
         }
 
         // Devolve o estado atual
-        public Estado EstadoAtual()
+        public EstadoDePedido EstadoAtual()
         {
             // Ordena os estados do mais novo para o mais antigo, escolhe o primeiro (mais recente)
-            return Estados.OrderByDescending(e => e.Tempo).FirstOrDefault().Estado;
+            return Estados.OrderByDescending(e => e.Tempo).FirstOrDefault();
         }
 
         // Devolve true se o estado atual não for um estado final
         public bool Aberto()
         {
             // Vê se o estado atual é um estado final, devolvendo o oposto
-            return !EstadoAtual().EstadoFinal();
+            return !EstadoAtual().Estado.EstadoFinal();
         }
     }
 }

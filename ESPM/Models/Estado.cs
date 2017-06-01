@@ -22,6 +22,12 @@ namespace ESPM.Models
         // Lista de estados para os quais este pode transitar
         public virtual List<Estado> Seguintes { get; set; }
 
+        // Este é o estado inicial se não tiver estados anteriores (Só deve haver 1)
+        public bool EstadoInicial()
+        {
+            return Anteriores.Count == 0;
+        }
+
         // Este é um estado final se não tiver estados seguintes
         public bool EstadoFinal()
         {

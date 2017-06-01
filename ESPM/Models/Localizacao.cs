@@ -7,6 +7,7 @@ using System.Web;
 
 namespace ESPM.Models
 {
+    // Falta o erro!!!
     [Table("Localizacoes")]
     public class Localizacao
     {
@@ -22,9 +23,9 @@ namespace ESPM.Models
         public DateTime Tempo { get; set; }
 
         [Required]
-        public float Latitude { get; set; }
+        public float? Latitude { get; set; }
 
         [Required]
-        public float Longitude { get; set; }
+        public float? Longitude { get; set; }
     }
 }

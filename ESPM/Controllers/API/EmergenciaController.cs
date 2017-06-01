@@ -34,7 +34,7 @@ namespace ESPM.Controllers.API
 
                 // Verificar se a chave utilizada é válida (Confirmar se a comparação com o null funciona)
                 if(db.Autorizacoes.Where(a => !a.Teste && !a.Revogada && a.Id == emergencia.Chave && (a.Validade == null || a.Validade < recebido)).Count() != 1)
-                    return BadRequest();
+                    return BadRequest("A chave utilizada não é válida");
 
                 // Validação do pedido aqui
                 // Apesar do modelo válido convém confirmar que foram enviadas informações suficientes
@@ -55,7 +55,7 @@ namespace ESPM.Controllers.API
                 // Será a melhor maneira?
                 // Ver a questão dos int? e das strings vazias
                 // Adicionar pessoa se existirem informações de pessoa
-                if (emergencia.Nome != null || emergencia.Contacto != 0 || emergencia.Idade != null || emergencia.Condicao != null)
+                if (emergencia.Nome != null || emergencia.Contacto != null || emergencia.Idade != null || emergencia.Condicao != null)
                 {
                     pedido.Pessoa = new Pessoa()
                     {
@@ -110,7 +110,7 @@ namespace ESPM.Controllers.API
                     Recebido = recebido
                 });
             }
-            return BadRequest();
+            return BadRequest("O pedido enviado não tem um formato válido");
         }
 
         protected override void Dispose(bool disposing)

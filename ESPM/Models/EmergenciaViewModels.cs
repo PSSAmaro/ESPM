@@ -47,7 +47,7 @@ namespace ESPM.Models
         public DateTime Recebido { get; set; }
 
         // Possível aviso a enviar, sem uso neste momento
-        public string Aviso { get; set; }
+        // public string Aviso { get; set; }
     }
 
     public class EstadoAtualViewModel

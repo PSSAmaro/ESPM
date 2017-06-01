@@ -209,6 +209,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Aplicacao.cs" />
     <Compile Include="Models\Autorizacao.cs" />
+    <Compile Include="Models\DbInitializer.cs" />
     <Compile Include="Models\Descricao.cs" />
     <Compile Include="Models\EmergenciaViewModels.cs" />
     <Compile Include="Models\Estado.cs" />

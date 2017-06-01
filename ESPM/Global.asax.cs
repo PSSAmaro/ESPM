@@ -1,5 +1,7 @@
-﻿using System;
+﻿using ESPM.Models;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
@@ -13,6 +15,9 @@ namespace ESPM
     {
         protected void Application_Start()
         {
+            // Inicializar a BD
+            Database.SetInitializer(new DbInitializer());
+
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

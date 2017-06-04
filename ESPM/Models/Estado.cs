@@ -19,13 +19,21 @@ namespace ESPM.Models
         [Required]
         public int Familia { get; set; }
 
+        [Required]
+        public bool Ativo { get; set; }
+
         // Lista de estados dos quais é possível chegar a este estado
-        public virtual List<Estado> Anteriores { get; set; }
+        // Nome do estado anterior: Anteriores.De.Nome
+        [InverseProperty("Para")]
+        public virtual List<TransicaoDeEstado> Anteriores { get; set; }
 
         // Lista de estados para os quais este pode transitar
-        public virtual List<Estado> Seguintes { get; set; }
+        // Nome do estado seguinte: Seguintes.Para.Nome
+        [InverseProperty("De")]
+        public virtual List<TransicaoDeEstado> Seguintes { get; set; }
 
         // Este é o estado inicial se não tiver estados anteriores (Só deve haver 1)
+        // Apagar se não for possível usar
         public bool EstadoInicial()
         {
             return Anteriores.Count == 0;

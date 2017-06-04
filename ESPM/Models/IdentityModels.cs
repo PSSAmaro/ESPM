@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Collections.Generic;
+using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace ESPM.Models
 {
@@ -37,6 +38,14 @@ namespace ESPM.Models
             return new ApplicationDbContext();
         }
 
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+            modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
+
+            base.OnModelCreating(modelBuilder);
+        }
+
         public DbSet<Aplicacao> Aplicacoes { get; set; }
         public DbSet<Autorizacao> Autorizacoes { get; set; }
         public DbSet<Descricao> Descricoes { get; set; }
@@ -45,5 +54,6 @@ namespace ESPM.Models
         public DbSet<Imagem> Imagens { get; set; }
         public DbSet<Localizacao> Localizacoes { get; set; }
         public DbSet<Pedido> Pedidos { get; set; }
+        public DbSet<TransicaoDeEstado> TransicoesDeEstado { get; set; }
     }
 }

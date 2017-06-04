@@ -47,73 +47,95 @@ namespace ESPM.Models
                 }
             });
 
-            db.Estados.AddRange(new List<Estado>()
+            List<Estado> Estados = new List<Estado>()
             {
                 new Estado()
                 {
                     Nome = "Alerta",
-                    Familia = 1
+                    Familia = 1,
+                    Ativo = true
                 },
                 new Estado()
                 {
                     Nome = "Análise",
-                    Familia = 1
+                    Familia = 1,
+                    Ativo = true
                 },
                 new Estado()
                 {
                     Nome = "Em Despacho",
-                    Familia = 1
+                    Familia = 1,
+                    Ativo = true
                 },
                 new Estado()
                 {
                     Nome = "Despacho 1º Alerta",
-                    Familia = 2
+                    Familia = 2,
+                    Ativo = true
                 },
                 new Estado()
                 {
                     Nome = "Chegada ao TO",
-                    Familia = 3
+                    Familia = 3,
+                    Ativo = true
                 },
                 new Estado()
                 {
                     Nome = "Em Curso",
-                    Familia = 3
+                    Familia = 3,
+                    Ativo = true
                 },
                 new Estado()
                 {
                     Nome = "Resolução",
-                    Familia = 4
+                    Familia = 4,
+                    Ativo = true
                 },
                 new Estado()
                 {
                     Nome = "Conclusão",
-                    Familia = 5
+                    Familia = 5,
+                    Ativo = true
                 },
                 new Estado()
                 {
                     Nome = "Falso Alerta",
-                    Familia = 6
+                    Familia = 6,
+                    Ativo = true
                 },
                 new Estado()
                 {
                     Nome = "Falso Alarme",
-                    Familia = 6
+                    Familia = 6,
+                    Ativo = true
                 },
                 new Estado()
                 {
                     Nome = "Anulada",
-                    Familia = 6
+                    Familia = 6,
+                    Ativo = true
                 },
                 new Estado()
                 {
                     Nome = "Vigilância",
-                    Familia = 7
+                    Familia = 7,
+                    Ativo = true
                 },
                 new Estado()
                 {
                     Nome = "Encerrada",
-                    Familia = 8
+                    Familia = 8,
+                    Ativo = true
                 }
+            };
+
+            db.Estados.AddRange(Estados);
+
+            db.TransicoesDeEstado.Add(new TransicaoDeEstado
+            {
+                De = Estados[0],
+                Para = Estados[1],
+                Ativa = true
             });
 
             db.SaveChanges();

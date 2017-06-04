@@ -12,9 +12,6 @@ namespace ESPM.Models
         // Id da aplicação
         public Guid Aplicacao { get; set; }
 
-        // Hash criado com a chave da aplicação
-        public string Hash { get; set; }
-
         // Momento em que o pedido foi enviado
         // Talvez mudar para unix time?
         public DateTime? Tempo { get; set; }
@@ -54,13 +51,22 @@ namespace ESPM.Models
         }
     }
 
+    public class LocalizacaoViewModel
+    {
+        // Momento em que a localização foi detetada
+        public DateTime? Tempo { get; set; }
+
+        // Latitude da localização detetada
+        public float Latitude { get; set; }
+
+        // Longitude da localização detetada
+        public float Longitude { get; set; }
+    }
+
     public class RecebidoViewModel
     {
         // Guid a usar para obter informação de estado
         public Guid Id { get; set; }
-
-        // Momento em que o pedido foi recebido
-        public DateTime Recebido { get; set; }
 
         // Possível aviso a enviar, sem uso neste momento
         // public string Aviso { get; set; }

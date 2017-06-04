@@ -12,6 +12,7 @@ using System.Web.Http;
 
 namespace ESPM.Controllers.API
 {
+    // Ver qual é a convenção com a questão da segurança e os hashes, etc...
     public class EmergenciaController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -19,9 +20,9 @@ namespace ESPM.Controllers.API
         public async Task<IHttpActionResult> Get(Guid id)
         {
             // Escolher o pedido com o id
-            Pedido pedido = await db.Pedidos.Where(p => p.Id == id).FirstOrDefaultAsync();
+            Pedido pedido = await db.Pedidos.FindAsync(id);
 
-            // Devolver 404 se não existir
+            // Devolver NotFound se não existir
             if (pedido == null)
                 return NotFound();
 
@@ -32,6 +33,9 @@ namespace ESPM.Controllers.API
             });
         }
 
+        // Novo pedido
+        // Faltam imagens e várias localizações
+        // Talvez aceitar outras formas de timestamps
         public async Task<IHttpActionResult> Post(EmergenciaViewModel emergencia)
         {
             if (ModelState.IsValid)
@@ -42,16 +46,12 @@ namespace ESPM.Controllers.API
                 // Escolher a autorização válida
                 Autorizacao aut = db.Autorizacoes.Where(a => a.Aplicacao.Id == emergencia.Aplicacao && !a.Teste && !a.Revogada && a.Validade > recebido).FirstOrDefault();
 
-                // Se não foi encontrada nenhuma autorização válida para a aplicação usada
-                if (aut == null)
-                    return BadRequest("Aplicação não autorizada");
-
-                // Verificar que a chave usada para o hash foi a correta
-                if (emergencia.Hash != Hash(emergencia.ToString(), aut.Id))
-                    return BadRequest("Hash inválido");
+                // Se não foi encontrada nenhuma autorização válida para a aplicação usada ou o header hash é inexistente/inválido
+                if (aut == null || !Request.Headers.Contains("Hash") || Request.Headers.GetValues("Hash").First() != Hash(emergencia.ToString(), aut.Id))
+                    return BadRequest("Erro de autenticação");
 
                 // Apesar do modelo válido convém confirmar que foram enviadas informações suficientes
-                // Se um dos seguintes campos não for nulo, é considerado que há informações suficientes
+                // Se todos os seguintes campos forem nulos, é considerado que não há informações suficientes
                 if (emergencia.Contacto == null && emergencia.OutrosDetalhesPessoa == null && emergencia.Descricao == null && !(emergencia.Latitude != null && emergencia.Longitude != null))
                     return BadRequest("Informações insuficientes");
 
@@ -113,11 +113,67 @@ namespace ESPM.Controllers.API
                 await db.SaveChangesAsync();
 
                 return Ok(new RecebidoViewModel() {
-                    Id = pedido.Id,
-                    Recebido = recebido
+                    Id = pedido.Id
                 });
             }
             return BadRequest("Formato inválido");
+        }
+
+        [HttpPost]
+        [Route("api/emergencia/{id}/localizacao")]
+        public async Task<IHttpActionResult> Localizacao(Guid id, LocalizacaoViewModel localizacao)
+        {
+            // Adiciona uma nova localização ao pedido
+
+            // Escolher o pedido com o id
+            Pedido pedido = await db.Pedidos.FindAsync(id);
+
+            // Devolver NotFound se não existir
+            if (pedido == null)
+                return NotFound();
+
+            db.Localizacoes.Add(new Localizacao()
+            {
+                Pedido = pedido,
+                // Usar o tempo recebido ou o atual
+                Tempo = (localizacao.Tempo == null ? DateTime.Now : (DateTime)localizacao.Tempo),
+                Latitude = localizacao.Latitude,
+                Longitude = localizacao.Longitude
+            });
+
+            await db.SaveChangesAsync();
+
+            // Devolve um Ok vazio
+            return Ok();
+        }
+
+        public async Task<IHttpActionResult> Delete(Guid id)
+        {
+            // Na verdade não elimina o pedido, apenas altera o seu estado para Anulada
+
+            // Escolher o pedido com o id
+            Pedido pedido = await db.Pedidos.FindAsync(id);
+
+            // Devolver NotFound se não existir
+            if (pedido == null)
+                return NotFound();
+
+            // Hash do Guid do pedido + Guid da autorização
+            if (!Request.Headers.Contains("Hash") || Request.Headers.GetValues("Hash").First() != Hash(id.ToString(), pedido.Autorizacao.Id))
+                return BadRequest("Erro de autenticação");
+
+            // Adicionar o estado Anulada
+            db.EstadosDePedido.Add(new EstadoDePedido()
+            {
+                Pedido = pedido,
+                Estado = db.Estados.Where(e => e.Nome == "Anulada").FirstOrDefault(),
+                Tempo = DateTime.Now
+            });
+
+            await db.SaveChangesAsync();
+
+            // Devolve um Ok vazio
+            return Ok();
         }
 
         protected override void Dispose(bool disposing)

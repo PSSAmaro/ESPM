@@ -210,14 +210,17 @@
     <Compile Include="Models\Aplicacao.cs" />
     <Compile Include="Models\Autorizacao.cs" />
     <Compile Include="Models\DbInitializer.cs" />
+    <Compile Include="Models\Definicao.cs" />
     <Compile Include="Models\Descricao.cs" />
     <Compile Include="Models\EmergenciaViewModels.cs" />
     <Compile Include="Models\Estado.cs" />
     <Compile Include="Models\EstadoDePedido.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Imagem.cs" />
+    <Compile Include="Models\ListaNegra.cs" />
     <Compile Include="Models\Localizacao.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\MudancaDefinicao.cs" />
     <Compile Include="Models\Pedido.cs" />
     <Compile Include="Models\TransicaoDeEstado.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

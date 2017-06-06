@@ -13,6 +13,16 @@ namespace ESPM.Models
     {
         protected override void Seed(ApplicationDbContext db)
         {
+            // Inicializar definições
+            db.Definicoes.AddRange(new List<Definicao>()
+            {
+                new Definicao()
+                {
+                    Nome = "LimiteListaNegra",
+                    Valor = 3
+                }
+            });
+
             var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
             var RoleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
 

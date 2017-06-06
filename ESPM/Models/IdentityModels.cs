@@ -46,6 +46,8 @@ namespace ESPM.Models
             base.OnModelCreating(modelBuilder);
         }
 
+        public DbSet<Definicao> Definicoes { get; set; }
+        public DbSet<MudancaDefinicao> MudancasDefinicoes { get; set; }
         public DbSet<Aplicacao> Aplicacoes { get; set; }
         public DbSet<Autorizacao> Autorizacoes { get; set; }
         public DbSet<Descricao> Descricoes { get; set; }

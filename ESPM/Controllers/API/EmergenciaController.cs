@@ -12,11 +12,19 @@ using System.Web.Http;
 
 namespace ESPM.Controllers.API
 {
+    // Convém depois melhorar a documentação...
+    /// <summary>
+    /// Criar e atualizar pedidos reais.
+    /// </summary>
     // Ver qual é a convenção com a questão da segurança e os hashes, etc...
     public class EmergenciaController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        /// <summary>
+        /// Ver o estado atual de um pedido de ajuda.
+        /// </summary>
+        /// <param name="id">ID do pedido de ajuda.</param>
         public async Task<IHttpActionResult> Get(Guid id)
         {
             // Escolher o pedido com o id
@@ -33,6 +41,10 @@ namespace ESPM.Controllers.API
             });
         }
 
+        /// <summary>
+        /// Enviar um novo pedido de ajuda.
+        /// </summary>
+        /// <param name="emergencia">Dados do pedido de ajuda.</param>
         // Novo pedido
         // Faltam imagens e várias localizações
         // Talvez aceitar outras formas de timestamps
@@ -119,6 +131,11 @@ namespace ESPM.Controllers.API
             return BadRequest("Formato inválido");
         }
 
+        /// <summary>
+        /// Enviar uma nova localização para um pedido de ajuda.
+        /// </summary>
+        /// <param name="id">ID do pedido de ajuda.</param>
+        /// <param name="localizacao">Nova localização.</param>
         [HttpPost]
         [Route("api/emergencia/{id}/localizacao")]
         public async Task<IHttpActionResult> Localizacao(Guid id, LocalizacaoViewModel localizacao)
@@ -147,6 +164,10 @@ namespace ESPM.Controllers.API
             return Ok();
         }
 
+        /// <summary>
+        /// Cancelar um pedido de ajuda.
+        /// </summary>
+        /// <param name="id">ID do pedido de ajuda.</param>
         public async Task<IHttpActionResult> Delete(Guid id)
         {
             // Na verdade não elimina o pedido, apenas altera o seu estado para Anulada
@@ -176,6 +197,9 @@ namespace ESPM.Controllers.API
             return Ok();
         }
 
+        /// <summary>
+        /// Libertar recursos.
+        /// </summary>
         protected override void Dispose(bool disposing)
         {
             if (disposing)

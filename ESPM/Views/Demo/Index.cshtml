@@ -1,0 +1,45 @@
+﻿@{
+    ViewBag.Title = "Demo";
+}
+
+<div id="esquerda">
+    <div id="map"></div>
+    <p>Localização atual: <span id="at"></span></p>
+</div>
+<table>
+    <tr>
+        <td>Contacto:</td>
+        <td><input type="text"></td>
+    </tr>
+    <tr>
+        <td>Nome:</td>
+        <td><input type="text"></td>
+    </tr>
+    <tr>
+        <td>Idade:</td>
+        <td><input type="text"></td>
+    </tr>
+    <tr>
+        <td colspan=2>
+            <textarea rows="4" cols="50" placeholder="Descrição"></textarea>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="submit" value="Enviar">
+        </td>
+    </tr>
+</table>
+<div id="fundo">
+    <h3>Relatório</h3>
+    <p id="consola">A</p>
+</div>
+
+@section styles {
+    @Styles.Render("~/Content/Demo.css")
+}
+
+@section scripts {
+    @Scripts.Render("~/Scripts/angular.js")
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD201QiIbe8GqSopWLrfsAiVBJkxLpImyc&callback=initMap"></script>
+}

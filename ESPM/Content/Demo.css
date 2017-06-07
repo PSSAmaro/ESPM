@@ -1,0 +1,12 @@
+﻿#esquerda {
+    float: left;
+}
+
+#map {
+    height: 400px;
+    width: 800px;
+}
+
+#fundo {
+    clear: both;
+}

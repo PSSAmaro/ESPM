@@ -217,7 +217,6 @@
     <Compile Include="Models\EstadoDePedido.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Imagem.cs" />
-    <Compile Include="Models\ListaNegra.cs" />
     <Compile Include="Models\Localizacao.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MudancaDefinicao.cs" />

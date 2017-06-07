@@ -18,8 +18,56 @@ namespace ESPM.Models
             {
                 new Definicao()
                 {
-                    Nome = "LimiteListaNegra",
-                    Valor = 3
+                    Nome = "PlataformaAtiva",
+                    Maximo = 1,
+                    Valor = 1,
+                    Descricao = "Define se o sistema está a receber pedidos.",
+                    SignificadoZero = "Não aceitar pedidos",
+                    SignificadoOutro = "Aceitar pedidos"
+                },
+                new Definicao()
+                {
+                    Nome = "GestaoAtiva",
+                    Maximo = 1,
+                    Valor = 1,
+                    Descricao = "Define se os operadores podem aceder ao módulo de gestão.",
+                    SignificadoZero = "Não permitir acesso",
+                    SignificadoOutro = "Permitir acesso"
+                },
+                new Definicao()
+                {
+                    Nome = "TesteAtivo",
+                    Valor = 1,
+                    Descricao = "Define se o modo de teste está ativo.",
+                    SignificadoZero = "Modo de teste desligado",
+                    SignificadoOutro = "Modo de teste ligado"
+                },
+                new Definicao()
+                {
+                    Nome = "DemoAtivo",
+                    Maximo = 1,
+                    Valor = 1,
+                    Descricao = "Define se a demonstração está ativa.",
+                    SignificadoZero = "Demonstração indisponível",
+                    SignificadoOutro = "Demonstração disponível"
+                },
+                new Definicao()
+                {
+                    Nome = "LimitePedidosFalsosApp",
+                    Maximo = 0,
+                    Valor = 10,
+                    Descricao = "Define a quantidade de pedidos falsos que podem ser recebidos antes de uma app ser desativada.",
+                    SignificadoZero = "Limite desativado",
+                    SignificadoOutro = "Limite de pedidos falsos"
+                },
+                new Definicao()
+                {
+                    Nome = "LimitePedidosFalsosIP",
+                    Maximo = 0,
+                    Valor = 3,
+                    Descricao = "Define a quantidade de pedidos falsos que podem ser recebidos do mesmo IP antes de rejeitar o IP",
+                    SignificadoZero = "Limite desativado",
+                    SignificadoOutro = "Limite de pedidos falsos"
                 }
             });
 
@@ -27,11 +75,16 @@ namespace ESPM.Models
             var RoleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
 
             // Criar roles: Admin, Operador e Aplicacao
+            // Admin = Administrador(es) da plataforma
             RoleManager.Create(new IdentityRole("Admin"));
+            // Operador = Operadores responsáveis pela gestão dos pedidos recebidos
             RoleManager.Create(new IdentityRole("Operador"));
+            // Desautorizado = Antigos Admin/Operador, mantidos para questões de log, mas desautorizados
+            RoleManager.Create(new IdentityRole("Desautorizado"));
+            // Aplicacao = Utilizadores responsáveis pelas (suas) aplicações, com acesso ao modo de teste
             RoleManager.Create(new IdentityRole("Aplicacao"));
 
-            // Criar utilizador
+            // Criar utilizador (APENAS TESTE!!!)
             var user = new ApplicationUser()
             {
                 UserName = "Teste"

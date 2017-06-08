@@ -25,5 +25,8 @@ app.controller('ESPMCtrl', function ($scope, Mapa, $http) {
         Mapa.mapa.panTo(event.latLng);
         $scope.$apply();
     }
+    $scope.enviar = function () {
+
+    }
     Mapa.init($scope.posicao, $scope.clique);
 });

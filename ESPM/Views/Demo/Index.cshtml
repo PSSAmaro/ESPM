@@ -9,15 +9,15 @@
     <table>
         <tr>
             <td>Contacto:</td>
-            <td><input type="text"></td>
+            <td><input ng-model="contacto"></td>
         </tr>
         <tr>
             <td>Nome:</td>
-            <td><input type="text"></td>
+            <td><input ng-model="nome"></td>
         </tr>
         <tr>
             <td>Idade:</td>
-            <td><input type="text"></td>
+            <td><input ng-model="idade"></td>
         </tr>
         <tr>
             <td colspan=2>
@@ -26,7 +26,7 @@
         </tr>
         <tr>
             <td>
-                <input type="submit" value="Enviar">
+                <button ng-click="enviar()">Click me!</button>
             </td>
         </tr>
     </table>

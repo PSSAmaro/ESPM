@@ -1,4 +1,5 @@
 ﻿using ESPM.Models;
+using ESPM.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -19,7 +20,7 @@ namespace ESPM.Controllers.API
     // Ver qual é a convenção com a questão da segurança e os hashes, etc...
     public class EmergenciaController : ApiController
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private GestaoBD db = new GestaoBD();
 
         /// <summary>
         /// Ver o estado atual de um pedido de ajuda.
@@ -28,7 +29,7 @@ namespace ESPM.Controllers.API
         public async Task<IHttpActionResult> Get(Guid id)
         {
             // Escolher o pedido com o id
-            Pedido pedido = await db.Pedidos.FindAsync(id);
+            Pedido pedido = await db.GetPedido(id);
 
             // Devolver NotFound se não existir
             if (pedido == null)
@@ -52,81 +53,17 @@ namespace ESPM.Controllers.API
         {
             if (ModelState.IsValid)
             {
-                // Momento em que o pedido foi recebido
-                DateTime recebido = DateTime.Now;
-
                 // Escolher a autorização válida
-                Autorizacao aut = db.Autorizacoes.Where(a => a.Aplicacao.Id == emergencia.Aplicacao && !a.Teste && !a.Revogada && a.Validade > recebido).FirstOrDefault();
+                Autorizacao autorizacao = db.GetAutorizacao(emergencia.Aplicacao);
 
-                // Se não foi encontrada nenhuma autorização válida para a aplicação usada ou o header hash é inexistente/inválido
-                if (aut == null || !Request.Headers.Contains("Hash") || Request.Headers.GetValues("Hash").First() != Hash(emergencia.ToString(), aut.Id))
-                    return BadRequest("Erro de autenticação");
+                Validacao validacao = new Validacao(emergencia, autorizacao, Request.Headers.GetValues("Hash"));
 
-                // Apesar do modelo válido convém confirmar que foram enviadas informações suficientes
-                // Se todos os seguintes campos forem nulos, é considerado que não há informações suficientes
-                if (emergencia.Contacto == null && emergencia.OutrosDetalhesPessoa == null && emergencia.Descricao == null && !(emergencia.Latitude != null && emergencia.Longitude != null))
-                    return BadRequest("Informações insuficientes");
-
-                // FALTA: Definir a credibilidade do pedido
-
-                // Criar o novo pedido
-                Pedido pedido = new Pedido()
-                {
-                    // Associar a autorização usada
-                    Autorizacao = aut,
-                    // Usar o tempo recebido ou o atual
-                    Tempo = (emergencia.Tempo == null ? recebido : (DateTime)emergencia.Tempo),
-                    Nome = emergencia.Nome,
-                    Contacto = emergencia.Contacto,
-                    Idade = emergencia.Idade,
-                    OutrosDetalhesPessoa = emergencia.OutrosDetalhesPessoa
-                };
-
-                // Adicionar descrição se existir descrição
-                if(emergencia.Descricao != null)
-                {
-                    pedido.Descricoes = new List<Descricao>
-                    {
-                        new Descricao()
-                        {
-                            Tempo = pedido.Tempo,
-                            Texto = emergencia.Descricao
-                        }
-                    };
-                }
-
-                // Adicionar localização se existir localização
-                if (emergencia.Latitude != null && emergencia.Longitude != null)
-                {
-                    pedido.Localizacoes = new List<Localizacao>
-                    {
-                        new Localizacao()
-                        {
-                            Tempo = pedido.Tempo,
-                            Latitude = emergencia.Latitude,
-                            Longitude = emergencia.Longitude
-                        }
-                    };
-                }
-
-                // Criar o estado inicial
-                pedido.Estados = new List<EstadoDePedido>
-                {
-                    new EstadoDePedido()
-                    {
-                        // Verificar se dá para usar a função EstadoInicial()
-                        Estado = db.Estados.Where(e => e.Anteriores.Count == 0).FirstOrDefault(),
-                        Tempo = recebido
-                    }
-                };
-
-                // Adicionar o novo pedido à BD
-                db.Pedidos.Add(pedido);
-                await db.SaveChangesAsync();
-
-                return Ok(new RecebidoViewModel() {
-                    Id = pedido.Id
-                });
+                // Era bom não responder BadRequest a tudo...
+                // E falta guardar os pedidos com erro :/
+                if(validacao.Resultado == Resultado.Valido)
+                    return Ok(await db.PostPedido(emergencia, autorizacao));
+                else
+                    return BadRequest(validacao.Mensagem[(int)validacao.Resultado]);
             }
             return BadRequest("Formato inválido");
         }
@@ -143,25 +80,21 @@ namespace ESPM.Controllers.API
             // Adiciona uma nova localização ao pedido
 
             // Escolher o pedido com o id
-            Pedido pedido = await db.Pedidos.FindAsync(id);
+            Pedido pedido = await db.GetPedido(id);
 
             // Devolver NotFound se não existir
             if (pedido == null)
                 return NotFound();
 
-            db.Localizacoes.Add(new Localizacao()
+            Validacao validacao = new Validacao(localizacao, pedido.Autorizacao, Request.Headers.GetValues("Hash"));
+
+            if (validacao.Resultado == Resultado.Valido)
             {
-                Pedido = pedido,
-                // Usar o tempo recebido ou o atual
-                Tempo = (localizacao.Tempo == null ? DateTime.Now : (DateTime)localizacao.Tempo),
-                Latitude = localizacao.Latitude,
-                Longitude = localizacao.Longitude
-            });
-
-            await db.SaveChangesAsync();
-
-            // Devolve um Ok vazio
-            return Ok();
+                await db.PostLocalizacao(pedido, localizacao);
+                return Ok();
+            }
+            else
+                return BadRequest(validacao.Mensagem[(int)validacao.Resultado]);
         }
 
         /// <summary>
@@ -173,28 +106,21 @@ namespace ESPM.Controllers.API
             // Na verdade não elimina o pedido, apenas altera o seu estado para Anulada
 
             // Escolher o pedido com o id
-            Pedido pedido = await db.Pedidos.FindAsync(id);
+            Pedido pedido = await db.GetPedido(id);
 
             // Devolver NotFound se não existir
             if (pedido == null)
                 return NotFound();
 
-            // Hash do Guid do pedido + Guid da autorização
-            if (!Request.Headers.Contains("Hash") || Request.Headers.GetValues("Hash").First() != Hash(id.ToString(), pedido.Autorizacao.Id))
-                return BadRequest("Erro de autenticação");
+            Validacao validacao = new Validacao(pedido, Request.Headers.GetValues("Hash"));
 
-            // Adicionar o estado Anulada
-            db.EstadosDePedido.Add(new EstadoDePedido()
+            if (validacao.Resultado == Resultado.Valido)
             {
-                Pedido = pedido,
-                Estado = db.Estados.Where(e => e.Nome == "Anulada").FirstOrDefault(),
-                Tempo = DateTime.Now
-            });
-
-            await db.SaveChangesAsync();
-
-            // Devolve um Ok vazio
-            return Ok();
+                await db.DeletePedido(pedido);
+                return Ok();
+            }
+            else
+                return BadRequest(validacao.Mensagem[(int)validacao.Resultado]);
         }
 
         /// <summary>
@@ -207,14 +133,6 @@ namespace ESPM.Controllers.API
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        private string Hash(string s, Guid g)
-        {
-            string str = s + g;
-            // https://stackoverflow.com/questions/17292366/hashing-with-sha1-algorithm-in-c-sharp
-            byte[] hash = new SHA1CryptoServiceProvider().ComputeHash(Encoding.UTF8.GetBytes(str));
-            return string.Join("", hash.Select(b => b.ToString("x2")).ToArray());
         }
     }
 }

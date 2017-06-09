@@ -61,6 +61,19 @@ namespace ESPM.Models
 
         // Longitude da localização detetada
         public float Longitude { get; set; }
+
+        public override string ToString()
+        {
+            // Modificar se o modelo for modificado
+            // Ignorar tempo porque pode ser modificado no servidor
+            string str = Latitude.ToString() + Longitude;
+
+            // Remover caracteres que podem ser ambíguos, procurar outros
+            foreach (string c in new string[] { ",", "." })
+                str = str.Replace(c, string.Empty);
+
+            return str;
+        }
     }
 
     public class RecebidoViewModel

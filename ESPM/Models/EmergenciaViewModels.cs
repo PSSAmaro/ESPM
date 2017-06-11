@@ -5,63 +5,91 @@ using System.Web;
 
 namespace ESPM.Models
 {
-    // Este é o modelo dos pedidos enviados, provavelmente vai ser modificado ainda
-    // Por enquanto suporta 1 localização e não suporta imagens
+    /// <summary>
+    /// Modelo dos pedidos enviados.
+    /// </summary>
+    // Por enquanto não suporta imagens
     public class EmergenciaViewModel
     {
-        // Id da aplicação
+        /// <summary>
+        /// ID da aplicação.
+        /// </summary>
         public Guid Aplicacao { get; set; }
 
-        // Momento em que o pedido foi enviado
+        /// <summary>
+        /// Momento em que o pedido foi enviado.
+        /// </summary>
         // Talvez mudar para unix time?
         public DateTime? Tempo { get; set; }
 
-        // Nome da pessoa que precisa de ajuda
+        /// <summary>
+        /// Nome da pessoa que precisa de ajuda.
+        /// </summary>
         public string Nome { get; set; }
 
-        // Contacto da pessoa que precisa de ajuda
+        /// <summary>
+        /// Contacto da pessoa que precisa de ajuda.
+        /// </summary>
         public int? Contacto { get; set; }
 
-        // Idade da pessoa que precisa de ajuda
+        /// <summary>
+        /// Idade da pessoa que precisa de ajuda.
+        /// </summary>
         public int? Idade { get; set; }
 
-        // Outros detalhes da condição da pessoa que precisa de ajuda
+        /// <summary>
+        /// Outros detalhes da condição da pessoa que precisa de ajuda.
+        /// </summary>
         public string OutrosDetalhesPessoa { get; set; }
 
-        // Descrição da situação
+        /// <summary>
+        /// Descrição da situação.
+        /// </summary>
         public string Descricao { get; set; }
 
-        // Latitude da localização detetada
-        public float? Latitude { get; set; }
+        /// <summary>
+        /// Lista de localizações detetadas.
+        /// </summary>
+        public List<LocalizacaoViewModel> Localizacoes { get; set; }
 
-        // Longitude da localização detetada
-        public float? Longitude { get; set; }
-
+        /// <summary>
+        /// Transforma o objeto em string.
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             // Modificar se o modelo for modificado
-            // Ignorar tempo porque pode ser modificado no servidor
-            string str = Nome + Contacto + Idade + OutrosDetalhesPessoa + Descricao + Latitude + Longitude;
-
-            // Remover caracteres que podem ser ambíguos, procurar outros
-            foreach (string c in new string[] { ",", "." })
-                str = str.Replace(c, string.Empty);
+            string str = Nome + Contacto + Idade + OutrosDetalhesPessoa + Descricao + string.Join("", Localizacoes);
 
             return str;
         }
     }
 
+    /// <summary>
+    /// Modelo das localizações enviadas.
+    /// </summary>
+    // Falta o erro
     public class LocalizacaoViewModel
     {
-        // Momento em que a localização foi detetada
+        /// <summary>
+        /// Momento em que a localização foi detetada.
+        /// </summary>
         public DateTime? Tempo { get; set; }
 
-        // Latitude da localização detetada
+        /// <summary>
+        /// Latitude da localização detetada.
+        /// </summary>
         public float Latitude { get; set; }
 
-        // Longitude da localização detetada
+        /// <summary>
+        /// Longitude da localização detetada.
+        /// </summary>
         public float Longitude { get; set; }
 
+        /// <summary>
+        /// Transforma o objeto em string, removendo os caracteres "," e ".".
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             // Modificar se o modelo for modificado

@@ -29,7 +29,7 @@ namespace ESPM.Controllers.API
         public async Task<IHttpActionResult> Get(Guid id)
         {
             // Escolher o pedido com o id
-            Pedido pedido = await db.GetPedido(id);
+            Pedido pedido = await db.LerPedido(id);
 
             // Devolver NotFound se não existir
             if (pedido == null)
@@ -54,14 +54,21 @@ namespace ESPM.Controllers.API
             if (ModelState.IsValid)
             {
                 // Escolher a autorização válida
-                Autorizacao autorizacao = db.GetAutorizacao(emergencia.Aplicacao);
+                Autorizacao autorizacao = db.LerAutorizacao(emergencia.Aplicacao);
 
                 Validacao validacao = new Validacao(emergencia, autorizacao, Request.Headers.GetValues("Hash"));
 
                 // Era bom não responder BadRequest a tudo...
                 // E falta guardar os pedidos com erro :/
                 if(validacao.Resultado == Resultado.Valido)
-                    return Ok(await db.PostPedido(emergencia, autorizacao));
+                {
+                    Pedido pedido = db.CriarPedido(emergencia, autorizacao);
+                    await db.GuardarAlteracoes();
+                    return Ok(new RecebidoViewModel()
+                    {
+                        Id = pedido.Id
+                    });
+                }
                 else
                     return BadRequest(validacao.Mensagem[(int)validacao.Resultado]);
             }
@@ -72,25 +79,26 @@ namespace ESPM.Controllers.API
         /// Enviar uma nova localização para um pedido de ajuda.
         /// </summary>
         /// <param name="id">ID do pedido de ajuda.</param>
-        /// <param name="localizacao">Nova localização.</param>
+        /// <param name="localizacoes">Nova localização.</param>
         [HttpPost]
         [Route("api/emergencia/{id}/localizacao")]
-        public async Task<IHttpActionResult> Localizacao(Guid id, LocalizacaoViewModel localizacao)
+        public async Task<IHttpActionResult> Localizacao(Guid id, List<LocalizacaoViewModel> localizacoes)
         {
             // Adiciona uma nova localização ao pedido
 
             // Escolher o pedido com o id
-            Pedido pedido = await db.GetPedido(id);
+            Pedido pedido = await db.LerPedido(id);
 
             // Devolver NotFound se não existir
             if (pedido == null)
                 return NotFound();
 
-            Validacao validacao = new Validacao(localizacao, pedido.Autorizacao, Request.Headers.GetValues("Hash"));
+            Validacao validacao = new Validacao(localizacoes, pedido.Autorizacao, Request.Headers.GetValues("Hash"));
 
             if (validacao.Resultado == Resultado.Valido)
             {
-                await db.PostLocalizacao(pedido, localizacao);
+                db.CriarLocalizacoes(localizacoes, pedido);
+                await db.GuardarAlteracoes();
                 return Ok();
             }
             else
@@ -106,7 +114,7 @@ namespace ESPM.Controllers.API
             // Na verdade não elimina o pedido, apenas altera o seu estado para Anulada
 
             // Escolher o pedido com o id
-            Pedido pedido = await db.GetPedido(id);
+            Pedido pedido = await db.LerPedido(id);
 
             // Devolver NotFound se não existir
             if (pedido == null)
@@ -116,7 +124,8 @@ namespace ESPM.Controllers.API
 
             if (validacao.Resultado == Resultado.Valido)
             {
-                await db.DeletePedido(pedido);
+                db.CancelarPedido(pedido);
+                await db.GuardarAlteracoes();
                 return Ok();
             }
             else

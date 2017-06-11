@@ -75,6 +75,7 @@ namespace ESPM.Helpers
 
             // Apesar do modelo válido convém confirmar que foram enviadas informações suficientes
             // Se todos os seguintes campos forem nulos, é considerado que não há informações suficientes
+            // FALTA: Se for enviada mais de 1 localização, estas devem ter tempo
             if (emergencia.Contacto == null && emergencia.OutrosDetalhesPessoa == null && emergencia.Descricao == null && !(emergencia.Latitude != null && emergencia.Longitude != null))
             {
                 Resultado = Resultado.DadosInsuficientes;
@@ -90,13 +91,13 @@ namespace ESPM.Helpers
         /// <summary>
         /// Construtor usado aquando do envio de uma nova localização.
         /// </summary>
-        /// <param name="localizacao">A nova localização.</param>
+        /// <param name="localizacoes">A nova localização.</param>
         /// <param name="autorizacao">A autorização da aplicação.</param>
         /// <param name="hash">O header com o hash.</param>
-        public Validacao(LocalizacaoViewModel localizacao, Autorizacao autorizacao, IEnumerable<string> hash)
+        public Validacao(List<LocalizacaoViewModel> localizacoes, Autorizacao autorizacao, IEnumerable<string> hash)
         {
             // Se não foi encontrada nenhuma autorização válida para a aplicação usada ou o header hash é inexistente/inválido
-            if (autorizacao == null || hash == null || hash.First() != Hash(localizacao.ToString(), autorizacao.Id))
+            if (autorizacao == null || hash == null || hash.First() != Hash(string.Join("", localizacoes), autorizacao.Id))
             {
                 Resultado = Resultado.ErroAutenticacao;
                 return;

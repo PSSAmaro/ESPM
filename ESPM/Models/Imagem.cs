@@ -7,18 +7,28 @@ using System.Web;
 
 namespace ESPM.Models
 {
+    /// <summary>
+    /// Imagem de um pedido.
+    /// </summary>
     [Table("Imagens")]
     public class Imagem
     {
+        /// <summary>
+        /// ID.
+        /// </summary>
         // Assumindo que é possível gerar o URL da imagem a partir apenas destas informações...
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
-        // Pedido a que pertence esta imagem
+        /// <summary>
+        /// Pedido a que pertence esta imagem.
+        /// </summary>
         [Required]
         public virtual Pedido Pedido { get; set; }
 
-        // Momento em que esta fotografia foi tirada
+        /// <summary>
+        /// Momento em que esta fotografia foi tirada.
+        /// </summary>
         // Se não houver informação de tempo é o momento em que a informação foi recebida
         public DateTime Tempo { get; set; }
     }

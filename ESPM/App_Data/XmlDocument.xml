@@ -649,6 +649,181 @@
             <param name="pedido">O pedido a adicionar a localização.</param>
             <param name="hash">O header com o hash.</param>
         </member>
+        <member name="T:ESPM.Models.AlteracaoDefinicao">
+            <summary>
+            Alteração às definições do sistema.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.AlteracaoDefinicao.Id">
+            <summary>
+            ID.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.AlteracaoDefinicao.Utilizador">
+            <summary>
+            Utilizador que fez a mudança.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.AlteracaoDefinicao.Definicao">
+            <summary>
+            Definição editada.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.AlteracaoDefinicao.De">
+            <summary>
+            Valor anterior.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.AlteracaoDefinicao.Para">
+            <summary>
+            Novo valor.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.AlteracaoDefinicao.Tempo">
+            <summary>
+            Momento em que a edição foi feita.
+            </summary>
+        </member>
+        <member name="T:ESPM.Models.Aplicacao">
+            <summary>
+            Aplicação autorizada.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Aplicacao.Id">
+            <summary>
+            ID da aplicação. Enviada com cada pedido.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Aplicacao.Utilizador">
+            <summary>
+            Utilizador responsável por esta aplicação, com acesso ao sistema de teste.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Aplicacao.Nome">
+            <summary>
+            Nome da aplicação.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Aplicacao.Autorizacoes">
+            <summary>
+            Lista de autorizações da aplicação.
+            </summary>
+        </member>
+        <member name="M:ESPM.Models.Aplicacao.#ctor">
+            <summary>
+            Inicializa as listas para evitar NullReferenceException.
+            </summary>
+        </member>
+        <member name="T:ESPM.Models.Autorizacao">
+            <summary>
+            Autorização de aplicação.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Autorizacao.Id">
+            <summary>
+            ID da autorização. Esta chave é a usada pela aplicação para autenticação.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Autorizacao.Aplicacao">
+            <summary>
+            Aplicação a que se refere a autorização.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Autorizacao.Validade">
+            <summary>
+            Validade da autorização.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Autorizacao.Teste">
+            <summary>
+            Define se é uma autorização real ou de teste.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Autorizacao.Revogada">
+            <summary>
+            Define se esta autorização foi revogada.
+            </summary>
+        </member>
+        <member name="T:ESPM.Models.Definicao">
+            <summary>
+            Definição do sistema.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Definicao.Nome">
+            <summary>
+            Nome da definição.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Definicao.Maximo">
+            <summary>
+            Valor máximo da definição.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Definicao.Valor">
+            <summary>
+            Valor atual da definição.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Definicao.Apresentacao">
+            <summary>
+            Nome de apresentação da definição.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Definicao.Descricao">
+            <summary>
+            Descrição da definição.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Definicao.SignificadoZero">
+            <summary>
+            O que significa esta definição ser 0?
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Definicao.SignificadoOutro">
+            <summary>
+            O que significa esta definição ser diferente de 0?
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Definicao.Alteracoes">
+            <summary>
+            Lista de modificações a esta definição.
+            </summary>
+        </member>
+        <member name="M:ESPM.Models.Definicao.#ctor">
+            <summary>
+            Inicializa as listas para evitar NullReferenceException.
+            </summary>
+        </member>
+        <member name="T:ESPM.Models.Descricao">
+            <summary>
+            Descrição de um pedido.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Descricao.Id">
+            <summary>
+            ID da descrição.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Descricao.Pedido">
+            <summary>
+            Pedido a que se refere esta descrição.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Descricao.Utilizador">
+            <summary>
+            Utilizador que fez esta mudança de descrição.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Descricao.Tempo">
+            <summary>
+            Momento em que a descrição foi modificada para esta versão.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Descricao.Texto">
+            <summary>
+            Texto da descrição.
+            </summary>
+        </member>
         <member name="T:ESPM.Models.EmergenciaViewModel">
             <summary>
             Modelo dos pedidos enviados.
@@ -730,6 +905,310 @@
             Transforma o objeto em string, removendo os caracteres "," e ".".
             </summary>
             <returns></returns>
+        </member>
+        <member name="T:ESPM.Models.Estado">
+            <summary>
+            Estado possível para um pedido.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Estado.Id">
+            <summary>
+            ID.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Estado.Nome">
+            <summary>
+            Nome do estado.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Estado.Familia">
+            <summary>
+            Família do estado.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Estado.Ativo">
+            <summary>
+            Define se o estado está disponível ou não.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Estado.Anteriores">
+            <summary>
+            Lista de estados dos quais é possível chegar a este estado.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Estado.Seguintes">
+            <summary>
+            Lista de estados para os quais este pode transitar.
+            </summary>
+        </member>
+        <member name="M:ESPM.Models.Estado.#ctor">
+            <summary>
+            Inicializa as listas para evitar NullReferenceException.
+            </summary>
+        </member>
+        <member name="T:ESPM.Models.EstadoDePedido">
+            <summary>
+            Estado de um pedido.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.EstadoDePedido.Id">
+            <summary>
+            ID.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.EstadoDePedido.Pedido">
+            <summary>
+            Pedido a que se refere este estado.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.EstadoDePedido.Estado">
+            <summary>
+            Estado do pedido.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.EstadoDePedido.Utilizador">
+            <summary>
+            Utilizador que fez esta mudança de estado. Null no estado inicial.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.EstadoDePedido.Tempo">
+            <summary>
+            Momento em que o pedido mudou para este estado.
+            </summary>
+        </member>
+        <member name="T:ESPM.Models.ApplicationUser">
+            <summary>
+            Utilizador da plataforma.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.ApplicationUser.Aplicacoes">
+            <summary>
+            Lista de aplicações pelas quais este utilizador é responsável. (Role = Aplicacao)
+            </summary>
+        </member>
+        <member name="M:ESPM.Models.ApplicationUser.GenerateUserIdentityAsync(Microsoft.AspNet.Identity.UserManager{ESPM.Models.ApplicationUser})">
+            <summary>
+            Criar identidade.
+            </summary>
+            <param name="manager">Gestor de utilizadores.</param>
+            <returns>Identidade de utilizador.</returns>
+        </member>
+        <member name="T:ESPM.Models.ApplicationDbContext">
+            <summary>
+            Contexto da BD.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.ApplicationDbContext.Definicoes">
+            <summary>
+            Definições do sistema.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.ApplicationDbContext.AlteracoesDefinicoes">
+            <summary>
+            Alterações às definições do sistema.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.ApplicationDbContext.Aplicacoes">
+            <summary>
+            Aplicações autorizadas.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.ApplicationDbContext.Autorizacoes">
+            <summary>
+            Autorizações de aplicações.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.ApplicationDbContext.Descricoes">
+            <summary>
+            Descrições de pedidos.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.ApplicationDbContext.Estados">
+            <summary>
+            Estados possíveis para os pedidos.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.ApplicationDbContext.EstadosDePedido">
+            <summary>
+            Estados dos pedidos.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.ApplicationDbContext.Imagens">
+            <summary>
+            Imagens dos pedidos.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.ApplicationDbContext.Localizacoes">
+            <summary>
+            Localizações dos pedidos.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.ApplicationDbContext.Pedidos">
+            <summary>
+            Pedidos de ajuda recebidos.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.ApplicationDbContext.TransicoesDeEstado">
+            <summary>
+            Transições possíveis entre estados de pedidos.
+            </summary>
+        </member>
+        <member name="M:ESPM.Models.ApplicationDbContext.#ctor">
+            <summary>
+            Ligação à BD.
+            </summary>
+        </member>
+        <member name="M:ESPM.Models.ApplicationDbContext.Create">
+            <summary>
+            Croar contexto.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ESPM.Models.ApplicationDbContext.OnModelCreating(System.Data.Entity.DbModelBuilder)">
+            <summary>
+            Definições aquando da criação do modelo.
+            </summary>
+            <param name="modelBuilder">Construtor do modelo.</param>
+        </member>
+        <member name="T:ESPM.Models.Imagem">
+            <summary>
+            Imagem de um pedido.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Imagem.Id">
+            <summary>
+            ID.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Imagem.Pedido">
+            <summary>
+            Pedido a que pertence esta imagem.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Imagem.Tempo">
+            <summary>
+            Momento em que esta fotografia foi tirada.
+            </summary>
+        </member>
+        <member name="T:ESPM.Models.Localizacao">
+            <summary>
+            Localização de um pedido.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Localizacao.Id">
+            <summary>
+            ID.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Localizacao.Pedido">
+            <summary>
+            Pedido a que se refere esta localização.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Localizacao.Tempo">
+            <summary>
+            Momento em que esta localização foi detetada.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Localizacao.Latitude">
+            <summary>
+            Latitude detetada.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Localizacao.Longitude">
+            <summary>
+            Longitude detetada.
+            </summary>
+        </member>
+        <member name="T:ESPM.Models.Pedido">
+            <summary>
+            Pedido de ajuda recebido.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Pedido.Id">
+            <summary>
+            ID.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Pedido.Autorizacao">
+            <summary>
+            Autorização utilizada para o pedido.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Pedido.Tempo">
+            <summary>
+            Momento em que o pedido foi enviado.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Pedido.Nome">
+            <summary>
+            Nome da pessoa que precisa de ajuda.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Pedido.Contacto">
+            <summary>
+            Contacto da pessoa que precisa de ajuda.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Pedido.Idade">
+            <summary>
+            Idade da pessoa que precisa de ajuda.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Pedido.OutrosDetalhesPessoa">
+            <summary>
+            Outras informações relevantes sobre a pessoa que precisa de ajuda.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Pedido.Descricoes">
+            <summary>
+            Histórico de descrições do pedido de ajuda.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Pedido.Localizacoes">
+            <summary>
+            Lista de localizações recebidas.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Pedido.Imagens">
+            <summary>
+            Lista de imagens recebidas.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Pedido.Estados">
+            <summary>
+            Lista de estados pelos quais o pedido já passou.
+            </summary>
+        </member>
+        <member name="M:ESPM.Models.Pedido.#ctor">
+            <summary>
+            Inicializa as listas para evitar NullReferenceException.
+            </summary>
+        </member>
+        <member name="T:ESPM.Models.TransicaoDeEstado">
+            <summary>
+            Transição possível entre estados de pedidos.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.TransicaoDeEstado.Id">
+            <summary>
+            ID.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.TransicaoDeEstado.De">
+            <summary>
+            Estado antes desta transição.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.TransicaoDeEstado.Para">
+            <summary>
+            Estado depois desta transição.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.TransicaoDeEstado.Ativa">
+            <summary>
+            Define se a transição está ativa.
+            </summary>
         </member>
     </members>
 </doc>

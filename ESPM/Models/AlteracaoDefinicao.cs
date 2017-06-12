@@ -7,30 +7,45 @@ using System.Web;
 
 namespace ESPM.Models
 {
-    // Log das alterações às definições do sistema
-    [Table("MudancasDefinicoes")]
-    public class MudancaDefinicao
+    /// <summary>
+    /// Alteração às definições do sistema.
+    /// </summary>
+    [Table("AlteracoesDefinicoes")]
+    public class AlteracaoDefinicao
     {
+        /// <summary>
+        /// ID.
+        /// </summary>
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        // Utilizador que fez a mudança
+        /// <summary>
+        /// Utilizador que fez a mudança.
+        /// </summary>
         [Required]
         public virtual ApplicationUser Utilizador { get; set; }
 
-        // Definição editada
+        /// <summary>
+        /// Definição editada.
+        /// </summary>
         [Required]
         public virtual Definicao Definicao { get; set; }
 
-        // Valor anterior
+        /// <summary>
+        /// Valor anterior.
+        /// </summary>
         [Required]
         public int De { get; set; }
 
-        // Novo valor
+        /// <summary>
+        /// Novo valor.
+        /// </summary>
         [Required]
         public int Para { get; set; }
 
-        // Momento em que a edição foi feita
+        /// <summary>
+        /// Momento em que a edição foi feita.
+        /// </summary>
         [Required]
         public DateTime Tempo { get; set; }
     }

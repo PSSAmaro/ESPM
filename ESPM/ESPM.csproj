@@ -239,6 +239,7 @@
     <Compile Include="Helpers\GestorPedidos.cs" />
     <Compile Include="Helpers\Validacao.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\AlteracaoDefinicao.cs" />
     <Compile Include="Models\Aplicacao.cs" />
     <Compile Include="Models\Autorizacao.cs" />
     <Compile Include="Models\DbInitializer.cs" />
@@ -251,7 +252,6 @@
     <Compile Include="Models\Imagem.cs" />
     <Compile Include="Models\Localizacao.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\MudancaDefinicao.cs" />
     <Compile Include="Models\Pedido.cs" />
     <Compile Include="Models\TransicaoDeEstado.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

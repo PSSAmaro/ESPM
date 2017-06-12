@@ -7,49 +7,77 @@ using System.Web;
 
 namespace ESPM.Models
 {
+    /// <summary>
+    /// Pedido de ajuda recebido.
+    /// </summary>
+    // Talvez adicionar um campo bool Aberto
     [Table("Pedidos")]
     public class Pedido
     {
+        /// <summary>
+        /// ID.
+        /// </summary>
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
-        // Autorização utilizada para o pedido
+        /// <summary>
+        /// Autorização utilizada para o pedido.
+        /// </summary>
         // É utilizada a autorização em vez da aplicação para ser mais fácil distinguir pedidos válidos, pedidos inválidos e pedidos de teste
         [Required]
         public virtual Autorizacao Autorizacao { get; set; }
 
-        // Momento em que o pedido foi enviado
+        /// <summary>
+        /// Momento em que o pedido foi enviado.
+        /// </summary>
         // Se não houver informação de tempo no pedido é o momento em que é recebido
-        // Falta definir o valor predefinido como a hora atual
         public DateTime Tempo { get; set; }
 
-        // Nome da pessoa que precisa de ajuda
+        /// <summary>
+        /// Nome da pessoa que precisa de ajuda.
+        /// </summary>
         public string Nome { get; set; }
 
-        // Contacto da pessoa que precisa de ajuda
+        /// <summary>
+        /// Contacto da pessoa que precisa de ajuda.
+        /// </summary>
         public int? Contacto { get; set; }
 
-        // Idade da pessoa que precisa de ajuda
+        /// <summary>
+        /// Idade da pessoa que precisa de ajuda.
+        /// </summary>
         public int? Idade { get; set; }
 
-        // Outras informações relevantes sobre a pessoa que precisa de ajuda
+        /// <summary>
+        /// Outras informações relevantes sobre a pessoa que precisa de ajuda.
+        /// </summary>
         public string OutrosDetalhesPessoa { get; set; }
 
-        // Histórico de descrições do pedido de ajuda
+        /// <summary>
+        /// Histórico de descrições do pedido de ajuda.
+        /// </summary>
         // Descrição atual: Descricoes.OrderByDescending(d => d.Tempo).FirstOrDefault()
         public virtual List<Descricao> Descricoes { get; set; }
 
-        // Lista de localizações recebidas
+        /// <summary>
+        /// Lista de localizações recebidas.
+        /// </summary>
         public virtual List<Localizacao> Localizacoes { get; set; }
 
-        // Lista de imagens recebidas
+        /// <summary>
+        /// Lista de imagens recebidas.
+        /// </summary>
         public virtual List<Imagem> Imagens { get; set; }
 
-        // Lista de estados pelos quais o pedido já passou
+        /// <summary>
+        /// Lista de estados pelos quais o pedido já passou.
+        /// </summary>
         // Estado atual: Estados.OrderByDescending(e => e.Tempo).FirstOrDefault()
-        // Aberto: EstadoAtual.Estado.EstadoFinal()
         public virtual List<EstadoDePedido> Estados { get; set; }
 
+        /// <summary>
+        /// Inicializa as listas para evitar NullReferenceException.
+        /// </summary>
         public Pedido()
         {
             Descricoes = new List<Descricao>();

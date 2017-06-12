@@ -7,23 +7,38 @@ using System.Web;
 
 namespace ESPM.Models
 {
+    /// <summary>
+    /// Estado de um pedido.
+    /// </summary>
     [Table("EstadosDePedidos")]
     public class EstadoDePedido
     {
+        /// <summary>
+        /// ID.
+        /// </summary>
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        // Pedido a que se refere este estado
+        /// <summary>
+        /// Pedido a que se refere este estado.
+        /// </summary>
         [Required]
         public virtual Pedido Pedido { get; set; }
 
+        /// <summary>
+        /// Estado do pedido.
+        /// </summary>
         [Required]
         public virtual Estado Estado { get; set; }
 
-        // Utilizador que fez esta mudança de estado
+        /// <summary>
+        /// Utilizador que fez esta mudança de estado. Null no estado inicial.
+        /// </summary>
         public virtual ApplicationUser Utilizador { get; set; }
 
-        // Momento em que o pedido mudou para este estado
+        /// <summary>
+        /// Momento em que o pedido mudou para este estado.
+        /// </summary>
         [Required]
         public DateTime Tempo { get; set; }
     }

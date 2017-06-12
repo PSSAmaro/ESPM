@@ -18,26 +18,29 @@ namespace ESPM.Models
             {
                 new Definicao()
                 {
-                    Nome = "PlataformaAtiva",
+                    Nome = "PlataformaLigada",
                     Maximo = 1,
                     Valor = 1,
+                    Apresentacao = "Receção de pedidos de ajuda",
                     Descricao = "Define se o sistema está a receber pedidos.",
                     SignificadoZero = "Não aceitar pedidos",
                     SignificadoOutro = "Aceitar pedidos"
                 },
                 new Definicao()
                 {
-                    Nome = "GestaoAtiva",
+                    Nome = "GestaoLigada",
                     Maximo = 1,
                     Valor = 1,
+                    Apresentacao = "Plataforma de gestão",
                     Descricao = "Define se os operadores podem aceder ao módulo de gestão.",
                     SignificadoZero = "Não permitir acesso",
                     SignificadoOutro = "Permitir acesso"
                 },
                 new Definicao()
                 {
-                    Nome = "TesteAtivo",
+                    Nome = "TesteLigado",
                     Valor = 1,
+                    Apresentacao = "Modo de teste",
                     Descricao = "Define se o modo de teste está ativo.",
                     SignificadoZero = "Modo de teste desligado",
                     SignificadoOutro = "Modo de teste ligado"
@@ -47,15 +50,37 @@ namespace ESPM.Models
                     Nome = "DemoAtivo",
                     Maximo = 1,
                     Valor = 1,
+                    Apresentacao = "Demonstração",
                     Descricao = "Define se a demonstração está ativa.",
                     SignificadoZero = "Demonstração indisponível",
                     SignificadoOutro = "Demonstração disponível"
                 },
                 new Definicao()
                 {
+                    Nome = "ValidadeAutorizacao",
+                    Maximo = 0,
+                    Valor = 365,
+                    Apresentacao = "Validade das autorizações",
+                    Descricao = "Define a quantidade de dias que devem ser dados a uma nova autorização.",
+                    SignificadoZero = "Sem validade (Não recomendado)",
+                    SignificadoOutro = "Número de dias de autorização"
+                },
+                new Definicao()
+                {
+                    Nome = "ValidadeTeste",
+                    Maximo = 0,
+                    Valor = 0,
+                    Apresentacao = "Validade das autorizações de teste",
+                    Descricao = "Define a quantidade de dias que devem ser dados a uma nova autorização de teste.",
+                    SignificadoZero = "Sem validade",
+                    SignificadoOutro = "Número de dias de autorização"
+                },
+                new Definicao()
+                {
                     Nome = "LimitePedidosFalsosApp",
                     Maximo = 0,
                     Valor = 10,
+                    Apresentacao = "Limite de falsos pedidos por aplicação",
                     Descricao = "Define a quantidade de pedidos falsos que podem ser recebidos antes de uma app ser desativada.",
                     SignificadoZero = "Limite desativado",
                     SignificadoOutro = "Limite de pedidos falsos"
@@ -65,6 +90,7 @@ namespace ESPM.Models
                     Nome = "LimitePedidosFalsosIP",
                     Maximo = 0,
                     Valor = 3,
+                    Apresentacao = "Limite de falsos pedidos por IP",
                     Descricao = "Define a quantidade de pedidos falsos que podem ser recebidos do mesmo IP antes de rejeitar o IP",
                     SignificadoZero = "Limite desativado",
                     SignificadoOutro = "Limite de pedidos falsos"

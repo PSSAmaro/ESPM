@@ -66,26 +66,20 @@ namespace ESPM.Helpers
         /// <param name="hash">O header com o hash.</param>
         public Validacao(EmergenciaViewModel emergencia, Autorizacao autorizacao, IEnumerable<string> hash)
         {
-            // Se não foi encontrada nenhuma autorização válida para a aplicação usada ou o header hash é inexistente/inválido
-            if (autorizacao == null || hash == null || hash.First() != Hash(emergencia.ToString(), autorizacao.Id))
-            {
-                Resultado = Resultado.ErroAutenticacao;
-                return;
-            }
+            // FALTA: Definir a credibilidade do pedido
+            // FALTA: Se for enviada mais de 1 localização, estas devem ter tempo
 
             // Apesar do modelo válido convém confirmar que foram enviadas informações suficientes
             // Se todos os seguintes campos forem nulos, é considerado que não há informações suficientes
-            // FALTA: Se for enviada mais de 1 localização, estas devem ter tempo
-            if (emergencia.Contacto == null && emergencia.OutrosDetalhesPessoa == null && emergencia.Descricao == null && !(emergencia.Latitude != null && emergencia.Longitude != null))
-            {
+            if (emergencia.Contacto == null && emergencia.OutrosDetalhesPessoa == null && emergencia.Descricao == null && emergencia.Localizacoes == null)
                 Resultado = Resultado.DadosInsuficientes;
-                return;
-            }
 
-            // FALTA: Definir a credibilidade do pedido
+            // Se não foi encontrada nenhuma autorização válida para a aplicação usada ou o header hash é inexistente/inválido
+            else if (autorizacao == null || hash == null || hash.First() != Hash(emergencia.ToString(), autorizacao.Id))
+                Resultado = Resultado.ErroAutenticacao;
 
-            // Se chegou aqui, o pedido é válido
-            Resultado = Resultado.Valido;
+            else
+                Resultado = Resultado.Valido;
         }
 
         /// <summary>
@@ -96,17 +90,18 @@ namespace ESPM.Helpers
         /// <param name="hash">O header com o hash.</param>
         public Validacao(List<LocalizacaoViewModel> localizacoes, Autorizacao autorizacao, IEnumerable<string> hash)
         {
-            // Se não foi encontrada nenhuma autorização válida para a aplicação usada ou o header hash é inexistente/inválido
-            if (autorizacao == null || hash == null || hash.First() != Hash(string.Join("", localizacoes), autorizacao.Id))
-            {
-                Resultado = Resultado.ErroAutenticacao;
-                return;
-            }
-
             // TALVEZ: Impor um limite de distância por tempo?
 
-            // Se chegou aqui, o pedido é válido
-            Resultado = Resultado.Valido;
+            // Se não existir pelo menos 1 localização enviada
+            if (localizacoes == null || localizacoes.Count == 0)
+                Resultado = Resultado.DadosInsuficientes;
+            
+            // Se não foi encontrada nenhuma autorização válida para a aplicação usada ou o header hash é inexistente/inválido
+            else if (autorizacao == null || hash == null || hash.First() != Hash(string.Join("", localizacoes), autorizacao.Id))
+                Resultado = Resultado.ErroAutenticacao;
+
+            else
+                Resultado = Resultado.Valido;
         }
 
         /// <summary>
@@ -117,13 +112,10 @@ namespace ESPM.Helpers
         public Validacao(Pedido pedido, IEnumerable<string> hash)
         {
             if (hash == null || hash.First() != Hash(pedido.Id.ToString(), pedido.Autorizacao.Id))
-            {
                 Resultado = Resultado.ErroAutenticacao;
-                return;
-            }
 
-            // Se chegou aqui, o pedido é válido
-            Resultado = Resultado.Valido;
+            else
+                Resultado = Resultado.Valido;
         }
 
         private string Hash(string s, Guid g)

@@ -53,6 +53,14 @@ namespace ESPM.Models
         public List<LocalizacaoViewModel> Localizacoes { get; set; }
 
         /// <summary>
+        /// Inicializa as listas para evitar NullReferenceException.
+        /// </summary>
+        public EmergenciaViewModel()
+        {
+            Localizacoes = new List<LocalizacaoViewModel>();
+        }
+
+        /// <summary>
         /// Transforma o objeto em string.
         /// </summary>
         /// <returns></returns>

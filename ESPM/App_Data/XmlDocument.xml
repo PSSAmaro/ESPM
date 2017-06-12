@@ -498,12 +498,12 @@
             </summary>
             <param name="emergencia">Dados do pedido de ajuda.</param>
         </member>
-        <member name="M:ESPM.Controllers.API.EmergenciaController.Localizacao(System.Guid,ESPM.Models.LocalizacaoViewModel)">
+        <member name="M:ESPM.Controllers.API.EmergenciaController.Localizacao(System.Guid,System.Collections.Generic.List{ESPM.Models.LocalizacaoViewModel})">
             <summary>
             Enviar uma nova localização para um pedido de ajuda.
             </summary>
             <param name="id">ID do pedido de ajuda.</param>
-            <param name="localizacao">Nova localização.</param>
+            <param name="localizacoes">Nova localização.</param>
         </member>
         <member name="M:ESPM.Controllers.API.EmergenciaController.Delete(System.Guid)">
             <summary>
@@ -515,6 +515,227 @@
             <summary>
             Libertar recursos.
             </summary>
+        </member>
+        <member name="T:ESPM.Helpers.GestaoBD">
+            <summary>
+            Gere a comunicação dos controladores com a Base de Dados.
+            </summary>
+        </member>
+        <member name="M:ESPM.Helpers.GestaoBD.LerPedido(System.Guid)">
+            <summary>
+            Devolve o pedido com o id definido.
+            Devolve null se não for encontrado.
+            </summary>
+            <param name="id">ID do pedido.</param>
+        </member>
+        <member name="M:ESPM.Helpers.GestaoBD.CriarPedido(ESPM.Models.EmergenciaViewModel,ESPM.Models.Autorizacao)">
+            <summary>
+            Inserir um novo pedido na base de dados.
+            </summary>
+            <param name="emergencia">A emergência recebida.</param>
+            <param name="autorizacao">A autorização utilizada pela aplicação.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ESPM.Helpers.GestaoBD.CancelarPedido(ESPM.Models.Pedido)">
+            <summary>
+            Marca um pedido como anulado.
+            </summary>
+            <param name="pedido">Pedido a anular.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ESPM.Helpers.GestaoBD.CriarLocalizacoes(System.Collections.Generic.List{ESPM.Models.LocalizacaoViewModel},ESPM.Models.Pedido)">
+            <summary>
+            Insere uma ou mais novas localizações num pedido.
+            </summary>
+            <param name="localizacoes">Nova localização.</param>
+            <param name="pedido">Pedido ao qual deve ser adicionada a localização.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ESPM.Helpers.GestaoBD.CriarEstadoDePedido(ESPM.Models.Estado,ESPM.Models.Pedido)">
+            <summary>
+            Cria um novo estado para um pedido.
+            </summary>
+            <param name="estado">Novo estado do pedido.</param>
+            <param name="pedido">Pedido ao qual adicionar o estado.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ESPM.Helpers.GestaoBD.CriarDescricao(System.String,ESPM.Models.Pedido,System.DateTime)">
+            <summary>
+            Cria uma nova descrição para um pedido.
+            </summary>
+            <param name="texto">Texto da descrição.</param>
+            <param name="pedido">Pedido ao qual deve ser adicionada a descrição.</param>
+            <param name="tempo">Momento em que a descrição foi escrita.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ESPM.Helpers.GestaoBD.LerAutorizacao(System.Guid,System.Boolean)">
+            <summary>
+            Devolve a autorização para a aplicação definida.
+            Devolve null se não for encontrada.
+            </summary>
+            <param name="aplicacao">ID da aplicação.</param>
+            <param name="teste">Define se é uma autorização de teste ou real.</param>
+        </member>
+        <member name="M:ESPM.Helpers.GestaoBD.GuardarAlteracoes">
+            <summary>
+            Guarda as alterações efetuadas na BD.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ESPM.Helpers.GestaoBD.Dispose">
+            <summary>
+            Libertar recursos.
+            </summary>
+        </member>
+        <member name="T:ESPM.Helpers.Resultado">
+            <summary>
+            Tipos de resultados possíveis da validação.
+            </summary>
+        </member>
+        <member name="F:ESPM.Helpers.Resultado.Valido">
+            <summary>
+            Pedido válido
+            </summary>
+        </member>
+        <member name="F:ESPM.Helpers.Resultado.ErroAutenticacao">
+            <summary>
+            Erro de autenticação
+            </summary>
+        </member>
+        <member name="F:ESPM.Helpers.Resultado.DadosInsuficientes">
+            <summary>
+            Informações enviadas insuficientes
+            </summary>
+        </member>
+        <member name="F:ESPM.Helpers.Resultado.Suspeito">
+            <summary>
+            Pedido não credível
+            </summary>
+        </member>
+        <member name="F:ESPM.Helpers.Resultado.Repetido">
+            <summary>
+            Pedido repetido
+            </summary>
+        </member>
+        <member name="T:ESPM.Helpers.Validacao">
+            <summary>
+            Validação de todos os requests recebidos, incluindo autorizações.
+            </summary>
+        </member>
+        <member name="F:ESPM.Helpers.Validacao.Resultado">
+            <summary>
+            Guarda o resultado da validação.
+            </summary>
+        </member>
+        <member name="F:ESPM.Helpers.Validacao.Mensagem">
+            <summary>
+            Lista de mensagens de erro para os tipos de resultados.
+            </summary>
+        </member>
+        <member name="M:ESPM.Helpers.Validacao.#ctor(ESPM.Models.EmergenciaViewModel,ESPM.Models.Autorizacao,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Construtor usado aquando da criação de um novo pedido.
+            </summary>
+            <param name="emergencia">A emergência a validar.</param>
+            <param name="autorizacao">A autorização da aplicação.</param>
+            <param name="hash">O header com o hash.</param>
+        </member>
+        <member name="M:ESPM.Helpers.Validacao.#ctor(System.Collections.Generic.List{ESPM.Models.LocalizacaoViewModel},ESPM.Models.Autorizacao,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Construtor usado aquando do envio de uma nova localização.
+            </summary>
+            <param name="localizacoes">A nova localização.</param>
+            <param name="autorizacao">A autorização da aplicação.</param>
+            <param name="hash">O header com o hash.</param>
+        </member>
+        <member name="M:ESPM.Helpers.Validacao.#ctor(ESPM.Models.Pedido,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Construtor usado aquando do pedido de cancelamento.
+            </summary>
+            <param name="pedido">O pedido a adicionar a localização.</param>
+            <param name="hash">O header com o hash.</param>
+        </member>
+        <member name="T:ESPM.Models.EmergenciaViewModel">
+            <summary>
+            Modelo dos pedidos enviados.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.EmergenciaViewModel.Aplicacao">
+            <summary>
+            ID da aplicação.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.EmergenciaViewModel.Tempo">
+            <summary>
+            Momento em que o pedido foi enviado.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.EmergenciaViewModel.Nome">
+            <summary>
+            Nome da pessoa que precisa de ajuda.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.EmergenciaViewModel.Contacto">
+            <summary>
+            Contacto da pessoa que precisa de ajuda.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.EmergenciaViewModel.Idade">
+            <summary>
+            Idade da pessoa que precisa de ajuda.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.EmergenciaViewModel.OutrosDetalhesPessoa">
+            <summary>
+            Outros detalhes da condição da pessoa que precisa de ajuda.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.EmergenciaViewModel.Descricao">
+            <summary>
+            Descrição da situação.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.EmergenciaViewModel.Localizacoes">
+            <summary>
+            Lista de localizações detetadas.
+            </summary>
+        </member>
+        <member name="M:ESPM.Models.EmergenciaViewModel.#ctor">
+            <summary>
+            Inicializa as listas para evitar NullReferenceException.
+            </summary>
+        </member>
+        <member name="M:ESPM.Models.EmergenciaViewModel.ToString">
+            <summary>
+            Transforma o objeto em string.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ESPM.Models.LocalizacaoViewModel">
+            <summary>
+            Modelo das localizações enviadas.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.LocalizacaoViewModel.Tempo">
+            <summary>
+            Momento em que a localização foi detetada.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.LocalizacaoViewModel.Latitude">
+            <summary>
+            Latitude da localização detetada.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.LocalizacaoViewModel.Longitude">
+            <summary>
+            Longitude da localização detetada.
+            </summary>
+        </member>
+        <member name="M:ESPM.Models.LocalizacaoViewModel.ToString">
+            <summary>
+            Transforma o objeto em string, removendo os caracteres "," e ".".
+            </summary>
+            <returns></returns>
         </member>
     </members>
 </doc>

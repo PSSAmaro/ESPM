@@ -516,19 +516,19 @@
             Libertar recursos.
             </summary>
         </member>
-        <member name="T:ESPM.Helpers.GestaoBD">
+        <member name="T:ESPM.Helpers.GestorPedidos">
             <summary>
             Gere a comunicação dos controladores com a Base de Dados.
             </summary>
         </member>
-        <member name="M:ESPM.Helpers.GestaoBD.LerPedido(System.Guid)">
+        <member name="M:ESPM.Helpers.GestorPedidos.LerPedido(System.Guid)">
             <summary>
             Devolve o pedido com o id definido.
             Devolve null se não for encontrado.
             </summary>
             <param name="id">ID do pedido.</param>
         </member>
-        <member name="M:ESPM.Helpers.GestaoBD.CriarPedido(ESPM.Models.EmergenciaViewModel,ESPM.Models.Autorizacao)">
+        <member name="M:ESPM.Helpers.GestorPedidos.CriarPedido(ESPM.Models.EmergenciaViewModel,ESPM.Models.Autorizacao)">
             <summary>
             Inserir um novo pedido na base de dados.
             </summary>
@@ -536,14 +536,14 @@
             <param name="autorizacao">A autorização utilizada pela aplicação.</param>
             <returns></returns>
         </member>
-        <member name="M:ESPM.Helpers.GestaoBD.CancelarPedido(ESPM.Models.Pedido)">
+        <member name="M:ESPM.Helpers.GestorPedidos.CancelarPedido(ESPM.Models.Pedido)">
             <summary>
             Marca um pedido como anulado.
             </summary>
             <param name="pedido">Pedido a anular.</param>
             <returns></returns>
         </member>
-        <member name="M:ESPM.Helpers.GestaoBD.CriarLocalizacoes(System.Collections.Generic.List{ESPM.Models.LocalizacaoViewModel},ESPM.Models.Pedido)">
+        <member name="M:ESPM.Helpers.GestorPedidos.CriarLocalizacoes(System.Collections.Generic.List{ESPM.Models.LocalizacaoViewModel},ESPM.Models.Pedido)">
             <summary>
             Insere uma ou mais novas localizações num pedido.
             </summary>
@@ -551,7 +551,7 @@
             <param name="pedido">Pedido ao qual deve ser adicionada a localização.</param>
             <returns></returns>
         </member>
-        <member name="M:ESPM.Helpers.GestaoBD.CriarEstadoDePedido(ESPM.Models.Estado,ESPM.Models.Pedido)">
+        <member name="M:ESPM.Helpers.GestorPedidos.CriarEstadoDePedido(ESPM.Models.Estado,ESPM.Models.Pedido)">
             <summary>
             Cria um novo estado para um pedido.
             </summary>
@@ -559,16 +559,16 @@
             <param name="pedido">Pedido ao qual adicionar o estado.</param>
             <returns></returns>
         </member>
-        <member name="M:ESPM.Helpers.GestaoBD.CriarDescricao(System.String,ESPM.Models.Pedido,System.DateTime)">
+        <member name="M:ESPM.Helpers.GestorPedidos.CriarDescricao(System.String,System.DateTime,ESPM.Models.Pedido)">
             <summary>
             Cria uma nova descrição para um pedido.
             </summary>
             <param name="texto">Texto da descrição.</param>
-            <param name="pedido">Pedido ao qual deve ser adicionada a descrição.</param>
             <param name="tempo">Momento em que a descrição foi escrita.</param>
+            <param name="pedido">Pedido ao qual deve ser adicionada a descrição.</param>
             <returns></returns>
         </member>
-        <member name="M:ESPM.Helpers.GestaoBD.LerAutorizacao(System.Guid,System.Boolean)">
+        <member name="M:ESPM.Helpers.GestorPedidos.LerAutorizacao(System.Guid,System.Boolean)">
             <summary>
             Devolve a autorização para a aplicação definida.
             Devolve null se não for encontrada.
@@ -576,13 +576,7 @@
             <param name="aplicacao">ID da aplicação.</param>
             <param name="teste">Define se é uma autorização de teste ou real.</param>
         </member>
-        <member name="M:ESPM.Helpers.GestaoBD.GuardarAlteracoes">
-            <summary>
-            Guarda as alterações efetuadas na BD.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:ESPM.Helpers.GestaoBD.Dispose">
+        <member name="M:ESPM.Helpers.GestorPedidos.Dispose">
             <summary>
             Libertar recursos.
             </summary>

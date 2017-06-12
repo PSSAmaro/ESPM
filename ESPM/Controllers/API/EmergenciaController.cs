@@ -20,7 +20,7 @@ namespace ESPM.Controllers.API
     // Ver qual é a convenção com a questão da segurança e os hashes, etc...
     public class EmergenciaController : ApiController
     {
-        private GestaoBD db = new GestaoBD();
+        private GestorPedidos db = new GestorPedidos();
 
         /// <summary>
         /// Ver o estado atual de um pedido de ajuda.
@@ -36,9 +36,10 @@ namespace ESPM.Controllers.API
                 return NotFound();
 
             // Devolver o estado atual e a última modificação do estado se existir
+            EstadoDePedido atual = pedido.Estados.OrderByDescending(e => e.Tempo).FirstOrDefault();
             return Ok(new EstadoAtualViewModel() {
-                Estado = pedido.EstadoAtual().Estado.Nome,
-                Modificado = pedido.EstadoAtual().Tempo
+                Estado = atual.Estado.Nome,
+                Modificado = atual.Tempo
             });
         }
 
@@ -62,8 +63,7 @@ namespace ESPM.Controllers.API
                 // E falta guardar os pedidos com erro :/
                 if(validacao.Resultado == Resultado.Valido)
                 {
-                    Pedido pedido = db.CriarPedido(emergencia, autorizacao);
-                    await db.GuardarAlteracoes();
+                    Pedido pedido = await db.CriarPedido(emergencia, autorizacao);
                     return Ok(new RecebidoViewModel()
                     {
                         Id = pedido.Id
@@ -97,8 +97,7 @@ namespace ESPM.Controllers.API
 
             if (validacao.Resultado == Resultado.Valido)
             {
-                db.CriarLocalizacoes(localizacoes, pedido);
-                await db.GuardarAlteracoes();
+                await db.CriarLocalizacoes(localizacoes, pedido);
                 return Ok();
             }
             else
@@ -124,8 +123,7 @@ namespace ESPM.Controllers.API
 
             if (validacao.Resultado == Resultado.Valido)
             {
-                db.CancelarPedido(pedido);
-                await db.GuardarAlteracoes();
+                await db.CancelarPedido(pedido);
                 return Ok();
             }
             else

@@ -36,6 +36,7 @@ namespace ESPM.Models
         public string OutrosDetalhesPessoa { get; set; }
 
         // Histórico de descrições do pedido de ajuda
+        // Descrição atual: Descricoes.OrderByDescending(d => d.Tempo).FirstOrDefault()
         public virtual List<Descricao> Descricoes { get; set; }
 
         // Lista de localizações recebidas
@@ -45,26 +46,16 @@ namespace ESPM.Models
         public virtual List<Imagem> Imagens { get; set; }
 
         // Lista de estados pelos quais o pedido já passou
+        // Estado atual: Estados.OrderByDescending(e => e.Tempo).FirstOrDefault()
+        // Aberto: EstadoAtual.Estado.EstadoFinal()
         public virtual List<EstadoDePedido> Estados { get; set; }
 
-        // Descrição atual do pedido de ajuda
-        public Descricao DescricaoAtual()
+        public Pedido()
         {
-            return Descricoes.OrderByDescending(d => d.Tempo).FirstOrDefault();
-        }
-
-        // Devolve o estado atual
-        public EstadoDePedido EstadoAtual()
-        {
-            // Ordena os estados do mais novo para o mais antigo, escolhe o primeiro (mais recente)
-            return Estados.OrderByDescending(e => e.Tempo).FirstOrDefault();
-        }
-
-        // Devolve true se o estado atual não for um estado final
-        public bool Aberto()
-        {
-            // Vê se o estado atual é um estado final, devolvendo o oposto
-            return !EstadoAtual().Estado.EstadoFinal();
+            Descricoes = new List<Descricao>();
+            Localizacoes = new List<Localizacao>();
+            Imagens = new List<Imagem>();
+            Estados = new List<EstadoDePedido>();
         }
     }
 }

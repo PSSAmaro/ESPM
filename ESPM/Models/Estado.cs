@@ -31,18 +31,5 @@ namespace ESPM.Models
         // Nome do estado seguinte: Seguintes.Para.Nome
         [InverseProperty("De")]
         public virtual List<TransicaoDeEstado> Seguintes { get; set; }
-
-        // Este é o estado inicial se não tiver estados anteriores (Só deve haver 1)
-        // Apagar se não for possível usar
-        public bool EstadoInicial()
-        {
-            return Anteriores.Count == 0;
-        }
-
-        // Este é um estado final se não tiver estados seguintes
-        public bool EstadoFinal()
-        {
-            return Seguintes.Count == 0;
-        }
     }
 }

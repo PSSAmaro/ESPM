@@ -304,13 +304,13 @@ namespace ESPM.Areas.HelpPage
 
                         if (!parameterDescriptor.IsOptional)
                         {
-                            uriParameter.Annotations.Add(new ParameterAnnotation() { Documentation = "Required" });
+                            uriParameter.Annotations.Add(new ParameterAnnotation() { Documentation = "Obrigatório" });
                         }
 
                         object defaultValue = parameterDescriptor.DefaultValue;
                         if (defaultValue != null)
                         {
-                            uriParameter.Annotations.Add(new ParameterAnnotation() { Documentation = "Default value is " + Convert.ToString(defaultValue, CultureInfo.InvariantCulture) });
+                            uriParameter.Annotations.Add(new ParameterAnnotation() { Documentation = "O valor predefinido é " + Convert.ToString(defaultValue, CultureInfo.InvariantCulture) });
                         }
                     }
                     else

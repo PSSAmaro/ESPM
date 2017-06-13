@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Web.Http;
 
@@ -12,8 +13,9 @@ namespace ESPM
         {
             // Web API configuration and services
 
-            // Utilizar JSON em vez de XML
-            config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
+            // Remover todos os tipos exceto JSON
+            config.Formatters.Clear();
+            config.Formatters.Add(new JsonMediaTypeFormatter());
 
             // Web API routes
             config.MapHttpAttributeRoutes();

@@ -499,12 +499,12 @@
             </summary>
             <param name="emergencia">Dados do pedido de ajuda.</param>
         </member>
-        <member name="M:ESPM.Controllers.API.EmergenciaController.Localizacao(System.Guid,System.Collections.Generic.List{ESPM.Models.LocalizacaoViewModel})">
+        <member name="M:ESPM.Controllers.API.EmergenciaController.Atualizar(System.Guid,ESPM.Models.AtualizacaoViewModel)">
             <summary>
             Enviar uma nova localização para um pedido de ajuda.
             </summary>
             <param name="id">ID do pedido de ajuda.</param>
-            <param name="localizacoes">Nova localização.</param>
+            <param name="atualizacao">Novas informações.</param>
         </member>
         <member name="M:ESPM.Controllers.API.EmergenciaController.Delete(System.Guid)">
             <summary>
@@ -535,6 +535,14 @@
             </summary>
             <param name="emergencia">A emergência recebida.</param>
             <param name="autorizacao">A autorização utilizada pela aplicação.</param>
+            <returns></returns>
+        </member>
+        <member name="M:ESPM.Helpers.GestorPedidos.AtualizarPedido(ESPM.Models.Pedido,ESPM.Models.AtualizacaoViewModel)">
+            <summary>
+            Atualizar um pedido.
+            </summary>
+            <param name="pedido">Pedido a atualizar.</param>
+            <param name="atualizacao">Atualização com as informações.</param>
             <returns></returns>
         </member>
         <member name="M:ESPM.Helpers.GestorPedidos.CancelarPedido(ESPM.Models.Pedido)">
@@ -635,12 +643,12 @@
             <param name="autorizacao">A autorização da aplicação.</param>
             <param name="hash">O header com o hash.</param>
         </member>
-        <member name="M:ESPM.Helpers.Validacao.#ctor(System.Collections.Generic.List{ESPM.Models.LocalizacaoViewModel},ESPM.Models.Autorizacao,System.Collections.Generic.IEnumerable{System.String})">
+        <member name="M:ESPM.Helpers.Validacao.#ctor(ESPM.Models.AtualizacaoViewModel,ESPM.Models.Pedido,System.Collections.Generic.IEnumerable{System.String})">
             <summary>
-            Construtor usado aquando do envio de uma nova localização.
+            Construtor usado aquando do envio de uma atualização.
             </summary>
-            <param name="localizacoes">A nova localização.</param>
-            <param name="autorizacao">A autorização da aplicação.</param>
+            <param name="atualizacao">A nova localização.</param>
+            <param name="pedido">A autorização da aplicação.</param>
             <param name="hash">O header com o hash.</param>
         </member>
         <member name="M:ESPM.Helpers.Validacao.#ctor(ESPM.Models.Pedido,System.Collections.Generic.IEnumerable{System.String})">
@@ -870,6 +878,11 @@
             Lista de localizações detetadas.
             </summary>
         </member>
+        <member name="P:ESPM.Models.EmergenciaViewModel.Fotografias">
+            <summary>
+            Lista de fotografias do local ou da situação.
+            </summary>
+        </member>
         <member name="M:ESPM.Models.EmergenciaViewModel.#ctor">
             <summary>
             Inicializa as listas para evitar NullReferenceException.
@@ -879,7 +892,49 @@
             <summary>
             Transforma o objeto em string.
             </summary>
-            <returns></returns>
+            <returns>Concatenação de todos os campos.</returns>
+        </member>
+        <member name="T:ESPM.Models.AtualizacaoViewModel">
+            <summary>
+            Pedido de atualização de uma emergência.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.AtualizacaoViewModel.Tempo">
+            <summary>
+            Momento em que a atualização foi enviada.
+            </summary>
+            <remarks>
+            Opcionalmente, caso seja enviada apenas 1 foto com a sua localização, este campo pode incluir o momento em que a foto foi tirada, de modo a não ser necessário repetir o mesmo tempo em ambos os campos.
+            </remarks>
+        </member>
+        <member name="P:ESPM.Models.AtualizacaoViewModel.Descricao">
+            <summary>
+            Descrição atualizada da situação.
+            </summary>
+            <remarks>
+            Deve ser uma atualização da descrição anterior e não uma nova descrição.
+            </remarks>
+        </member>
+        <member name="P:ESPM.Models.AtualizacaoViewModel.Localizacoes">
+            <summary>
+            Lista de novas localizações detetadas.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.AtualizacaoViewModel.Fotografias">
+            <summary>
+            Lista de novas fotografias do local ou da situação.
+            </summary>
+        </member>
+        <member name="M:ESPM.Models.AtualizacaoViewModel.#ctor">
+            <summary>
+            Inicializa as listas para evitar NullReferenceException.
+            </summary>
+        </member>
+        <member name="M:ESPM.Models.AtualizacaoViewModel.ToString">
+            <summary>
+            Transforma o objeto em string.
+            </summary>
+            <returns>Concatenação de todos os campos.</returns>
         </member>
         <member name="T:ESPM.Models.LocalizacaoViewModel">
             <summary>
@@ -890,6 +945,10 @@
             <summary>
             Momento em que a localização foi detetada.
             </summary>
+            <remarks>
+            Se não for enviado nenhum tempo, é utilizado o tempo em que esta localização é recebido.
+            Se forem enviadas várias localizações no mesmo pedido, estas devem incluir obrigatoriamente tempo de modo a ser possível criar uma linha de tempo.
+            </remarks>
         </member>
         <member name="P:ESPM.Models.LocalizacaoViewModel.Latitude">
             <summary>
@@ -905,7 +964,22 @@
             <summary>
             Transforma o objeto em string, removendo os caracteres "," e ".".
             </summary>
-            <returns></returns>
+            <returns>Concatenação dos campos sem pontuação.</returns>
+        </member>
+        <member name="T:ESPM.Models.ImagemViewModel">
+            <summary>
+            Modelo das fotografias enviadas.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.ImagemViewModel.Tempo">
+            <summary>
+            Momento em que a fotografia foi tirada/recebida.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.ImagemViewModel.Imagem">
+            <summary>
+            Fotografia do local/acontecimento.
+            </summary>
         </member>
         <member name="T:ESPM.Models.RecebidoViewModel">
             <summary>

@@ -1,6 +1,7 @@
 ﻿using ESPM.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -11,6 +12,7 @@ namespace ESPM.Helpers
     /// Gere a comunicação dos controladores com a Base de Dados.
     /// </summary>
     // Toda esta classe provavelmente devia ser implementada com os get e set do C#, mas eu sou mau e nem procurei se dava.
+    // FALTA: IMAGENS!!!!!!!!
     public class GestorPedidos
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -54,6 +56,28 @@ namespace ESPM.Helpers
             pedido.Estados.Add(await CriarEstadoDePedido(db.Estados.Where(e => e.Anteriores.Count == 0).FirstOrDefault()));
 
             db.Pedidos.Add(pedido);
+            await db.SaveChangesAsync();
+
+            return pedido;
+        }
+
+        /// <summary>
+        /// Atualizar um pedido.
+        /// </summary>
+        /// <param name="pedido">Pedido a atualizar.</param>
+        /// <param name="atualizacao">Atualização com as informações.</param>
+        /// <returns></returns>
+        public async Task<Pedido> AtualizarPedido(Pedido pedido, AtualizacaoViewModel atualizacao)
+        {
+            // Usar o tempo recebido ou o atual
+            DateTime t = (atualizacao.Tempo == null ? DateTime.Now : (DateTime)atualizacao.Tempo);
+            if (atualizacao.Descricao != null)
+                pedido.Descricoes.Add(await CriarDescricao(atualizacao.Descricao, t));
+            if (atualizacao.Localizacoes != null)
+                pedido.Localizacoes.AddRange(await CriarLocalizacoes(atualizacao.Localizacoes));
+
+            // Falta testar
+            db.Entry(pedido).State = EntityState.Modified;
             await db.SaveChangesAsync();
 
             return pedido;

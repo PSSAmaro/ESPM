@@ -71,7 +71,7 @@ namespace ESPM.Helpers
 
             // Apesar do modelo válido convém confirmar que foram enviadas informações suficientes
             // Se todos os seguintes campos forem nulos, é considerado que não há informações suficientes
-            if (emergencia.Contacto == null && emergencia.OutrosDetalhesPessoa == null && emergencia.Descricao == null && emergencia.Localizacoes == null)
+            if (emergencia.Contacto == null && emergencia.OutrosDetalhesPessoa == null && emergencia.Descricao == null && (emergencia.Localizacoes == null || emergencia.Localizacoes.Count == 0) && (emergencia.Fotografias == null || emergencia.Fotografias.Count == 0))
                 Resultado = Resultado.DadosInsuficientes;
 
             // Se não foi encontrada nenhuma autorização válida para a aplicação usada ou o header hash é inexistente/inválido
@@ -83,21 +83,20 @@ namespace ESPM.Helpers
         }
 
         /// <summary>
-        /// Construtor usado aquando do envio de uma nova localização.
+        /// Construtor usado aquando do envio de uma atualização.
         /// </summary>
-        /// <param name="localizacoes">A nova localização.</param>
-        /// <param name="autorizacao">A autorização da aplicação.</param>
+        /// <param name="atualizacao">A nova localização.</param>
+        /// <param name="pedido">A autorização da aplicação.</param>
         /// <param name="hash">O header com o hash.</param>
-        public Validacao(List<LocalizacaoViewModel> localizacoes, Autorizacao autorizacao, IEnumerable<string> hash)
+        public Validacao(AtualizacaoViewModel atualizacao, Pedido pedido, IEnumerable<string> hash)
         {
-            // TALVEZ: Impor um limite de distância por tempo?
-
-            // Se não existir pelo menos 1 localização enviada
-            if (localizacoes == null || localizacoes.Count == 0)
+            // Se não existir pelo menos 1 informação atualizada
+            if (atualizacao.Descricao == null && (atualizacao.Localizacoes == null || atualizacao.Localizacoes.Count == 0) && (atualizacao.Fotografias == null || atualizacao.Fotografias.Count == 0))
                 Resultado = Resultado.DadosInsuficientes;
             
             // Se não foi encontrada nenhuma autorização válida para a aplicação usada ou o header hash é inexistente/inválido
-            else if (autorizacao == null || hash == null || hash.First() != Hash(string.Join("", localizacoes), autorizacao.Id))
+            // string: Pedido.id + atualizacao.ToString()
+            else if (pedido == null || hash == null || hash.First() != Hash(pedido.Id + atualizacao.ToString(), pedido.Autorizacao.Id))
                 Resultado = Resultado.ErroAutenticacao;
 
             else

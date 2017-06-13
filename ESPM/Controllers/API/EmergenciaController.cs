@@ -51,8 +51,8 @@ namespace ESPM.Controllers.API
         /// </summary>
         /// <param name="emergencia">Dados do pedido de ajuda.</param>
         // Novo pedido
-        // Faltam imagens e várias localizações
         // Talvez aceitar outras formas de timestamps
+        [ResponseType(typeof(RecebidoViewModel))]
         public async Task<IHttpActionResult> Post(EmergenciaViewModel emergencia)
         {
             if (ModelState.IsValid)
@@ -82,10 +82,9 @@ namespace ESPM.Controllers.API
         /// Enviar uma nova localização para um pedido de ajuda.
         /// </summary>
         /// <param name="id">ID do pedido de ajuda.</param>
-        /// <param name="localizacoes">Nova localização.</param>
-        [HttpPost]
-        [Route("api/emergencia/{id}/localizacao")]
-        public async Task<IHttpActionResult> Localizacao(Guid id, List<LocalizacaoViewModel> localizacoes)
+        /// <param name="atualizacao">Novas informações.</param>
+        [AcceptVerbs("PATCH", "PUT")]
+        public async Task<IHttpActionResult> Atualizar(Guid id, AtualizacaoViewModel atualizacao)
         {
             // Adiciona uma nova localização ao pedido
 
@@ -96,11 +95,11 @@ namespace ESPM.Controllers.API
             if (pedido == null)
                 return NotFound();
 
-            Validacao validacao = new Validacao(localizacoes, pedido.Autorizacao, Request.Headers.GetValues("Hash"));
+            Validacao validacao = new Validacao(atualizacao, pedido, Request.Headers.GetValues("Hash"));
 
             if (validacao.Resultado == Resultado.Valido)
             {
-                await db.CriarLocalizacoes(localizacoes, pedido);
+                await db.AtualizarPedido(pedido, atualizacao);
                 return Ok();
             }
             else

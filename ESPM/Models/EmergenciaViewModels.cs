@@ -10,7 +10,7 @@ namespace ESPM.Models
     /// Modelo dos pedidos enviados.
     /// </summary>
     // Por enquanto não suporta imagens
-    [ModelName("Pedido")]
+    [ModelName("Emergencia")]
     public class EmergenciaViewModel
     {
         /// <summary>
@@ -55,21 +55,81 @@ namespace ESPM.Models
         public List<LocalizacaoViewModel> Localizacoes { get; set; }
 
         /// <summary>
+        /// Lista de fotografias do local ou da situação.
+        /// </summary>
+        public List<ImagemViewModel> Fotografias { get; set; }
+
+        /// <summary>
         /// Inicializa as listas para evitar NullReferenceException.
         /// </summary>
         public EmergenciaViewModel()
         {
             Localizacoes = new List<LocalizacaoViewModel>();
+            Fotografias = new List<ImagemViewModel>();
         }
 
         /// <summary>
         /// Transforma o objeto em string.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Concatenação de todos os campos.</returns>
         public override string ToString()
         {
             // Modificar se o modelo for modificado
             string str = Nome + Contacto + Idade + OutrosDetalhesPessoa + Descricao + string.Join("", Localizacoes);
+
+            return str;
+        }
+    }
+
+    /// <summary>
+    /// Pedido de atualização de uma emergência.
+    /// </summary>
+    [ModelName("Atualizacao")]
+    public class AtualizacaoViewModel
+    {
+        /// <summary>
+        /// Momento em que a atualização foi enviada.
+        /// </summary>
+        /// <remarks>
+        /// Opcionalmente, caso seja enviada apenas 1 foto com a sua localização, este campo pode incluir o momento em que a foto foi tirada, de modo a não ser necessário repetir o mesmo tempo em ambos os campos.
+        /// </remarks>
+        public DateTime? Tempo { get; set; }
+
+        /// <summary>
+        /// Descrição atualizada da situação.
+        /// </summary>
+        /// <remarks>
+        /// Deve ser uma atualização da descrição anterior e não uma nova descrição.
+        /// </remarks>
+        public string Descricao { get; set; }
+
+        /// <summary>
+        /// Lista de novas localizações detetadas.
+        /// </summary>
+        public List<LocalizacaoViewModel> Localizacoes { get; set; }
+
+        /// <summary>
+        /// Lista de novas fotografias do local ou da situação.
+        /// </summary>
+        public List<ImagemViewModel> Fotografias { get; set; }
+
+        /// <summary>
+        /// Inicializa as listas para evitar NullReferenceException.
+        /// </summary>
+        public AtualizacaoViewModel()
+        {
+            Localizacoes = new List<LocalizacaoViewModel>();
+            Fotografias = new List<ImagemViewModel>();
+        }
+
+        /// <summary>
+        /// Transforma o objeto em string.
+        /// </summary>
+        /// <returns>Concatenação de todos os campos.</returns>
+        public override string ToString()
+        {
+            // Modificar se o modelo for modificado
+            string str = Descricao + string.Join("", Localizacoes);
 
             return str;
         }
@@ -85,6 +145,10 @@ namespace ESPM.Models
         /// <summary>
         /// Momento em que a localização foi detetada.
         /// </summary>
+        /// <remarks>
+        /// Se não for enviado nenhum tempo, é utilizado o tempo em que esta localização é recebido.
+        /// Se forem enviadas várias localizações no mesmo pedido, estas devem incluir obrigatoriamente tempo de modo a ser possível criar uma linha de tempo.
+        /// </remarks>
         public DateTime? Tempo { get; set; }
 
         /// <summary>
@@ -100,7 +164,7 @@ namespace ESPM.Models
         /// <summary>
         /// Transforma o objeto em string, removendo os caracteres "," e ".".
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Concatenação dos campos sem pontuação.</returns>
         public override string ToString()
         {
             // Modificar se o modelo for modificado
@@ -113,6 +177,23 @@ namespace ESPM.Models
 
             return str;
         }
+    }
+
+    /// <summary>
+    /// Modelo das fotografias enviadas.
+    /// </summary>
+    [ModelName("Fotografia")]
+    public class ImagemViewModel
+    {
+        /// <summary>
+        /// Momento em que a fotografia foi tirada/recebida.
+        /// </summary>
+        public DateTime? Tempo { get; set; }
+
+        /// <summary>
+        /// Fotografia do local/acontecimento.
+        /// </summary>
+        public byte[] Imagem { get; set; }
     }
 
     /// <summary>

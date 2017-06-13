@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ESPM.Areas.HelpPage.ModelDescriptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -9,6 +10,7 @@ namespace ESPM.Models
     /// Modelo dos pedidos enviados.
     /// </summary>
     // Por enquanto não suporta imagens
+    [ModelName("Pedido")]
     public class EmergenciaViewModel
     {
         /// <summary>
@@ -77,6 +79,7 @@ namespace ESPM.Models
     /// Modelo das localizações enviadas.
     /// </summary>
     // Falta o erro
+    [ModelName("Localizacao")]
     public class LocalizacaoViewModel
     {
         /// <summary>
@@ -112,21 +115,33 @@ namespace ESPM.Models
         }
     }
 
+    /// <summary>
+    /// Resultado do pedido enviado e o seu ID.
+    /// </summary>
+    // FALTA: Talvez adicionar o resultado?
+    [ModelName("Resultado")]
     public class RecebidoViewModel
     {
-        // Guid a usar para obter informação de estado
+        /// <summary>
+        /// ID do pedido criado.
+        /// </summary>
         public Guid Id { get; set; }
-
-        // Possível aviso a enviar, sem uso neste momento
-        // public string Aviso { get; set; }
     }
 
+    /// <summary>
+    /// Modelo do estado atual de um pedido.
+    /// </summary>
+    [ModelName("EstadoAtual")]
     public class EstadoAtualViewModel
     {
-        // Nome do estado atual do pedido
+        /// <summary>
+        /// Estado atual do pedido.
+        /// </summary>
         public string Estado { get; set; }
 
-        // Momento em que o pedido foi modificado para este estado
+        /// <summary>
+        /// Hora da última alteração do estado do pedido.
+        /// </summary>
         public DateTime Modificado { get; set; }
     }
 }

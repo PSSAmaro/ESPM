@@ -10,6 +10,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Description;
 
 namespace ESPM.Controllers.API
 {
@@ -26,6 +27,8 @@ namespace ESPM.Controllers.API
         /// Ver o estado atual de um pedido de ajuda.
         /// </summary>
         /// <param name="id">ID do pedido de ajuda.</param>
+        /// <returns>Estado atual do pedido e hora da última modificação.</returns>
+        [ResponseType(typeof(EstadoAtualViewModel))]
         public async Task<IHttpActionResult> Get(Guid id)
         {
             // Escolher o pedido com o id

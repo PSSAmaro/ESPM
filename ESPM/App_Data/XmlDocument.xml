@@ -491,6 +491,7 @@
             Ver o estado atual de um pedido de ajuda.
             </summary>
             <param name="id">ID do pedido de ajuda.</param>
+            <returns>Estado atual do pedido e hora da última modificação.</returns>
         </member>
         <member name="M:ESPM.Controllers.API.EmergenciaController.Post(ESPM.Models.EmergenciaViewModel)">
             <summary>
@@ -905,6 +906,31 @@
             Transforma o objeto em string, removendo os caracteres "," e ".".
             </summary>
             <returns></returns>
+        </member>
+        <member name="T:ESPM.Models.RecebidoViewModel">
+            <summary>
+            Resultado do pedido enviado e o seu ID.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.RecebidoViewModel.Id">
+            <summary>
+            ID do pedido criado.
+            </summary>
+        </member>
+        <member name="T:ESPM.Models.EstadoAtualViewModel">
+            <summary>
+            Modelo do estado atual de um pedido.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.EstadoAtualViewModel.Estado">
+            <summary>
+            Estado atual do pedido.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.EstadoAtualViewModel.Modificado">
+            <summary>
+            Hora da última alteração do estado do pedido.
+            </summary>
         </member>
         <member name="T:ESPM.Models.Estado">
             <summary>

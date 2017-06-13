@@ -1,0 +1,47 @@
+﻿@{
+    ViewBag.Title = "Demo";
+}
+<div ng-app="ESPM" ng-controller="ESPMCtrl">
+    <div id="esquerda">
+        <div id="map"></div>
+        <p>Localização atual: {{posicao.lat}}, {{posicao.lng}}</p>
+    </div>
+    <table>
+        <tr>
+            <td>Contacto:</td>
+            <td><input ng-model="contacto"></td>
+        </tr>
+        <tr>
+            <td>Nome:</td>
+            <td><input ng-model="nome"></td>
+        </tr>
+        <tr>
+            <td>Idade:</td>
+            <td><input ng-model="idade"></td>
+        </tr>
+        <tr>
+            <td colspan=2>
+                <textarea rows="4" cols="50" placeholder="Descrição"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button ng-click="enviar()">Click me!</button>
+            </td>
+        </tr>
+    </table>
+    <div id="fundo">
+        <h3>Relatório</h3>
+        <p id="consola">{{consola}}</p>
+    </div>
+</div>
+
+@section styles {
+    @Styles.Render("~/Content/Demo.css")
+}
+
+@section scripts {
+    @Scripts.Render("~/Scripts/angular.js")
+    @Scripts.Render("~/Scripts/app/demo-controller.js")
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD201QiIbe8GqSopWLrfsAiVBJkxLpImyc"></script>
+}

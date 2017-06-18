@@ -60,7 +60,7 @@ namespace ESPM.Controllers.API
                 // Escolher a autorização válida
                 Autorizacao autorizacao = db.LerAutorizacao(emergencia.Aplicacao);
 
-                Validacao validacao = new Validacao(emergencia, autorizacao, Request.Headers.GetValues("Hash"));
+                Validacao validacao = new Validacao(emergencia, autorizacao, Request.Headers);
 
                 // Era bom não responder BadRequest a tudo...
                 // E falta guardar os pedidos com erro :/
@@ -95,7 +95,7 @@ namespace ESPM.Controllers.API
             if (pedido == null)
                 return NotFound();
 
-            Validacao validacao = new Validacao(atualizacao, pedido, Request.Headers.GetValues("Hash"));
+            Validacao validacao = new Validacao(atualizacao, pedido, Request.Headers);
 
             if (validacao.Resultado == Resultado.Valido)
             {
@@ -121,7 +121,7 @@ namespace ESPM.Controllers.API
             if (pedido == null)
                 return NotFound();
 
-            Validacao validacao = new Validacao(pedido, Request.Headers.GetValues("Hash"));
+            Validacao validacao = new Validacao(pedido, Request.Headers);
 
             if (validacao.Resultado == Resultado.Valido)
             {

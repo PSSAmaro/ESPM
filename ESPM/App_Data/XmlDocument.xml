@@ -635,23 +635,23 @@
             Lista de mensagens de erro para os tipos de resultados.
             </summary>
         </member>
-        <member name="M:ESPM.Helpers.Validacao.#ctor(ESPM.Models.EmergenciaViewModel,ESPM.Models.Autorizacao,System.Collections.Generic.IEnumerable{System.String})">
+        <member name="M:ESPM.Helpers.Validacao.#ctor(ESPM.Models.EmergenciaViewModel,ESPM.Models.Autorizacao,System.Net.Http.Headers.HttpRequestHeaders)">
             <summary>
             Construtor usado aquando da criação de um novo pedido.
             </summary>
             <param name="emergencia">A emergência a validar.</param>
             <param name="autorizacao">A autorização da aplicação.</param>
-            <param name="hash">O header com o hash.</param>
+            <param name="headers">O header com o hash.</param>
         </member>
-        <member name="M:ESPM.Helpers.Validacao.#ctor(ESPM.Models.AtualizacaoViewModel,ESPM.Models.Pedido,System.Collections.Generic.IEnumerable{System.String})">
+        <member name="M:ESPM.Helpers.Validacao.#ctor(ESPM.Models.AtualizacaoViewModel,ESPM.Models.Pedido,System.Net.Http.Headers.HttpRequestHeaders)">
             <summary>
             Construtor usado aquando do envio de uma atualização.
             </summary>
             <param name="atualizacao">A nova localização.</param>
             <param name="pedido">A autorização da aplicação.</param>
-            <param name="hash">O header com o hash.</param>
+            <param name="headers">O header com o hash.</param>
         </member>
-        <member name="M:ESPM.Helpers.Validacao.#ctor(ESPM.Models.Pedido,System.Collections.Generic.IEnumerable{System.String})">
+        <member name="M:ESPM.Helpers.Validacao.#ctor(ESPM.Models.Pedido,System.Net.Http.Headers.HttpRequestHeaders)">
             <summary>
             Construtor usado aquando do pedido de cancelamento.
             </summary>

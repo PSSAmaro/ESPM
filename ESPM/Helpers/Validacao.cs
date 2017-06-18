@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
@@ -63,8 +64,8 @@ namespace ESPM.Helpers
         /// </summary>
         /// <param name="emergencia">A emergência a validar.</param>
         /// <param name="autorizacao">A autorização da aplicação.</param>
-        /// <param name="hash">O header com o hash.</param>
-        public Validacao(EmergenciaViewModel emergencia, Autorizacao autorizacao, IEnumerable<string> hash)
+        /// <param name="headers">O header com o hash.</param>
+        public Validacao(EmergenciaViewModel emergencia, Autorizacao autorizacao, HttpRequestHeaders headers)
         {
             // FALTA: Definir a credibilidade do pedido
             // FALTA: Se for enviada mais de 1 localização, estas devem ter tempo
@@ -75,7 +76,7 @@ namespace ESPM.Helpers
                 Resultado = Resultado.DadosInsuficientes;
 
             // Se não foi encontrada nenhuma autorização válida para a aplicação usada ou o header hash é inexistente/inválido
-            else if (autorizacao == null || hash == null || hash.First() != Hash(emergencia.ToString(), autorizacao.Id))
+            else if (autorizacao == null || headers.GetValues("Hash") == null || headers.GetValues("Hash").First() != Hash(emergencia.ToString(), autorizacao.Id))
                 Resultado = Resultado.ErroAutenticacao;
 
             else
@@ -87,8 +88,8 @@ namespace ESPM.Helpers
         /// </summary>
         /// <param name="atualizacao">A nova localização.</param>
         /// <param name="pedido">A autorização da aplicação.</param>
-        /// <param name="hash">O header com o hash.</param>
-        public Validacao(AtualizacaoViewModel atualizacao, Pedido pedido, IEnumerable<string> hash)
+        /// <param name="headers">O header com o hash.</param>
+        public Validacao(AtualizacaoViewModel atualizacao, Pedido pedido, HttpRequestHeaders headers)
         {
             // Se não existir pelo menos 1 informação atualizada
             if (atualizacao.Descricao == null && (atualizacao.Localizacoes == null || atualizacao.Localizacoes.Count == 0) && (atualizacao.Fotografias == null || atualizacao.Fotografias.Count == 0))
@@ -96,7 +97,7 @@ namespace ESPM.Helpers
             
             // Se não foi encontrada nenhuma autorização válida para a aplicação usada ou o header hash é inexistente/inválido
             // string: Pedido.id + atualizacao.ToString()
-            else if (pedido == null || hash == null || hash.First() != Hash(pedido.Id + atualizacao.ToString(), pedido.Autorizacao.Id))
+            else if (pedido == null || headers.GetValues("Hash") == null || headers.GetValues("Hash").First() != Hash(pedido.Id + atualizacao.ToString(), pedido.Autorizacao.Id))
                 Resultado = Resultado.ErroAutenticacao;
 
             else
@@ -108,9 +109,9 @@ namespace ESPM.Helpers
         /// </summary>
         /// <param name="pedido">O pedido a adicionar a localização.</param>
         /// <param name="hash">O header com o hash.</param>
-        public Validacao(Pedido pedido, IEnumerable<string> hash)
+        public Validacao(Pedido pedido, HttpRequestHeaders headers)
         {
-            if (hash == null || hash.First() != Hash(pedido.Id.ToString(), pedido.Autorizacao.Id))
+            if (headers.GetValues("Hash") == null || headers.GetValues("Hash").First() != Hash(pedido.Id.ToString(), pedido.Autorizacao.Id))
                 Resultado = Resultado.ErroAutenticacao;
 
             else

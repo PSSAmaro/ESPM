@@ -12,12 +12,14 @@ app.service('Mapa', function ($q) {
         });
         // Isto provavelmente não é recomendado com Angular e há outra maneira...
         google.maps.event.addListener(this.mapa, 'click', clique);
-    }
+    };
 });
 
-app.controller('ESPMCtrl', function ($scope, Mapa, $http) {
+app.controller('ESPMCtrl', function ($scope, Mapa, $http, $interval) {
+    $scope.pedido = "";
+    $scope.modificado = "";
     $scope.dados = {
-        'Aplicacao': '083b7150-9050-e711-a1f4-74de2b8eb05f',
+        'Aplicacao': '098ebeef-6154-e711-a1f4-74de2b8eb05f',
         'Localizacoes': [
             {
                 'Latitude': 32.745,
@@ -25,7 +27,7 @@ app.controller('ESPMCtrl', function ($scope, Mapa, $http) {
             }
         ]
     };
-    $scope.chave = "0123";
+    $scope.chave = "Chave temporariamente desativada";
     $scope.consola = "Chave da demonstração: " + $scope.chave + "\n";
     $scope.clique = function (event) {
         $scope.dados.Localizacoes[0].Latitude = event.latLng.lat();
@@ -33,17 +35,25 @@ app.controller('ESPMCtrl', function ($scope, Mapa, $http) {
         Mapa.marcador.setPosition(event.latLng);
         Mapa.mapa.panTo(event.latLng);
         $scope.$apply();
-    }
+    };
     $scope.enviar = function () {
-        $http.post('/api/emergencia', $scope.dados, {
-            headers: {
-                'Hash': '48bc6539d9fac0ddf0fd93b26a98b787c67533c0'
-            },
-        }).then(function (result) {
-            $scope.consola += "aaa";
+        $http.post('/api/emergencia', $scope.dados).then(function (result) {
+            $scope.pedido = result.data.Id;
+            $scope.consola += "ID do pedido: " + result.data.Id + "\n";
+            $interval($scope.estado, 5000);
         }, function (result) {
             $scope.consola += result.data.Message + "\n";
         });
-    }
+    };
+    $scope.estado = function () {
+        $http.get('/api/emergencia/' + $scope.pedido).then(function (result) {
+            if (result.data.Modificado != $scope.modificado) {
+                $scope.consola += "(" + new Date().toLocaleTimeString() + ") Estado atual: " + result.data.Estado + "\n";
+                $scope.modificado = result.data.Modificado;
+            }
+        }, function (result) {
+            $scope.consola += result.data.Message + "\n";
+        });
+    };
     Mapa.init({ lat: $scope.dados.Localizacoes[0].Latitude, lng: $scope.dados.Localizacoes[0].Longitude }, $scope.clique);
 });

@@ -656,7 +656,7 @@
             Construtor usado aquando do pedido de cancelamento.
             </summary>
             <param name="pedido">O pedido a adicionar a localização.</param>
-            <param name="hash">O header com o hash.</param>
+            <param name="headers">O header com o hash.</param>
         </member>
         <member name="T:ESPM.Models.AlteracaoDefinicao">
             <summary>

@@ -76,8 +76,8 @@ namespace ESPM.Helpers
                 Resultado = Resultado.DadosInsuficientes;
 
             // Se não foi encontrada nenhuma autorização válida para a aplicação usada ou o header hash é inexistente/inválido
-            else if (autorizacao == null || headers.GetValues("Hash") == null || headers.GetValues("Hash").First() != Hash(emergencia.ToString(), autorizacao.Id))
-                Resultado = Resultado.ErroAutenticacao;
+            /* else if (autorizacao == null || headers.GetValues("Hash") == null || headers.GetValues("Hash").First() != Hash(emergencia.ToString(), autorizacao.Id))
+                Resultado = Resultado.ErroAutenticacao; */
 
             else
                 Resultado = Resultado.Valido;
@@ -97,8 +97,8 @@ namespace ESPM.Helpers
             
             // Se não foi encontrada nenhuma autorização válida para a aplicação usada ou o header hash é inexistente/inválido
             // string: Pedido.id + atualizacao.ToString()
-            else if (pedido == null || headers.GetValues("Hash") == null || headers.GetValues("Hash").First() != Hash(pedido.Id + atualizacao.ToString(), pedido.Autorizacao.Id))
-                Resultado = Resultado.ErroAutenticacao;
+            /* else if (pedido == null || headers.GetValues("Hash") == null || headers.GetValues("Hash").First() != Hash(pedido.Id + atualizacao.ToString(), pedido.Autorizacao.Id))
+                Resultado = Resultado.ErroAutenticacao; */
 
             else
                 Resultado = Resultado.Valido;
@@ -108,13 +108,13 @@ namespace ESPM.Helpers
         /// Construtor usado aquando do pedido de cancelamento.
         /// </summary>
         /// <param name="pedido">O pedido a adicionar a localização.</param>
-        /// <param name="hash">O header com o hash.</param>
+        /// <param name="headers">O header com o hash.</param>
         public Validacao(Pedido pedido, HttpRequestHeaders headers)
         {
-            if (headers.GetValues("Hash") == null || headers.GetValues("Hash").First() != Hash(pedido.Id.ToString(), pedido.Autorizacao.Id))
+            /* if (headers.GetValues("Hash") == null || headers.GetValues("Hash").First() != Hash(pedido.Id.ToString(), pedido.Autorizacao.Id))
                 Resultado = Resultado.ErroAutenticacao;
 
-            else
+            else */
                 Resultado = Resultado.Valido;
         }
 

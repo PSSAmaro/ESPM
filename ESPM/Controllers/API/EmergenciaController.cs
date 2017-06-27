@@ -19,6 +19,8 @@ namespace ESPM.Controllers.API
     /// Criar e atualizar pedidos reais.
     /// </summary>
     // Ver qual é a convenção com a questão da segurança e os hashes, etc...
+    // A rota é definida aqui para separar da rota da API de gestão
+    [Route("api/Emergencia/{id:guid?}")]
     public class EmergenciaController : ApiController
     {
         private GestorPedidos db = new GestorPedidos();
@@ -32,7 +34,7 @@ namespace ESPM.Controllers.API
         public async Task<IHttpActionResult> Get(Guid id)
         {
             // Escolher o pedido com o id
-            Pedido pedido = await db.LerPedido(id);
+            Pedido pedido = await db.Pedido(id);
 
             // Devolver NotFound se não existir
             if (pedido == null)
@@ -58,7 +60,7 @@ namespace ESPM.Controllers.API
             if (ModelState.IsValid)
             {
                 // Escolher a autorização válida
-                Autorizacao autorizacao = db.LerAutorizacao(emergencia.Aplicacao);
+                Autorizacao autorizacao = db.Autorizacao(emergencia.Aplicacao);
 
                 Validacao validacao = new Validacao(emergencia, autorizacao, Request.Headers);
 
@@ -83,13 +85,12 @@ namespace ESPM.Controllers.API
         /// </summary>
         /// <param name="id">ID do pedido de ajuda.</param>
         /// <param name="atualizacao">Novas informações.</param>
-        [AcceptVerbs("PATCH", "PUT")]
-        public async Task<IHttpActionResult> Atualizar(Guid id, AtualizacaoViewModel atualizacao)
+        public async Task<IHttpActionResult> Put(Guid id, AtualizacaoViewModel atualizacao)
         {
             // Adiciona uma nova localização ao pedido
 
             // Escolher o pedido com o id
-            Pedido pedido = await db.LerPedido(id);
+            Pedido pedido = await db.Pedido(id);
 
             // Devolver NotFound se não existir
             if (pedido == null)
@@ -115,7 +116,7 @@ namespace ESPM.Controllers.API
             // Na verdade não elimina o pedido, apenas altera o seu estado para Anulada
 
             // Escolher o pedido com o id
-            Pedido pedido = await db.LerPedido(id);
+            Pedido pedido = await db.Pedido(id);
 
             // Devolver NotFound se não existir
             if (pedido == null)

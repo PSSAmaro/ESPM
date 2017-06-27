@@ -24,7 +24,8 @@ namespace ESPM.Models
                     Apresentacao = "Receção de pedidos de ajuda",
                     Descricao = "Define se o sistema está a receber pedidos.",
                     SignificadoZero = "Não aceitar pedidos",
-                    SignificadoOutro = "Aceitar pedidos"
+                    SignificadoOutro = "Aceitar pedidos",
+                    Listar = true
                 },
                 new Definicao()
                 {
@@ -34,7 +35,8 @@ namespace ESPM.Models
                     Apresentacao = "Plataforma de gestão",
                     Descricao = "Define se os operadores podem aceder ao módulo de gestão.",
                     SignificadoZero = "Não permitir acesso",
-                    SignificadoOutro = "Permitir acesso"
+                    SignificadoOutro = "Permitir acesso",
+                    Listar = true
                 },
                 new Definicao()
                 {
@@ -43,7 +45,8 @@ namespace ESPM.Models
                     Apresentacao = "Modo de teste",
                     Descricao = "Define se o modo de teste está ativo.",
                     SignificadoZero = "Modo de teste desligado",
-                    SignificadoOutro = "Modo de teste ligado"
+                    SignificadoOutro = "Modo de teste ligado",
+                    Listar = true
                 },
                 new Definicao()
                 {
@@ -53,7 +56,8 @@ namespace ESPM.Models
                     Apresentacao = "Demonstração",
                     Descricao = "Define se a demonstração está ativa.",
                     SignificadoZero = "Demonstração indisponível",
-                    SignificadoOutro = "Demonstração disponível"
+                    SignificadoOutro = "Demonstração disponível",
+                    Listar = true
                 },
                 new Definicao()
                 {
@@ -63,7 +67,8 @@ namespace ESPM.Models
                     Apresentacao = "Validade das autorizações",
                     Descricao = "Define a quantidade de dias que devem ser dados a uma nova autorização.",
                     SignificadoZero = "Sem validade (Não recomendado)",
-                    SignificadoOutro = "Número de dias de autorização"
+                    SignificadoOutro = "Número de dias de autorização",
+                    Listar = true
                 },
                 new Definicao()
                 {
@@ -73,7 +78,8 @@ namespace ESPM.Models
                     Apresentacao = "Validade das autorizações de teste",
                     Descricao = "Define a quantidade de dias que devem ser dados a uma nova autorização de teste.",
                     SignificadoZero = "Sem validade",
-                    SignificadoOutro = "Número de dias de autorização"
+                    SignificadoOutro = "Número de dias de autorização",
+                    Listar = true
                 },
                 new Definicao()
                 {
@@ -83,7 +89,8 @@ namespace ESPM.Models
                     Apresentacao = "Limite de falsos pedidos por aplicação",
                     Descricao = "Define a quantidade de pedidos falsos que podem ser recebidos antes de uma app ser desativada.",
                     SignificadoZero = "Limite desativado",
-                    SignificadoOutro = "Limite de pedidos falsos"
+                    SignificadoOutro = "Limite de pedidos falsos",
+                    Listar = true
                 },
                 new Definicao()
                 {
@@ -93,7 +100,30 @@ namespace ESPM.Models
                     Apresentacao = "Limite de falsos pedidos por IP",
                     Descricao = "Define a quantidade de pedidos falsos que podem ser recebidos do mesmo IP antes de rejeitar o IP",
                     SignificadoZero = "Limite desativado",
-                    SignificadoOutro = "Limite de pedidos falsos"
+                    SignificadoOutro = "Limite de pedidos falsos",
+                    Listar = true
+                },
+                new Definicao()
+                {
+                    Nome = "BloqueioOperador",
+                    Maximo = 1,
+                    Valor = 1,
+                    Apresentacao = "Bloquear pedidos ao operador",
+                    Descricao = "Define se os pedidos devem ser associados a um operador, impedindo o tratamento do mesmo pedido por vários operadores.",
+                    SignificadoZero = "Vários operadores podem tratar do mesmo pedido",
+                    SignificadoOutro = "Apenas 1 operador pode tratar de cada pedido",
+                    Listar = true
+                },
+                new Definicao()
+                {
+                    Nome = "EstadoInicial",
+                    Maximo = 0,
+                    Valor = 1,
+                    Apresentacao = "Estado inicial",
+                    Descricao = "Define o estado que deve ser atribuido aos novos pedidos recebidos.",
+                    SignificadoZero = "Não permitido",
+                    SignificadoOutro = "ID do estado",
+                    Listar = false
                 }
             });
 

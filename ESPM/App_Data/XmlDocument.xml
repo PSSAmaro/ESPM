@@ -499,7 +499,7 @@
             </summary>
             <param name="emergencia">Dados do pedido de ajuda.</param>
         </member>
-        <member name="M:ESPM.Controllers.API.EmergenciaController.Atualizar(System.Guid,ESPM.Models.AtualizacaoViewModel)">
+        <member name="M:ESPM.Controllers.API.EmergenciaController.Put(System.Guid,ESPM.Models.AtualizacaoViewModel)">
             <summary>
             Enviar uma nova localização para um pedido de ajuda.
             </summary>
@@ -516,6 +516,32 @@
             <summary>
             Libertar recursos.
             </summary>
+        </member>
+        <member name="T:ESPM.Helpers.GestorDefinicoes">
+            <summary>
+            Gere as definições da aplicação
+            </summary>
+        </member>
+        <member name="M:ESPM.Helpers.GestorDefinicoes.LerDefinicoes">
+            <summary>
+            Lista as definições do sistema que devem aparecer na página de definições.
+            </summary>
+            <returns>Definições em que Listar é True</returns>
+        </member>
+        <member name="M:ESPM.Helpers.GestorDefinicoes.LerDefinicao(System.String)">
+            <summary>
+            Lê o valor de uma definição.
+            </summary>
+            <param name="def">Nome da definição.</param>
+            <returns>Valor da definição.</returns>
+        </member>
+        <member name="M:ESPM.Helpers.GestorDefinicoes.AlterarDefinicao(System.String,System.Int32)">
+            <summary>
+            Altera o valor de uma definição.
+            </summary>
+            <param name="def">Definição a alterar.</param>
+            <param name="val">Novo valor.</param>
+            <returns>Sucesso da operação.</returns>
         </member>
         <member name="T:ESPM.Helpers.GestorPedidos">
             <summary>
@@ -791,6 +817,11 @@
         <member name="P:ESPM.Models.Definicao.SignificadoOutro">
             <summary>
             O que significa esta definição ser diferente de 0?
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Definicao.Listar">
+            <summary>
+            Indica se esta definição deve estar na lista de definições
             </summary>
         </member>
         <member name="P:ESPM.Models.Definicao.Alteracoes">

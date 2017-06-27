@@ -230,13 +230,15 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\API\EmergenciaController.cs" />
-    <Compile Include="Controllers\API\PedidoController.cs" />
+    <Compile Include="Controllers\Gestao\API\AplicacaosController.cs" />
+    <Compile Include="Controllers\Gestao\API\PedidoController.cs" />
     <Compile Include="Controllers\DemoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Definicoes.cs" />
     <Compile Include="Helpers\GestorPedidos.cs" />
     <Compile Include="Helpers\Validacao.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -249,6 +251,7 @@
     <Compile Include="Models\EmergenciaViewModels.cs" />
     <Compile Include="Models\Estado.cs" />
     <Compile Include="Models\EstadoDePedido.cs" />
+    <Compile Include="Models\GestaoPedidosViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Imagem.cs" />
     <Compile Include="Models\Localizacao.cs" />

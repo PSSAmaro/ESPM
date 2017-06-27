@@ -9,20 +9,50 @@ using System.Web;
 namespace ESPM.Helpers
 {
     /// <summary>
-    /// Gere a comunicação dos controladores com a Base de Dados.
+    /// Gere a criação e edição dos pedidos.
     /// </summary>
     // Toda esta classe provavelmente devia ser implementada com os get e set do C#, mas eu sou mau e nem procurei se dava.
     // FALTA: IMAGENS!!!!!!!!
+    // Isto vai ter que levar um refactoring a sério, tá muito miserável
     public class GestorPedidos
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+
+        /// <summary>
+        /// Carrega todos os pedidos da BD.
+        /// </summary>
+        /// <returns>Todos os pedidos existentes na BD.</returns>
+        public IQueryable<Pedido> Pedidos()
+        {
+            return db.Pedidos;
+        }
+
+        /// <summary>
+        /// Carrega todos os pedidos abertos na BD.
+        /// </summary>
+        /// <returns>Devolve os pedidos abertos.</returns>
+        public IQueryable<Pedido> PedidosAbertos()
+        {
+            // O que a seguinte query faz é procurar pedidos cujo estado ainda tenha estados seguintes
+            return db.Pedidos.Where(p => p.Estados.OrderByDescending(e => e.Tempo).FirstOrDefault().Estado.Seguintes.Count > 0);
+        }
+
+        /// <summary>
+        /// Carrega todos os pedidos abertos na BD.
+        /// </summary>
+        /// <returns>Devolve os pedidos abertos.</returns>
+        public IQueryable<Pedido> PedidosFechados()
+        {
+            // O que a seguinte query faz é procurar pedidos cujo estado não tenha estados seguintes
+            return db.Pedidos.Where(p => p.Estados.OrderByDescending(e => e.Tempo).FirstOrDefault().Estado.Seguintes.Count == 0);
+        }
 
         /// <summary>
         /// Devolve o pedido com o id definido.
         /// Devolve null se não for encontrado.
         /// </summary>
         /// <param name="id">ID do pedido.</param>
-        public async Task<Pedido> LerPedido(Guid id)
+        public async Task<Pedido> Pedido(Guid id)
         {
             return await db.Pedidos.FindAsync(id);
         }
@@ -51,9 +81,9 @@ namespace ESPM.Helpers
             if (emergencia.Descricao != null)
                 pedido.Descricoes.Add(await CriarDescricao(emergencia.Descricao, t));
             if (emergencia.Localizacoes != null)
-                pedido.Localizacoes.AddRange(await CriarLocalizacoes(emergencia.Localizacoes));
+                pedido.Localizacoes.AddRange(await AdicionarLocalizacoes(emergencia.Localizacoes));
             // Adicionar o estado inicial
-            pedido.Estados.Add(await CriarEstadoDePedido(db.Estados.Where(e => e.Anteriores.Count == 0).FirstOrDefault()));
+            pedido.Estados.Add(await AlterarEstadoDePedido("Inicial"));
 
             db.Pedidos.Add(pedido);
             await db.SaveChangesAsync();
@@ -74,7 +104,7 @@ namespace ESPM.Helpers
             if (atualizacao.Descricao != null)
                 pedido.Descricoes.Add(await CriarDescricao(atualizacao.Descricao, t));
             if (atualizacao.Localizacoes != null)
-                pedido.Localizacoes.AddRange(await CriarLocalizacoes(atualizacao.Localizacoes));
+                pedido.Localizacoes.AddRange(await AdicionarLocalizacoes(atualizacao.Localizacoes));
 
             // Falta testar
             db.Entry(pedido).State = EntityState.Modified;
@@ -91,7 +121,7 @@ namespace ESPM.Helpers
         public async Task<EstadoDePedido> CancelarPedido(Pedido pedido)
         {
             // Adicionar o estado Anulada
-            return await CriarEstadoDePedido(db.Estados.Where(e => e.Nome == "Anulada").FirstOrDefault(), pedido);
+            return await AlterarEstadoDePedido("Anulada", pedido);
         }
 
         /// <summary>
@@ -100,7 +130,7 @@ namespace ESPM.Helpers
         /// <param name="localizacoes">Nova localização.</param>
         /// <param name="pedido">Pedido ao qual deve ser adicionada a localização.</param>
         /// <returns></returns>
-        public async Task<List<Localizacao>> CriarLocalizacoes(List<LocalizacaoViewModel> localizacoes, Pedido pedido = null)
+        public async Task<List<Localizacao>> AdicionarLocalizacoes(List<LocalizacaoViewModel> localizacoes, Pedido pedido = null)
         {
             List<Localizacao> novas = new List<Localizacao>();
             foreach (var localizacao in localizacoes)
@@ -130,21 +160,36 @@ namespace ESPM.Helpers
         /// <param name="estado">Novo estado do pedido.</param>
         /// <param name="pedido">Pedido ao qual adicionar o estado.</param>
         /// <returns></returns>
-        public async Task<EstadoDePedido> CriarEstadoDePedido(Estado estado, Pedido pedido = null)
+        // Palavra especial: Inicial - Altera para o estado definido como inicial
+        public async Task<EstadoDePedido> AlterarEstadoDePedido(string estado, Pedido pedido = null)
         {
+            Estado seguinte;
+            if (estado == "Inicial")
+                seguinte = db.Estados.Where(e => e.Id == Definicoes.Ler("EstadoInicial")).FirstOrDefault();
+            else
+                seguinte = db.Estados.Where(e => e.Nome == estado).FirstOrDefault();
+
             EstadoDePedido novo = new EstadoDePedido()
             {
                 Pedido = pedido,
-                Estado = estado,
+                Estado = seguinte,
                 Tempo = DateTime.Now
             };
 
             if (pedido != null)
             {
-                db.EstadosDePedido.Add(novo);
-                await db.SaveChangesAsync();
-            }
+                Estado atual = pedido.Estados.OrderByDescending(e => e.Tempo).FirstOrDefault().Estado;
 
+                // Validar a transição
+                if (db.TransicoesDeEstado.Where(t => t.De == atual && t.Para == seguinte).ToList().Count == 1)
+                {
+                    db.EstadosDePedido.Add(novo);
+                    await db.SaveChangesAsync();
+                }
+                else
+                    return null;
+            }
+            
             return novo;
         }
 
@@ -182,7 +227,7 @@ namespace ESPM.Helpers
         /// </summary>
         /// <param name="aplicacao">ID da aplicação.</param>
         /// <param name="teste">Define se é uma autorização de teste ou real.</param>
-        public Autorizacao LerAutorizacao(Guid aplicacao, bool teste = false)
+        public Autorizacao Autorizacao(Guid aplicacao, bool teste = false)
         {
             return db.Autorizacoes.Where(a => a.Aplicacao.Id == aplicacao && a.Teste == teste && !a.Revogada && a.Validade > DateTime.Now).FirstOrDefault();
         }

@@ -9,7 +9,6 @@ namespace ESPM.Models
     /// <summary>
     /// Modelo dos pedidos enviados.
     /// </summary>
-    // Por enquanto não suporta imagens
     [ModelName("Emergencia")]
     public class EmergenciaViewModel
     {

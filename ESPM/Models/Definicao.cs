@@ -60,6 +60,12 @@ namespace ESPM.Models
         public string SignificadoOutro { get; set; }
 
         /// <summary>
+        /// Indica se esta definição deve estar na lista de definições
+        /// </summary>
+        [Required]
+        public bool Listar { get; set; }
+
+        /// <summary>
         /// Lista de modificações a esta definição.
         /// </summary>
         public virtual List<AlteracaoDefinicao> Alteracoes { get; set; }

@@ -20,13 +20,18 @@ namespace ESPM.Models
         public int Id { get; set; }
 
         /// <summary>
+        /// Request de onde foi enviada a descrição.
+        /// </summary>
+        public virtual Avaliacao Avaliacao { get; set; }
+
+        /// <summary>
         /// Pedido a que se refere esta descrição.
         /// </summary>
         [Required]
         public virtual Pedido Pedido { get; set; }
 
         /// <summary>
-        /// Utilizador que fez esta mudança de descrição.
+        /// Operador que fez esta mudança de descrição (Se foi feita por um operador).
         /// </summary>
         public virtual ApplicationUser Utilizador { get; set; }
 

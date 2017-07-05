@@ -10,33 +10,6 @@ using System.Web;
 namespace ESPM.Helpers
 {
     /// <summary>
-    /// Tipos de resultados possíveis da validação.
-    /// </summary>
-    public enum Resultado
-    {
-        /// <summary>
-        /// Pedido válido
-        /// </summary>
-        Valido,
-        /// <summary>
-        /// Erro de autenticação
-        /// </summary>
-        ErroAutenticacao,
-        /// <summary>
-        /// Informações enviadas insuficientes
-        /// </summary>
-        DadosInsuficientes,
-        /// <summary>
-        /// Pedido não credível
-        /// </summary>
-        Suspeito,
-        /// <summary>
-        /// Pedido repetido
-        /// </summary>
-        Repetido
-    }
-
-    /// <summary>
     /// Validação de todos os requests recebidos, incluindo autorizações.
     /// </summary>
     // FALTA: Criar uma tabela com as avaliações desta classe

@@ -59,6 +59,11 @@ namespace ESPM.Models
         public DbSet<Autorizacao> Autorizacoes { get; set; }
 
         /// <summary>
+        /// Avaliações dos Requests.
+        /// </summary>
+        public DbSet<Avaliacao> Avaliacoes { get; set; }
+
+        /// <summary>
         /// Descrições de pedidos.
         /// </summary>
         public DbSet<Descricao> Descricoes { get; set; }

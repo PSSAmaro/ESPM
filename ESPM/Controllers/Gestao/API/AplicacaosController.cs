@@ -13,6 +13,7 @@ using ESPM.Models;
 
 namespace ESPM.Controllers.Gestao.API
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     // FICHEIRO A USAR COMO TEMPLATE PARA DEPOIS ELIMINAR
     public class AplicacaosController : ApiController
     {

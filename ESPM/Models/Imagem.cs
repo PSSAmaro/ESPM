@@ -21,6 +21,12 @@ namespace ESPM.Models
         public Guid Id { get; set; }
 
         /// <summary>
+        /// Request de onde foi enviada a imagem.
+        /// </summary>
+        [Required]
+        public virtual Avaliacao Avaliacao { get; set; }
+
+        /// <summary>
         /// Pedido a que pertence esta imagem.
         /// </summary>
         [Required]

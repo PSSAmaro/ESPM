@@ -31,27 +31,26 @@ namespace ESPM.Models
         /// Momento em que o pedido foi enviado.
         /// </summary>
         // Se não houver informação de tempo no pedido é o momento em que é recebido
+        [Required]
         public DateTime Tempo { get; set; }
 
         /// <summary>
-        /// Nome da pessoa que precisa de ajuda.
+        /// Momento em que o pedido foi modificado pela última vez.
         /// </summary>
-        public string Nome { get; set; }
+        // Atualizar sempre que alguma coisa for modificada
+        [Required]
+        public DateTime Modificado { get; set; }
 
         /// <summary>
-        /// Contacto da pessoa que precisa de ajuda.
+        /// Operador responsável pelo tratamento deste pedido.
         /// </summary>
-        public int? Contacto { get; set; }
+        public ApplicationUser Operador { get; set; }
 
         /// <summary>
-        /// Idade da pessoa que precisa de ajuda.
+        /// Informação da pessoa que precisa de ajuda.
         /// </summary>
-        public int? Idade { get; set; }
-
-        /// <summary>
-        /// Outras informações relevantes sobre a pessoa que precisa de ajuda.
-        /// </summary>
-        public string OutrosDetalhesPessoa { get; set; }
+        // Informação mais recente: InformacaoPessoa.OrderByDescending(d => d.Tempo).FirstOrDefault()
+        public virtual List<Pessoa> InformacaoPessoa { get; set; }
 
         /// <summary>
         /// Histórico de descrições do pedido de ajuda.
@@ -80,6 +79,7 @@ namespace ESPM.Models
         /// </summary>
         public Pedido()
         {
+            InformacaoPessoa = new List<Pessoa>();
             Descricoes = new List<Descricao>();
             Localizacoes = new List<Localizacao>();
             Imagens = new List<Imagem>();

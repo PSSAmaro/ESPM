@@ -72,11 +72,9 @@ namespace ESPM.Helpers
             {
                 Autorizacao = autorizacao,
                 Tempo = t,
-                Nome = emergencia.Nome,
-                Contacto = emergencia.Contacto,
-                Idade = emergencia.Idade,
-                OutrosDetalhesPessoa = emergencia.OutrosDetalhesPessoa,
+                Modificado = t
             };
+            
             // Adicionar descrição e localizações se existirem
             if (emergencia.Descricao != null)
                 pedido.Descricoes.Add(await CriarDescricao(emergencia.Descricao, t));
@@ -140,6 +138,11 @@ namespace ESPM.Helpers
                     Pedido = pedido,
                     // Usar o tempo recebido ou o atual
                     Tempo = (localizacao.Tempo == null ? DateTime.Now : (DateTime)localizacao.Tempo),
+                    Avaliacao = new Avaliacao()
+                    {
+                        Tempo = DateTime.Now,
+                        Resultado = Resultado.Valido
+                    },
                     Latitude = localizacao.Latitude,
                     Longitude = localizacao.Longitude
                 });
@@ -165,7 +168,7 @@ namespace ESPM.Helpers
         {
             Estado seguinte;
             if (estado == "Inicial")
-                seguinte = db.Estados.Where(e => e.Id == Definicoes.Ler("EstadoInicial")).FirstOrDefault();
+                seguinte = db.Estados.Find(Definicoes.Ler("EstadoInicial"));
             else
                 seguinte = db.Estados.Where(e => e.Nome == estado).FirstOrDefault();
 

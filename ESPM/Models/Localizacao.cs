@@ -21,6 +21,12 @@ namespace ESPM.Models
         public int Id { get; set; }
 
         /// <summary>
+        /// Request de onde foi enviada a localização.
+        /// </summary>
+        [Required]
+        public virtual Avaliacao Avaliacao { get; set; }
+
+        /// <summary>
         /// Pedido a que se refere esta localização.
         /// </summary>
         [Required]

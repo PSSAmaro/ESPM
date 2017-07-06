@@ -114,6 +114,17 @@ namespace ESPM.Models
                     SignificadoZero = "Não permitido",
                     SignificadoOutro = "ID do estado",
                     Listar = false
+                },
+                new Definicao()
+                {
+                    Nome = "EstadoCancelado",
+                    Maximo = 0,
+                    Valor = 11,
+                    Apresentacao = "Estado cancelado",
+                    Descricao = "Define o estado que deve ser atribuido aos pedidos que foram cancelados por quem enviou.",
+                    SignificadoZero = "Não permitido",
+                    SignificadoOutro = "ID do estado",
+                    Listar = false
                 }
             });
 

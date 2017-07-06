@@ -26,7 +26,7 @@ namespace ESPM.Filters
                 Avaliacao avaliacao = new Avaliacao()
                 {
                     Tempo = DateTime.Now,
-                    Endereco = db.Enderecos.Find((string)filterContext.ControllerContext.RouteData.Values["Endereco"]),
+                    Endereco = db.Enderecos.Find((string)filterContext.Request.Properties["Endereco"]),
                     Resultado = Resultado.NaoAvaliado,
                     Header = Guid.Empty
                 };
@@ -78,8 +78,8 @@ namespace ESPM.Filters
                 db.Avaliacoes.Add(avaliacao);
                 db.SaveChanges();
 
-                // Colocar avaliação na RouteData para permitir acesso pelo controlador
-                filterContext.ControllerContext.RouteData.Values.Add("Avaliacao", avaliacao.Id);
+                // Colocar avaliação nas propriedades do pedido para permitir acesso pelo controlador
+                filterContext.Request.Properties.Add("Avaliacao", avaliacao.Id);
             }
         }
 
@@ -91,12 +91,12 @@ namespace ESPM.Filters
                     return true;
                 case "Post":
                     EmergenciaViewModel emergencia = (EmergenciaViewModel)argumentos["emergencia"];
-                    if (emergencia.Contacto == null && emergencia.OutrosDetalhesPessoa == null && emergencia.Descricao == null && emergencia.Localizacoes.Count == 0 && emergencia.Fotografias.Count == 0)
+                    if (emergencia.Contacto == null && emergencia.OutrosDetalhesPessoa == null && emergencia.Descricao == null && emergencia.Localizacoes.Count == 0)
                         return false;
                     return true;
                 case "Put":
                     AtualizacaoViewModel atualizacao = (AtualizacaoViewModel)argumentos["atualizacao"];
-                    if (atualizacao.Descricao == null && atualizacao.Localizacoes.Count == 0 && atualizacao.Fotografias.Count == 0)
+                    if (atualizacao.Descricao == null && atualizacao.Localizacoes.Count == 0)
                         return false;
                     return true;
                 default:

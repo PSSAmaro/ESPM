@@ -230,6 +230,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\API\EmergenciaController.cs" />
+    <Compile Include="Controllers\API\TesteController.cs" />
     <Compile Include="Controllers\Gestao\API\AplicacaosController.cs" />
     <Compile Include="Controllers\Gestao\API\PedidoController.cs" />
     <Compile Include="Controllers\DemoController.cs" />

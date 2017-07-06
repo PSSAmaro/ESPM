@@ -15,7 +15,6 @@ using ESPM.Filters;
 
 namespace ESPM.Controllers.API
 {
-    // Convém depois melhorar a documentação...
     /// <summary>
     /// Criar e atualizar pedidos reais.
     /// </summary>
@@ -23,64 +22,110 @@ namespace ESPM.Controllers.API
     // A rota é definida aqui para separar da rota da API de gestão
     [Permissao]
     [Validacao(Teste = false)]
-    [Route("api/Emergencia/{id:guid?}")]
+    [RoutePrefix("api/Emergencia/{id:guid?}")]
     public class EmergenciaController : ApiController
     {
-        private GestorPedidos db = new GestorPedidos();
+        /// <summary>
+        /// Contexto da BD.
+        /// </summary>
+        protected ApplicationDbContext db = new ApplicationDbContext();
 
         /// <summary>
         /// Ver o estado atual de um pedido de ajuda.
         /// </summary>
         /// <param name="id">ID do pedido de ajuda.</param>
         /// <returns>Estado atual do pedido e hora da última modificação.</returns>
+        [Route]
         [ResponseType(typeof(EstadoAtualViewModel))]
-        public async Task<IHttpActionResult> Get(Guid id)
+        public virtual async Task<IHttpActionResult> Get(Guid id)
         {
             // Escolher o pedido com o id
-            Pedido pedido = await db.Pedido(id);
+            Pedido pedido = await db.Pedidos.FindAsync(id);
 
             // Devolver NotFound se não existir
             if (pedido == null)
                 return NotFound();
 
             // Devolver o estado atual e a última modificação do estado se existir
-            EstadoDePedido atual = pedido.Estados.OrderByDescending(e => e.Tempo).FirstOrDefault();
-            return Ok(new EstadoAtualViewModel() {
-                Estado = atual.Estado.Nome,
-                Modificado = atual.Tempo
-            });
+            return Ok(new EstadoAtualViewModel(pedido.Estados.OrderByDescending(e => e.Tempo).FirstOrDefault()));
         }
 
         /// <summary>
         /// Enviar um novo pedido de ajuda.
         /// </summary>
         /// <param name="emergencia">Dados do pedido de ajuda.</param>
-        // Novo pedido
-        // Talvez aceitar outras formas de timestamps
+        [Route]
         [ResponseType(typeof(RecebidoViewModel))]
-        public async Task<IHttpActionResult> Post(EmergenciaViewModel emergencia)
+        public virtual async Task<IHttpActionResult> Post(EmergenciaViewModel emergencia)
         {
-            if (ModelState.IsValid)
+            // Carregar avaliação das propriedades do pedido
+            Avaliacao avaliacao = db.Avaliacoes.Find((int)Request.Properties["Avaliacao"]);
+
+            // Tempos do pedido: Envio (Se existe) e Receção
+            DateTime recebido = DateTime.Now;
+            DateTime enviado = emergencia.Tempo ?? recebido;
+
+            // Criar o novo pedido
+            Pedido pedido = new Pedido()
             {
-                // Escolher a autorização válida
-                Autorizacao autorizacao = db.Autorizacao(emergencia.Aplicacao);
+                Autorizacao = db.Autorizacoes.Find(avaliacao.Header),
+                Avaliacao = avaliacao,
+                Tempo = enviado,
+                Modificado = recebido
+            };
 
-                ValidacaoV validacao = new ValidacaoV(emergencia, autorizacao, Request.Headers);
-
-                // Era bom não responder BadRequest a tudo...
-                // E falta guardar os pedidos com erro :/
-                if(validacao.Resultado == Resultado.Valido)
+            // Adicionar detalhes da pessoa se foram enviados
+            if (emergencia.Nome != null || emergencia.Contacto != null || emergencia.Idade != null || emergencia.OutrosDetalhesPessoa != null)
+            {
+                pedido.InformacaoPessoa.Add(new Pessoa()
                 {
-                    Pedido pedido = await db.CriarPedido(emergencia, autorizacao);
-                    return Ok(new RecebidoViewModel()
+                    Avaliacao = avaliacao,
+                    Nome = emergencia.Nome,
+                    Contacto = emergencia.Contacto,
+                    Idade = emergencia.Idade,
+                    OutrosDetalhes = emergencia.OutrosDetalhesPessoa
+                });
+            }
+
+            // Adicionar descrição se foi enviada
+            if (emergencia.Descricao != null)
+            {
+                pedido.Descricoes.Add(new Descricao()
+                {
+                    Avaliacao = avaliacao,
+                    Tempo = enviado,
+                    Texto = emergencia.Descricao
+                });
+            }
+
+            // Adicionar localizações se foram enviadas
+            if (emergencia.Localizacoes.Count > 0)
+            {
+                foreach (LocalizacaoViewModel localizacao in emergencia.Localizacoes)
+                {
+                    pedido.Localizacoes.Add(new Localizacao()
                     {
-                        Id = pedido.Id
+                        Avaliacao = avaliacao,
+                        Tempo = localizacao.Tempo ?? enviado,
+                        Latitude = localizacao.Latitude,
+                        Longitude = localizacao.Longitude
                     });
                 }
-                else
-                    return BadRequest(validacao.Mensagem[(int)validacao.Resultado]);
             }
-            return BadRequest("Formato inválido");
+
+            // Adicionar estado inicial
+            pedido.Estados.Add(new EstadoDePedido()
+            {
+                Avaliacao = avaliacao,
+                Estado = db.Estados.Find(db.Definicoes.Find("EstadoInicial").Valor),
+                Tempo = recebido
+            });
+
+            // Adicionar pedido à BD
+            db.Pedidos.Add(pedido);
+            await db.SaveChangesAsync();
+
+            return Ok(new RecebidoViewModel(pedido.Id));
         }
 
         /// <summary>
@@ -88,52 +133,110 @@ namespace ESPM.Controllers.API
         /// </summary>
         /// <param name="id">ID do pedido de ajuda.</param>
         /// <param name="atualizacao">Novas informações.</param>
-        public async Task<IHttpActionResult> Put(Guid id, AtualizacaoViewModel atualizacao)
+        [Route]
+        public virtual async Task<IHttpActionResult> Put(Guid id, AtualizacaoViewModel atualizacao)
         {
-            // Adiciona uma nova localização ao pedido
+            // FALTA: Retirar código repetido
 
             // Escolher o pedido com o id
-            Pedido pedido = await db.Pedido(id);
+            Pedido pedido = await db.Pedidos.FindAsync(id);
 
             // Devolver NotFound se não existir
             if (pedido == null)
                 return NotFound();
 
-            ValidacaoV validacao = new ValidacaoV(atualizacao, pedido, Request.Headers);
+            // Carregar avaliação das propriedades do pedido
+            Avaliacao avaliacao = db.Avaliacoes.Find((int)Request.Properties["Avaliacao"]);
 
-            if (validacao.Resultado == Resultado.Valido)
+            // Usar o tempo recebido ou o atual
+            DateTime tempo = atualizacao.Tempo ?? DateTime.Now;
+
+            // Adicionar detalhes da pessoa se foram enviados
+            if (atualizacao.Nome != null || atualizacao.Contacto != null || atualizacao.Idade != null || atualizacao.OutrosDetalhesPessoa != null)
             {
-                await db.AtualizarPedido(pedido, atualizacao);
-                return Ok();
+                // Carregar as informações já existentes
+                Pessoa pessoa = pedido.InformacaoPessoa.OrderByDescending(d => d.Tempo).FirstOrDefault();
+
+                // Atualizar os campos que foram enviados e popular os outros com os valores anteriores
+                pedido.InformacaoPessoa.Add(new Pessoa()
+                {
+                    Avaliacao = avaliacao,
+                    Nome = atualizacao.Nome ?? pessoa.Nome,
+                    Contacto = atualizacao.Contacto ?? pessoa.Contacto,
+                    Idade = atualizacao.Idade ?? pessoa.Idade,
+                    OutrosDetalhes = atualizacao.OutrosDetalhesPessoa ?? pessoa.OutrosDetalhes
+                });
             }
-            else
-                return BadRequest(validacao.Mensagem[(int)validacao.Resultado]);
+
+            // Adicionar descrição se foi enviada
+            if (atualizacao.Descricao != null)
+            {
+                pedido.Descricoes.Add(new Descricao()
+                {
+                    Avaliacao = avaliacao,
+                    Tempo = tempo,
+                    Texto = atualizacao.Descricao
+                });
+            }
+
+            // Adicionar localizações se foram enviadas
+            if (atualizacao.Localizacoes.Count > 0)
+            {
+                foreach (LocalizacaoViewModel localizacao in atualizacao.Localizacoes)
+                {
+                    pedido.Localizacoes.Add(new Localizacao()
+                    {
+                        Avaliacao = avaliacao,
+                        Tempo = localizacao.Tempo ?? tempo,
+                        Latitude = localizacao.Latitude,
+                        Longitude = localizacao.Longitude
+                    });
+                }
+            }
+
+            // Guardar alterações
+            await db.SaveChangesAsync();
+
+            return StatusCode(HttpStatusCode.NoContent);
         }
 
         /// <summary>
         /// Cancelar um pedido de ajuda.
         /// </summary>
         /// <param name="id">ID do pedido de ajuda.</param>
-        public async Task<IHttpActionResult> Delete(Guid id)
+        [Route]
+        public virtual async Task<IHttpActionResult> Delete(Guid id)
         {
             // Na verdade não elimina o pedido, apenas altera o seu estado para Anulada
 
             // Escolher o pedido com o id
-            Pedido pedido = await db.Pedido(id);
+            Pedido pedido = await db.Pedidos.FindAsync(id);
 
             // Devolver NotFound se não existir
             if (pedido == null)
                 return NotFound();
 
-            ValidacaoV validacao = new ValidacaoV(pedido, Request.Headers);
+            // Falta: Confirmar que veio do mesmo IP e autorização
+            // Usar o ActionFilter
 
-            if (validacao.Resultado == Resultado.Valido)
+            // Adicionar o estado correspondente ao pedido anulado
+            pedido.Estados.Add(new EstadoDePedido()
             {
-                await db.CancelarPedido(pedido);
-                return Ok();
-            }
-            else
-                return BadRequest(validacao.Mensagem[(int)validacao.Resultado]);
+                Estado = db.Estados.Find(db.Definicoes.Find("EstadoCancelado").Valor),
+                Tempo = DateTime.Now
+            });
+
+            return Ok();
+        }
+
+        /// <summary>
+        /// Enviar imagens referentes a um pedido de ajuda.
+        /// </summary>
+        /// <param name="id">ID do pedido de ajuda.</param>
+        [Route("Imagem")]
+        public virtual async Task<IHttpActionResult> Imagem(Guid id)
+        {
+            return Ok();
         }
 
         /// <summary>

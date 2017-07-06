@@ -49,8 +49,8 @@ namespace ESPM.Filters
                     filterContext.Response = new HttpResponseMessage(HttpStatusCode.Forbidden);
                     return;
                 }
-                // Colocar endereço na RouteData para permitir acesso pela validação e pelo controlador
-                filterContext.ControllerContext.RouteData.Values.Add("Endereco", IP.IP);
+                // Colocar endereço nas propriedades do pedido para permitir acesso pela validação e pelo controlador
+                filterContext.Request.Properties.Add("Endereco", IP.IP);
             }
         }
 

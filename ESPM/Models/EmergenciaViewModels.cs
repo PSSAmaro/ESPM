@@ -14,15 +14,8 @@ namespace ESPM.Models
     public class EmergenciaViewModel
     {
         /// <summary>
-        /// ID da aplicação.
-        /// </summary>
-        [Required]
-        public Guid Aplicacao { get; set; }
-
-        /// <summary>
         /// Momento em que o pedido foi enviado.
         /// </summary>
-        // Talvez mudar para unix time?
         public DateTime? Tempo { get; set; }
 
         /// <summary>
@@ -56,29 +49,11 @@ namespace ESPM.Models
         public List<LocalizacaoViewModel> Localizacoes { get; set; }
 
         /// <summary>
-        /// Lista de fotografias do local ou da situação.
-        /// </summary>
-        public List<ImagemViewModel> Fotografias { get; set; }
-
-        /// <summary>
         /// Inicializa as listas para evitar NullReferenceException.
         /// </summary>
         public EmergenciaViewModel()
         {
             Localizacoes = new List<LocalizacaoViewModel>();
-            Fotografias = new List<ImagemViewModel>();
-        }
-
-        /// <summary>
-        /// Transforma o objeto em string.
-        /// </summary>
-        /// <returns>Concatenação de todos os campos.</returns>
-        public override string ToString()
-        {
-            // Modificar se o modelo for modificado
-            string str = Nome + Contacto + Idade + OutrosDetalhesPessoa + Descricao + string.Join("", Localizacoes);
-
-            return str;
         }
     }
 
@@ -97,6 +72,26 @@ namespace ESPM.Models
         public DateTime? Tempo { get; set; }
 
         /// <summary>
+        /// Nome da pessoa que precisa de ajuda.
+        /// </summary>
+        public string Nome { get; set; }
+
+        /// <summary>
+        /// Contacto da pessoa que precisa de ajuda.
+        /// </summary>
+        public int? Contacto { get; set; }
+
+        /// <summary>
+        /// Idade da pessoa que precisa de ajuda.
+        /// </summary>
+        public int? Idade { get; set; }
+
+        /// <summary>
+        /// Outros detalhes da condição da pessoa que precisa de ajuda.
+        /// </summary>
+        public string OutrosDetalhesPessoa { get; set; }
+
+        /// <summary>
         /// Descrição atualizada da situação.
         /// </summary>
         /// <remarks>
@@ -110,36 +105,17 @@ namespace ESPM.Models
         public List<LocalizacaoViewModel> Localizacoes { get; set; }
 
         /// <summary>
-        /// Lista de novas fotografias do local ou da situação.
-        /// </summary>
-        public List<ImagemViewModel> Fotografias { get; set; }
-
-        /// <summary>
         /// Inicializa as listas para evitar NullReferenceException.
         /// </summary>
         public AtualizacaoViewModel()
         {
             Localizacoes = new List<LocalizacaoViewModel>();
-            Fotografias = new List<ImagemViewModel>();
-        }
-
-        /// <summary>
-        /// Transforma o objeto em string.
-        /// </summary>
-        /// <returns>Concatenação de todos os campos.</returns>
-        public override string ToString()
-        {
-            // Modificar se o modelo for modificado
-            string str = Descricao + string.Join("", Localizacoes);
-
-            return str;
         }
     }
 
     /// <summary>
     /// Modelo das localizações enviadas.
     /// </summary>
-    // Falta o erro
     [ModelName("Localizacao")]
     public class LocalizacaoViewModel
     {
@@ -162,47 +138,12 @@ namespace ESPM.Models
         /// </summary>
         [Required]
         public float Longitude { get; set; }
-
-        /// <summary>
-        /// Transforma o objeto em string, removendo os caracteres "," e ".".
-        /// </summary>
-        /// <returns>Concatenação dos campos sem pontuação.</returns>
-        public override string ToString()
-        {
-            // Modificar se o modelo for modificado
-            // Ignorar tempo porque pode ser modificado no servidor
-            string str = Latitude.ToString() + Longitude;
-
-            // Remover caracteres que podem ser ambíguos, procurar outros
-            foreach (string c in new string[] { ",", "." })
-                str = str.Replace(c, string.Empty);
-
-            return str;
-        }
-    }
-
-    /// <summary>
-    /// Modelo das fotografias enviadas.
-    /// </summary>
-    [ModelName("Fotografia")]
-    public class ImagemViewModel
-    {
-        /// <summary>
-        /// Momento em que a fotografia foi tirada/recebida.
-        /// </summary>
-        public DateTime? Tempo { get; set; }
-
-        /// <summary>
-        /// Fotografia do local/acontecimento.
-        /// </summary>
-        [Required]
-        public byte[] Imagem { get; set; }
     }
 
     /// <summary>
     /// Resultado do pedido enviado e o seu ID.
     /// </summary>
-    // FALTA: Talvez adicionar o resultado?
+    // Talvez adicionar alguma mensagem
     [ModelName("Resultado")]
     public class RecebidoViewModel
     {
@@ -210,6 +151,15 @@ namespace ESPM.Models
         /// ID do pedido criado.
         /// </summary>
         public Guid Id { get; set; }
+
+        /// <summary>
+        /// Construtor do ViewModel.
+        /// </summary>
+        /// <param name="id">ID do novo pedido.</param>
+        public RecebidoViewModel(Guid id)
+        {
+            Id = id;
+        }
     }
 
     /// <summary>
@@ -227,5 +177,15 @@ namespace ESPM.Models
         /// Hora da última alteração do estado do pedido.
         /// </summary>
         public DateTime Modificado { get; set; }
+
+        /// <summary>
+        /// Construtor do ViewModel.
+        /// </summary>
+        /// <param name="estado">Estado mais recente do pedido.</param>
+        public EstadoAtualViewModel(EstadoDePedido estado)
+        {
+            Estado = estado.Estado.Nome;
+            Modificado = estado.Tempo;
+        }
     }
 }

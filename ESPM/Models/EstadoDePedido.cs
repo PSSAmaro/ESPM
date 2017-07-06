@@ -20,6 +20,11 @@ namespace ESPM.Models
         public int Id { get; set; }
 
         /// <summary>
+        /// Request de onde foi enviada o estado (apenas inicial ou anulado).
+        /// </summary>
+        public virtual Avaliacao Avaliacao { get; set; }
+
+        /// <summary>
         /// Pedido a que se refere este estado.
         /// </summary>
         [Required]

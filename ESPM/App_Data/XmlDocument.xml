@@ -512,7 +512,55 @@
             </summary>
             <param name="id">ID do pedido de ajuda.</param>
         </member>
+        <member name="M:ESPM.Controllers.API.EmergenciaController.Imagem(System.Guid)">
+            <summary>
+            Enviar imagens referentes a um pedido de ajuda.
+            </summary>
+            <param name="id">ID do pedido de ajuda.</param>
+        </member>
         <member name="M:ESPM.Controllers.API.EmergenciaController.Dispose(System.Boolean)">
+            <summary>
+            Libertar recursos.
+            </summary>
+        </member>
+        <member name="T:ESPM.Controllers.API.TesteController">
+            <summary>
+            Criar e atualizar pedidos de teste.
+            </summary>
+        </member>
+        <member name="M:ESPM.Controllers.API.TesteController.Get(System.Guid)">
+            <summary>
+            Ver o estado atual de um pedido de ajuda.
+            </summary>
+            <param name="id">ID do pedido de ajuda.</param>
+            <returns>Estado atual do pedido e hora da última modificação.</returns>
+        </member>
+        <member name="M:ESPM.Controllers.API.TesteController.Post(ESPM.Models.EmergenciaViewModel)">
+            <summary>
+            Enviar um novo pedido de ajuda.
+            </summary>
+            <param name="emergencia">Dados do pedido de ajuda.</param>
+        </member>
+        <member name="M:ESPM.Controllers.API.TesteController.Put(System.Guid,ESPM.Models.AtualizacaoViewModel)">
+            <summary>
+            Enviar uma nova localização para um pedido de ajuda.
+            </summary>
+            <param name="id">ID do pedido de ajuda.</param>
+            <param name="atualizacao">Novas informações.</param>
+        </member>
+        <member name="M:ESPM.Controllers.API.TesteController.Delete(System.Guid)">
+            <summary>
+            Cancelar um pedido de ajuda.
+            </summary>
+            <param name="id">ID do pedido de ajuda.</param>
+        </member>
+        <member name="M:ESPM.Controllers.API.TesteController.Imagem(System.Guid)">
+            <summary>
+            Enviar imagens referentes a um pedido de ajuda.
+            </summary>
+            <param name="id">ID do pedido de ajuda.</param>
+        </member>
+        <member name="M:ESPM.Controllers.API.TesteController.Dispose(System.Boolean)">
             <summary>
             Libertar recursos.
             </summary>
@@ -991,21 +1039,10 @@
             Lista de localizações detetadas.
             </summary>
         </member>
-        <member name="P:ESPM.Models.EmergenciaViewModel.Fotografias">
-            <summary>
-            Lista de fotografias do local ou da situação.
-            </summary>
-        </member>
         <member name="M:ESPM.Models.EmergenciaViewModel.#ctor">
             <summary>
             Inicializa as listas para evitar NullReferenceException.
             </summary>
-        </member>
-        <member name="M:ESPM.Models.EmergenciaViewModel.ToString">
-            <summary>
-            Transforma o objeto em string.
-            </summary>
-            <returns>Concatenação de todos os campos.</returns>
         </member>
         <member name="T:ESPM.Models.AtualizacaoViewModel">
             <summary>
@@ -1033,21 +1070,10 @@
             Lista de novas localizações detetadas.
             </summary>
         </member>
-        <member name="P:ESPM.Models.AtualizacaoViewModel.Fotografias">
-            <summary>
-            Lista de novas fotografias do local ou da situação.
-            </summary>
-        </member>
         <member name="M:ESPM.Models.AtualizacaoViewModel.#ctor">
             <summary>
             Inicializa as listas para evitar NullReferenceException.
             </summary>
-        </member>
-        <member name="M:ESPM.Models.AtualizacaoViewModel.ToString">
-            <summary>
-            Transforma o objeto em string.
-            </summary>
-            <returns>Concatenação de todos os campos.</returns>
         </member>
         <member name="T:ESPM.Models.LocalizacaoViewModel">
             <summary>
@@ -1070,27 +1096,6 @@
         <member name="P:ESPM.Models.LocalizacaoViewModel.Longitude">
             <summary>
             Longitude da localização detetada.
-            </summary>
-        </member>
-        <member name="M:ESPM.Models.LocalizacaoViewModel.ToString">
-            <summary>
-            Transforma o objeto em string, removendo os caracteres "," e ".".
-            </summary>
-            <returns>Concatenação dos campos sem pontuação.</returns>
-        </member>
-        <member name="T:ESPM.Models.ImagemViewModel">
-            <summary>
-            Modelo das fotografias enviadas.
-            </summary>
-        </member>
-        <member name="P:ESPM.Models.ImagemViewModel.Tempo">
-            <summary>
-            Momento em que a fotografia foi tirada/recebida.
-            </summary>
-        </member>
-        <member name="P:ESPM.Models.ImagemViewModel.Imagem">
-            <summary>
-            Fotografia do local/acontecimento.
             </summary>
         </member>
         <member name="T:ESPM.Models.RecebidoViewModel">

@@ -55,6 +55,6 @@ namespace ESPM.Models
         /// <summary>
         /// Outras informações relevantes sobre a pessoa que precisa de ajuda.
         /// </summary>
-        public string OutrosDetalhesPessoa { get; set; }
+        public string OutrosDetalhes { get; set; }
     }
 }

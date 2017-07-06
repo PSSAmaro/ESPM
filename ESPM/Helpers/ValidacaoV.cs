@@ -45,7 +45,7 @@ namespace ESPM.Helpers
 
             // Apesar do modelo válido convém confirmar que foram enviadas informações suficientes
             // Se todos os seguintes campos forem nulos, é considerado que não há informações suficientes
-            if (emergencia.Contacto == null && emergencia.OutrosDetalhesPessoa == null && emergencia.Descricao == null && (emergencia.Localizacoes == null || emergencia.Localizacoes.Count == 0) && (emergencia.Fotografias == null || emergencia.Fotografias.Count == 0))
+            if (emergencia.Contacto == null && emergencia.OutrosDetalhesPessoa == null && emergencia.Descricao == null && (emergencia.Localizacoes == null || emergencia.Localizacoes.Count == 0))
                 Resultado = Resultado.DadosInsuficientes;
 
             // Se não foi encontrada nenhuma autorização válida para a aplicação usada ou o header hash é inexistente/inválido
@@ -65,7 +65,7 @@ namespace ESPM.Helpers
         public ValidacaoV(AtualizacaoViewModel atualizacao, Pedido pedido, HttpRequestHeaders headers)
         {
             // Se não existir pelo menos 1 informação atualizada
-            if (atualizacao.Descricao == null && (atualizacao.Localizacoes == null || atualizacao.Localizacoes.Count == 0) && (atualizacao.Fotografias == null || atualizacao.Fotografias.Count == 0))
+            if (atualizacao.Descricao == null && (atualizacao.Localizacoes == null || atualizacao.Localizacoes.Count == 0))
                 Resultado = Resultado.DadosInsuficientes;
             
             // Se não foi encontrada nenhuma autorização válida para a aplicação usada ou o header hash é inexistente/inválido

@@ -517,6 +517,20 @@
             Libertar recursos.
             </summary>
         </member>
+        <member name="T:ESPM.Filters.Permissao">
+            <summary>
+            Verifica se o dispositivo que enviou o pedido não é um da blacklist.
+            Uma vez que este filtro é o primeiro a correr, impede abusadores comuns.
+            Não deve ser usada para autenticação, uma vez que pedido não autenticados devem passar à mesma,
+            ficando apenas na lista de suspeitos.
+            </summary>
+        </member>
+        <member name="M:ESPM.Filters.Permissao.OnAuthorization(System.Web.Http.Controllers.HttpActionContext)">
+            <summary>
+            Validar dispositivo que enviou o pedido.
+            </summary>
+            <param name="filterContext">Contexto do pedido.</param>
+        </member>
         <member name="T:ESPM.Helpers.Definicoes">
             <summary>
             Gere as definições da aplicação
@@ -634,22 +648,22 @@
             Libertar recursos.
             </summary>
         </member>
-        <member name="T:ESPM.Helpers.Validacao">
+        <member name="T:ESPM.Helpers.ValidacaoV">
             <summary>
             Validação de todos os requests recebidos, incluindo autorizações.
             </summary>
         </member>
-        <member name="F:ESPM.Helpers.Validacao.Resultado">
+        <member name="F:ESPM.Helpers.ValidacaoV.Resultado">
             <summary>
             Guarda o resultado da validação.
             </summary>
         </member>
-        <member name="F:ESPM.Helpers.Validacao.Mensagem">
+        <member name="F:ESPM.Helpers.ValidacaoV.Mensagem">
             <summary>
             Lista de mensagens de erro para os tipos de resultados.
             </summary>
         </member>
-        <member name="M:ESPM.Helpers.Validacao.#ctor(ESPM.Models.EmergenciaViewModel,ESPM.Models.Autorizacao,System.Net.Http.Headers.HttpRequestHeaders)">
+        <member name="M:ESPM.Helpers.ValidacaoV.#ctor(ESPM.Models.EmergenciaViewModel,ESPM.Models.Autorizacao,System.Net.Http.Headers.HttpRequestHeaders)">
             <summary>
             Construtor usado aquando da criação de um novo pedido.
             </summary>
@@ -657,7 +671,7 @@
             <param name="autorizacao">A autorização da aplicação.</param>
             <param name="headers">O header com o hash.</param>
         </member>
-        <member name="M:ESPM.Helpers.Validacao.#ctor(ESPM.Models.AtualizacaoViewModel,ESPM.Models.Pedido,System.Net.Http.Headers.HttpRequestHeaders)">
+        <member name="M:ESPM.Helpers.ValidacaoV.#ctor(ESPM.Models.AtualizacaoViewModel,ESPM.Models.Pedido,System.Net.Http.Headers.HttpRequestHeaders)">
             <summary>
             Construtor usado aquando do envio de uma atualização.
             </summary>
@@ -665,7 +679,7 @@
             <param name="pedido">A autorização da aplicação.</param>
             <param name="headers">O header com o hash.</param>
         </member>
-        <member name="M:ESPM.Helpers.Validacao.#ctor(ESPM.Models.Pedido,System.Net.Http.Headers.HttpRequestHeaders)">
+        <member name="M:ESPM.Helpers.ValidacaoV.#ctor(ESPM.Models.Pedido,System.Net.Http.Headers.HttpRequestHeaders)">
             <summary>
             Construtor usado aquando do pedido de cancelamento.
             </summary>
@@ -802,6 +816,11 @@
             Pedido repetido
             </summary>
         </member>
+        <member name="F:ESPM.Models.Resultado.NaoAvaliado">
+            <summary>
+            Pedido não avaliado
+            </summary>
+        </member>
         <member name="T:ESPM.Models.Avaliacao">
             <summary>
             Avaliação de um Request recebido e conteúdo do mesmo.
@@ -815,6 +834,11 @@
         <member name="P:ESPM.Models.Avaliacao.Tempo">
             <summary>
             Momento em que foi efetuada a avaliação.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Avaliacao.Endereco">
+            <summary>
+            Endereço IP que enviou o pedido.
             </summary>
         </member>
         <member name="P:ESPM.Models.Avaliacao.Resultado">
@@ -1036,7 +1060,6 @@
             </summary>
             <remarks>
             Se não for enviado nenhum tempo, é utilizado o tempo em que esta localização é recebido.
-            Se forem enviadas várias localizações no mesmo pedido, estas devem incluir obrigatoriamente tempo de modo a ser possível criar uma linha de tempo.
             </remarks>
         </member>
         <member name="P:ESPM.Models.LocalizacaoViewModel.Latitude">
@@ -1093,6 +1116,42 @@
         <member name="P:ESPM.Models.EstadoAtualViewModel.Modificado">
             <summary>
             Hora da última alteração do estado do pedido.
+            </summary>
+        </member>
+        <member name="T:ESPM.Models.Endereco">
+            <summary>
+            Lista de endereços que utilizam/utilizaram o sistema.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Endereco.IP">
+            <summary>
+            Endereço IP.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Endereco.Livre">
+            <summary>
+            Indica se o IP tem carta branca (Por exemplo: Se for servidor de uma aplicação).
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Endereco.Falsos">
+            <summary>
+            Pedidos falsos já recebidos deste IP.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Endereco.Limite">
+            <summary>
+            Limite de pedidos falsos para este IP.
+            Este valor é definido mesmo que seja um IP livre, mas é ignorado nesse caso.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Endereco.Avaliacoes">
+            <summary>
+            Lista de requests recebidos deste IP.
+            </summary>
+        </member>
+        <member name="M:ESPM.Models.Endereco.#ctor">
+            <summary>
+            Inicializa as listas para evitar NullReferenceException.
             </summary>
         </member>
         <member name="T:ESPM.Models.Estado">
@@ -1217,6 +1276,11 @@
             Descrições de pedidos.
             </summary>
         </member>
+        <member name="P:ESPM.Models.ApplicationDbContext.Enderecos">
+            <summary>
+            Endereços IP que enviaram pedidos.
+            </summary>
+        </member>
         <member name="P:ESPM.Models.ApplicationDbContext.Estados">
             <summary>
             Estados possíveis para os pedidos.
@@ -1337,6 +1401,11 @@
         <member name="P:ESPM.Models.Pedido.Autorizacao">
             <summary>
             Autorização utilizada para o pedido.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Pedido.Avaliacao">
+            <summary>
+            Request de onde foi enviado o pedido original.
             </summary>
         </member>
         <member name="P:ESPM.Models.Pedido.Tempo">

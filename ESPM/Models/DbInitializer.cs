@@ -41,22 +41,12 @@ namespace ESPM.Models
                 new Definicao()
                 {
                     Nome = "TesteLigado",
+                    Maximo = 1,
                     Valor = 1,
                     Apresentacao = "Modo de teste",
                     Descricao = "Define se o modo de teste está ativo.",
                     SignificadoZero = "Modo de teste desligado",
                     SignificadoOutro = "Modo de teste ligado",
-                    Listar = true
-                },
-                new Definicao()
-                {
-                    Nome = "DemoAtivo",
-                    Maximo = 1,
-                    Valor = 1,
-                    Apresentacao = "Demonstração",
-                    Descricao = "Define se a demonstração está ativa.",
-                    SignificadoZero = "Demonstração indisponível",
-                    SignificadoOutro = "Demonstração disponível",
                     Listar = true
                 },
                 new Definicao()
@@ -74,7 +64,7 @@ namespace ESPM.Models
                 {
                     Nome = "ValidadeTeste",
                     Maximo = 0,
-                    Valor = 0,
+                    Valor = 365,
                     Apresentacao = "Validade das autorizações de teste",
                     Descricao = "Define a quantidade de dias que devem ser dados a uma nova autorização de teste.",
                     SignificadoZero = "Sem validade",
@@ -83,11 +73,11 @@ namespace ESPM.Models
                 },
                 new Definicao()
                 {
-                    Nome = "LimitePedidosFalsosApp",
+                    Nome = "LimitePedidosFalsosAut",
                     Maximo = 0,
-                    Valor = 10,
-                    Apresentacao = "Limite de falsos pedidos por aplicação",
-                    Descricao = "Define a quantidade de pedidos falsos que podem ser recebidos antes de uma app ser desativada.",
+                    Valor = 20,
+                    Apresentacao = "Limite de falsos pedidos por autorização",
+                    Descricao = "Define a quantidade de pedidos falsos que podem ser recebidos antes de uma autorização ser revogada.",
                     SignificadoZero = "Limite desativado",
                     SignificadoOutro = "Limite de pedidos falsos",
                     Listar = true
@@ -96,7 +86,7 @@ namespace ESPM.Models
                 {
                     Nome = "LimitePedidosFalsosIP",
                     Maximo = 0,
-                    Valor = 3,
+                    Valor = 5,
                     Apresentacao = "Limite de falsos pedidos por IP",
                     Descricao = "Define a quantidade de pedidos falsos que podem ser recebidos do mesmo IP antes de rejeitar o IP",
                     SignificadoZero = "Limite desativado",

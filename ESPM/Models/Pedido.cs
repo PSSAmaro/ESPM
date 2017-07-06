@@ -28,6 +28,12 @@ namespace ESPM.Models
         public virtual Autorizacao Autorizacao { get; set; }
 
         /// <summary>
+        /// Request de onde foi enviado o pedido original.
+        /// </summary>
+        [Required]
+        public virtual Avaliacao Avaliacao { get; set; }
+
+        /// <summary>
         /// Momento em que o pedido foi enviado.
         /// </summary>
         // Se não houver informação de tempo no pedido é o momento em que é recebido

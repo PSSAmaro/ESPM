@@ -168,7 +168,7 @@ namespace ESPM.Helpers
         {
             Estado seguinte;
             if (estado == "Inicial")
-                seguinte = db.Estados.Find(Definicoes.Ler("EstadoInicial"));
+                seguinte = db.Estados.Find(db.Definicoes.Find("EstadoInicial").Valor);
             else
                 seguinte = db.Estados.Where(e => e.Nome == estado).FirstOrDefault();
 

@@ -69,6 +69,11 @@ namespace ESPM.Models
         public DbSet<Descricao> Descricoes { get; set; }
 
         /// <summary>
+        /// Endereços IP que enviaram pedidos.
+        /// </summary>
+        public DbSet<Endereco> Enderecos { get; set; }
+
+        /// <summary>
         /// Estados possíveis para os pedidos.
         /// </summary>
         public DbSet<Estado> Estados { get; set; }

@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using ESPM.Filters;
 
 namespace ESPM.Controllers.API
 {
@@ -20,6 +21,8 @@ namespace ESPM.Controllers.API
     /// </summary>
     // Ver qual é a convenção com a questão da segurança e os hashes, etc...
     // A rota é definida aqui para separar da rota da API de gestão
+    [Permissao]
+    [Validacao(Teste = false)]
     [Route("api/Emergencia/{id:guid?}")]
     public class EmergenciaController : ApiController
     {
@@ -62,7 +65,7 @@ namespace ESPM.Controllers.API
                 // Escolher a autorização válida
                 Autorizacao autorizacao = db.Autorizacao(emergencia.Aplicacao);
 
-                Validacao validacao = new Validacao(emergencia, autorizacao, Request.Headers);
+                ValidacaoV validacao = new ValidacaoV(emergencia, autorizacao, Request.Headers);
 
                 // Era bom não responder BadRequest a tudo...
                 // E falta guardar os pedidos com erro :/
@@ -96,7 +99,7 @@ namespace ESPM.Controllers.API
             if (pedido == null)
                 return NotFound();
 
-            Validacao validacao = new Validacao(atualizacao, pedido, Request.Headers);
+            ValidacaoV validacao = new ValidacaoV(atualizacao, pedido, Request.Headers);
 
             if (validacao.Resultado == Resultado.Valido)
             {
@@ -122,7 +125,7 @@ namespace ESPM.Controllers.API
             if (pedido == null)
                 return NotFound();
 
-            Validacao validacao = new Validacao(pedido, Request.Headers);
+            ValidacaoV validacao = new ValidacaoV(pedido, Request.Headers);
 
             if (validacao.Resultado == Resultado.Valido)
             {

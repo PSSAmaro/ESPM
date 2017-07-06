@@ -35,7 +35,11 @@ namespace ESPM.Models
         /// <summary>
         /// Pedido repetido
         /// </summary>
-        Repetido
+        Repetido,
+        /// <summary>
+        /// Pedido não avaliado
+        /// </summary>
+        NaoAvaliado
     }
 
     /// <summary>
@@ -57,6 +61,12 @@ namespace ESPM.Models
         public DateTime Tempo { get; set; }
 
         /// <summary>
+        /// Endereço IP que enviou o pedido.
+        /// </summary>
+        [Required]
+        public virtual Endereco Endereco { get; set; }
+
+        /// <summary>
         /// Resultado da avaliação.
         /// </summary>
         [Required]
@@ -65,7 +75,7 @@ namespace ESPM.Models
         /// <summary>
         /// Header de autenticação enviado.
         /// </summary>
-        public string Header { get; set; }
+        public Guid Header { get; set; }
 
         /// <summary>
         /// Corpo enviado.

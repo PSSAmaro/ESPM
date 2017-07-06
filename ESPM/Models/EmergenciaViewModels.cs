@@ -1,6 +1,7 @@
 ﻿using ESPM.Areas.HelpPage.ModelDescriptions;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -15,6 +16,7 @@ namespace ESPM.Models
         /// <summary>
         /// ID da aplicação.
         /// </summary>
+        [Required]
         public Guid Aplicacao { get; set; }
 
         /// <summary>
@@ -146,18 +148,19 @@ namespace ESPM.Models
         /// </summary>
         /// <remarks>
         /// Se não for enviado nenhum tempo, é utilizado o tempo em que esta localização é recebido.
-        /// Se forem enviadas várias localizações no mesmo pedido, estas devem incluir obrigatoriamente tempo de modo a ser possível criar uma linha de tempo.
         /// </remarks>
         public DateTime? Tempo { get; set; }
 
         /// <summary>
         /// Latitude da localização detetada.
         /// </summary>
+        [Required]
         public float Latitude { get; set; }
 
         /// <summary>
         /// Longitude da localização detetada.
         /// </summary>
+        [Required]
         public float Longitude { get; set; }
 
         /// <summary>
@@ -192,6 +195,7 @@ namespace ESPM.Models
         /// <summary>
         /// Fotografia do local/acontecimento.
         /// </summary>
+        [Required]
         public byte[] Imagem { get; set; }
     }
 

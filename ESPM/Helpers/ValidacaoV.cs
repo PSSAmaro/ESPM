@@ -13,7 +13,7 @@ namespace ESPM.Helpers
     /// Validação de todos os requests recebidos, incluindo autorizações.
     /// </summary>
     // FALTA: Criar uma tabela com as avaliações desta classe
-    public class Validacao
+    public class ValidacaoV
     {
         /// <summary>
         /// Guarda o resultado da validação.
@@ -38,7 +38,7 @@ namespace ESPM.Helpers
         /// <param name="emergencia">A emergência a validar.</param>
         /// <param name="autorizacao">A autorização da aplicação.</param>
         /// <param name="headers">O header com o hash.</param>
-        public Validacao(EmergenciaViewModel emergencia, Autorizacao autorizacao, HttpRequestHeaders headers)
+        public ValidacaoV(EmergenciaViewModel emergencia, Autorizacao autorizacao, HttpRequestHeaders headers)
         {
             // FALTA: Definir a credibilidade do pedido
             // FALTA: Se for enviada mais de 1 localização, estas devem ter tempo
@@ -62,7 +62,7 @@ namespace ESPM.Helpers
         /// <param name="atualizacao">A nova localização.</param>
         /// <param name="pedido">A autorização da aplicação.</param>
         /// <param name="headers">O header com o hash.</param>
-        public Validacao(AtualizacaoViewModel atualizacao, Pedido pedido, HttpRequestHeaders headers)
+        public ValidacaoV(AtualizacaoViewModel atualizacao, Pedido pedido, HttpRequestHeaders headers)
         {
             // Se não existir pelo menos 1 informação atualizada
             if (atualizacao.Descricao == null && (atualizacao.Localizacoes == null || atualizacao.Localizacoes.Count == 0) && (atualizacao.Fotografias == null || atualizacao.Fotografias.Count == 0))
@@ -82,7 +82,7 @@ namespace ESPM.Helpers
         /// </summary>
         /// <param name="pedido">O pedido a adicionar a localização.</param>
         /// <param name="headers">O header com o hash.</param>
-        public Validacao(Pedido pedido, HttpRequestHeaders headers)
+        public ValidacaoV(Pedido pedido, HttpRequestHeaders headers)
         {
             /* if (headers.GetValues("Hash") == null || headers.GetValues("Hash").First() != Hash(pedido.Id.ToString(), pedido.Autorizacao.Id))
                 Resultado = Resultado.ErroAutenticacao;

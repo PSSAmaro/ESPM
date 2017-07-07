@@ -42,10 +42,6 @@ namespace ESPM.Controllers.API
             // Escolher o pedido com o id
             Pedido pedido = await db.Pedidos.FindAsync(id);
 
-            // Devolver NotFound se não existir
-            if (pedido == null)
-                return NotFound();
-
             // Devolver o estado atual e a última modificação do estado se existir
             return Ok(new EstadoAtualViewModel(pedido.Estados.OrderByDescending(e => e.Tempo).FirstOrDefault()));
         }
@@ -141,10 +137,6 @@ namespace ESPM.Controllers.API
             // Escolher o pedido com o id
             Pedido pedido = await db.Pedidos.FindAsync(id);
 
-            // Devolver NotFound se não existir
-            if (pedido == null)
-                return NotFound();
-
             // Carregar avaliação das propriedades do pedido
             Avaliacao avaliacao = db.Avaliacoes.Find((int)Request.Properties["Avaliacao"]);
 
@@ -154,18 +146,37 @@ namespace ESPM.Controllers.API
             // Adicionar detalhes da pessoa se foram enviados
             if (atualizacao.Nome != null || atualizacao.Contacto != null || atualizacao.Idade != null || atualizacao.OutrosDetalhesPessoa != null)
             {
-                // Carregar as informações já existentes
-                Pessoa pessoa = pedido.InformacaoPessoa.OrderByDescending(d => d.Tempo).FirstOrDefault();
-
-                // Atualizar os campos que foram enviados e popular os outros com os valores anteriores
-                pedido.InformacaoPessoa.Add(new Pessoa()
+                // Confirmar que já existe informação antes, se não existir simplesmente criar uma nova pessoa
+                if (pedido.InformacaoPessoa.Count == 0)
                 {
-                    Avaliacao = avaliacao,
-                    Nome = atualizacao.Nome ?? pessoa.Nome,
-                    Contacto = atualizacao.Contacto ?? pessoa.Contacto,
-                    Idade = atualizacao.Idade ?? pessoa.Idade,
-                    OutrosDetalhes = atualizacao.OutrosDetalhesPessoa ?? pessoa.OutrosDetalhes
-                });
+                    pedido.InformacaoPessoa.Add(new Pessoa()
+                    {
+                        Avaliacao = avaliacao,
+                        Nome = atualizacao.Nome,
+                        Contacto = atualizacao.Contacto,
+                        Idade = atualizacao.Idade,
+                        OutrosDetalhes = atualizacao.OutrosDetalhesPessoa
+                    });
+                }
+                else
+                {
+                    // Carregar as informações já existentes
+                    Pessoa pessoa = pedido.InformacaoPessoa.OrderByDescending(d => d.Tempo).FirstOrDefault();
+
+                    // Verificar que alguma informação é realmente diferente
+                    if (atualizacao.Nome != pessoa.Nome || atualizacao.Contacto != pessoa.Contacto || atualizacao.Idade != pessoa.Idade || atualizacao.OutrosDetalhesPessoa != pessoa.OutrosDetalhes)
+                    {
+                        // Atualizar os campos que foram enviados e popular os outros com os valores anteriores
+                        pedido.InformacaoPessoa.Add(new Pessoa()
+                        {
+                            Avaliacao = avaliacao,
+                            Nome = atualizacao.Nome ?? pessoa.Nome,
+                            Contacto = atualizacao.Contacto ?? pessoa.Contacto,
+                            Idade = atualizacao.Idade ?? pessoa.Idade,
+                            OutrosDetalhes = atualizacao.OutrosDetalhesPessoa ?? pessoa.OutrosDetalhes
+                        });
+                    }
+                }
             }
 
             // Adicionar descrição se foi enviada
@@ -211,10 +222,6 @@ namespace ESPM.Controllers.API
 
             // Escolher o pedido com o id
             Pedido pedido = await db.Pedidos.FindAsync(id);
-
-            // Devolver NotFound se não existir
-            if (pedido == null)
-                return NotFound();
 
             // Falta: Confirmar que veio do mesmo IP e autorização
             // Usar o ActionFilter

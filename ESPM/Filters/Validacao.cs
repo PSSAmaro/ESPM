@@ -18,7 +18,19 @@ namespace ESPM.Filters
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                // Não é necessária validação para o método Get
+                bool formatoValido = true;
+
+                // Verificar se o formato é válido e se o pedido existe
+                if (filterContext.ActionArguments.Any(a => a.Value == null) || !filterContext.ModelState.IsValid)
+                {
+                    formatoValido = false;
+                    // Responder com BadRequest
+                    filterContext.Response = filterContext.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Formato inválido.");
+                }
+                else if (!PedidoExiste(filterContext.ActionDescriptor.ActionName, filterContext.ActionArguments, db))
+                    filterContext.Response = filterContext.Request.CreateErrorResponse(HttpStatusCode.NotFound, "O pedido não existe.");
+
+                // Não é necessária mais validação para o método Get
                 if (filterContext.ActionDescriptor.ActionName == "Get")
                     return;
 
@@ -49,14 +61,12 @@ namespace ESPM.Filters
                 }
 
                 // Verificar se o formato é válido
-                if (filterContext.ActionArguments.Any(a => a.Value == null) || !filterContext.ModelState.IsValid)
+                if (!formatoValido)
                 {
                     // Neste caso o pedido não é tratado
                     avaliacao.Resultado = Resultado.MauFormato;
-                    // Responder com BadRequest
-                    filterContext.Response = filterContext.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Formato inválido.");
                 }
-                else if (!db.Autorizacoes.Any(a => a.Id == avaliacao.Header && a.Teste == Teste && !a.Revogada && a.Validade > DateTime.Now))
+                else if (!db.Autorizacoes.Any(a => a.Id == avaliacao.Header && a.Teste == Teste && !a.Revogada && a.Validade > DateTime.Now) && MesmoEnderecoAutorizacao(filterContext.ActionDescriptor.ActionName, filterContext.ActionArguments, avaliacao, db))
                 {
                     // Processar o pedido à mesma e não alertar o utilizador
                     // Talvez enviar um alerta para o responsável pela aplicação
@@ -83,6 +93,16 @@ namespace ESPM.Filters
             }
         }
 
+        private bool PedidoExiste(string metodo, Dictionary<string, object> argumentos, ApplicationDbContext db)
+        {
+            // O método Post não pede um pedido existente
+            if (metodo == "Post")
+                return true;
+            if (db.Pedidos.Any(p => p.Id == (Guid)argumentos["id"]))
+                return true;
+            return false;
+        }
+
         private bool InfoSuficiente(string metodo, Dictionary<string, object> argumentos)
         {
             switch (metodo)
@@ -102,6 +122,18 @@ namespace ESPM.Filters
                 default:
                     return false;
             }
+        }
+
+        private bool MesmoEnderecoAutorizacao(string metodo, Dictionary<string, object> argumentos, Avaliacao avaliacao, ApplicationDbContext db)
+        {
+            if (metodo == "Post")
+                return true;
+            Pedido pedido = db.Pedidos.Find((Guid)argumentos["id"]);
+            // Confirmar que a autorização utilizada e o IP são os mesmos
+            // Cuidado com esta utilização porque o IP dos telemóveis muda facilmente
+            if (pedido.Autorizacao.Id == avaliacao.Header && pedido.Estados.OrderBy(d => d.Tempo).FirstOrDefault().Avaliacao.Endereco == avaliacao.Endereco)
+                return true;
+            return false;
         }
     }
 }

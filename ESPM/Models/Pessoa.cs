@@ -25,12 +25,12 @@ namespace ESPM.Models
         /// <summary>
         /// Pedido a que se refere esta descrição da pessoa.
         /// </summary>
-        public Pedido Pedido { get; set; }
+        public virtual Pedido Pedido { get; set; }
 
         /// <summary>
         /// Operador que fez esta mudança de descrição da pessoa (Se foi feita por um operador).
         /// </summary>
-        public ApplicationUser Utilizador { get; set; }
+        public virtual ApplicationUser Utilizador { get; set; }
 
         /// <summary>
         /// Momento em que a descrição da pessoa foi modificada para esta versão.

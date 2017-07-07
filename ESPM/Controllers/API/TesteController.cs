@@ -45,11 +45,11 @@ namespace ESPM.Controllers.API
         /// Enviar uma nova localização para um pedido de ajuda.
         /// </summary>
         /// <param name="id">ID do pedido de ajuda.</param>
-        /// <param name="atualizacao">Novas informações.</param>
+        /// <param name="emergencia">Novas informações.</param>
         [Route]
-        public override async Task<IHttpActionResult> Put(Guid id, AtualizacaoViewModel atualizacao)
+        public override async Task<IHttpActionResult> Put(Guid id, EmergenciaViewModel emergencia)
         {
-            return await base.Put(id, atualizacao);
+            return await base.Put(id, emergencia);
         }
 
         /// <summary>

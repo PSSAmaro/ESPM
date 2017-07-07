@@ -241,9 +241,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\Definicoes.cs" />
     <Compile Include="Helpers\GestorPedidos.cs" />
-    <Compile Include="Helpers\ValidacaoV.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AlteracaoDefinicao.cs" />
     <Compile Include="Models\Aplicacao.cs" />

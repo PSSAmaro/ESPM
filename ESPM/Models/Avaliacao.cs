@@ -75,7 +75,7 @@ namespace ESPM.Models
         /// <summary>
         /// Header de autenticação enviado.
         /// </summary>
-        public Guid Header { get; set; }
+        public Guid? Header { get; set; }
 
         /// <summary>
         /// Corpo enviado.

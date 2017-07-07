@@ -8,6 +8,7 @@ using System.Web;
 
 namespace ESPM.Helpers
 {
+    // É PARA REMOVAR O MAIS RÁPIDO POSSÍVEL
     /// <summary>
     /// Gere a criação e edição dos pedidos.
     /// </summary>
@@ -95,7 +96,7 @@ namespace ESPM.Helpers
         /// <param name="pedido">Pedido a atualizar.</param>
         /// <param name="atualizacao">Atualização com as informações.</param>
         /// <returns></returns>
-        public async Task<Pedido> AtualizarPedido(Pedido pedido, AtualizacaoViewModel atualizacao)
+        /*public async Task<Pedido> AtualizarPedido(Pedido pedido, AtualizacaoViewModel atualizacao)
         {
             // Usar o tempo recebido ou o atual
             DateTime t = (atualizacao.Tempo == null ? DateTime.Now : (DateTime)atualizacao.Tempo);
@@ -109,7 +110,7 @@ namespace ESPM.Helpers
             await db.SaveChangesAsync();
 
             return pedido;
-        }
+        }*/
 
         /// <summary>
         /// Marca um pedido como anulado.

@@ -39,15 +39,14 @@ namespace ESPM.Filters
                 {
                     Tempo = DateTime.Now,
                     Endereco = db.Enderecos.Find((string)filterContext.Request.Properties["Endereco"]),
-                    Resultado = Resultado.NaoAvaliado,
-                    Header = Guid.Empty
+                    Resultado = Resultado.NaoAvaliado
                 };
 
                 // Registar header de autenticação do pedido
                 IEnumerable<string> header;
                 if (filterContext.Request.Headers.TryGetValues("X-ESPM-Autenticacao", out header))
                 {
-                    Guid guid = Guid.Empty;
+                    Guid guid;
                     Guid.TryParse(header.FirstOrDefault(), out guid);
                     avaliacao.Header = guid;
                 }
@@ -105,23 +104,12 @@ namespace ESPM.Filters
 
         private bool InfoSuficiente(string metodo, Dictionary<string, object> argumentos)
         {
-            switch (metodo)
-            {
-                case "Delete":
-                    return true;
-                case "Post":
-                    EmergenciaViewModel emergencia = (EmergenciaViewModel)argumentos["emergencia"];
-                    if (emergencia.Contacto == null && emergencia.OutrosDetalhesPessoa == null && emergencia.Descricao == null && emergencia.Localizacoes.Count == 0)
-                        return false;
-                    return true;
-                case "Put":
-                    AtualizacaoViewModel atualizacao = (AtualizacaoViewModel)argumentos["atualizacao"];
-                    if (atualizacao.Descricao == null && atualizacao.Localizacoes.Count == 0)
-                        return false;
-                    return true;
-                default:
-                    return false;
-            }
+            if (metodo == "Delete")
+                return true;
+            EmergenciaViewModel emergencia = (EmergenciaViewModel)argumentos["emergencia"];
+            if (emergencia.Contacto == null && emergencia.OutrosDetalhesPessoa == null && emergencia.Descricao == null && emergencia.Localizacoes.Count == 0)
+                return false;
+            return true;
         }
 
         private bool MesmoEnderecoAutorizacao(string metodo, Dictionary<string, object> argumentos, Avaliacao avaliacao, ApplicationDbContext db)

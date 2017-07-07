@@ -24,7 +24,6 @@ namespace ESPM.Models
         /// Autorização utilizada para o pedido.
         /// </summary>
         // É utilizada a autorização em vez da aplicação para ser mais fácil distinguir pedidos válidos, pedidos inválidos e pedidos de teste
-        [Required]
         public virtual Autorizacao Autorizacao { get; set; }
 
         /// <summary>
@@ -50,7 +49,7 @@ namespace ESPM.Models
         /// <summary>
         /// Operador responsável pelo tratamento deste pedido.
         /// </summary>
-        public ApplicationUser Operador { get; set; }
+        public virtual ApplicationUser Operador { get; set; }
 
         /// <summary>
         /// Informação da pessoa que precisa de ajuda.

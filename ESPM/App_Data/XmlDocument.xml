@@ -486,6 +486,11 @@
             Criar e atualizar pedidos reais.
             </summary>
         </member>
+        <member name="F:ESPM.Controllers.API.EmergenciaController.db">
+            <summary>
+            Contexto da BD.
+            </summary>
+        </member>
         <member name="M:ESPM.Controllers.API.EmergenciaController.Get(System.Guid)">
             <summary>
             Ver o estado atual de um pedido de ajuda.
@@ -499,12 +504,12 @@
             </summary>
             <param name="emergencia">Dados do pedido de ajuda.</param>
         </member>
-        <member name="M:ESPM.Controllers.API.EmergenciaController.Put(System.Guid,ESPM.Models.AtualizacaoViewModel)">
+        <member name="M:ESPM.Controllers.API.EmergenciaController.Put(System.Guid,ESPM.Models.EmergenciaViewModel)">
             <summary>
             Enviar uma nova localização para um pedido de ajuda.
             </summary>
             <param name="id">ID do pedido de ajuda.</param>
-            <param name="atualizacao">Novas informações.</param>
+            <param name="emergencia">Novas informações.</param>
         </member>
         <member name="M:ESPM.Controllers.API.EmergenciaController.Delete(System.Guid)">
             <summary>
@@ -541,12 +546,12 @@
             </summary>
             <param name="emergencia">Dados do pedido de ajuda.</param>
         </member>
-        <member name="M:ESPM.Controllers.API.TesteController.Put(System.Guid,ESPM.Models.AtualizacaoViewModel)">
+        <member name="M:ESPM.Controllers.API.TesteController.Put(System.Guid,ESPM.Models.EmergenciaViewModel)">
             <summary>
             Enviar uma nova localização para um pedido de ajuda.
             </summary>
             <param name="id">ID do pedido de ajuda.</param>
-            <param name="atualizacao">Novas informações.</param>
+            <param name="emergencia">Novas informações.</param>
         </member>
         <member name="M:ESPM.Controllers.API.TesteController.Delete(System.Guid)">
             <summary>
@@ -578,32 +583,6 @@
             Validar dispositivo que enviou o pedido.
             </summary>
             <param name="filterContext">Contexto do pedido.</param>
-        </member>
-        <member name="T:ESPM.Helpers.Definicoes">
-            <summary>
-            Gere as definições da aplicação
-            </summary>
-        </member>
-        <member name="M:ESPM.Helpers.Definicoes.Ler">
-            <summary>
-            Lista as definições do sistema que devem aparecer na página de definições.
-            </summary>
-            <returns>Definições em que Listar é True</returns>
-        </member>
-        <member name="M:ESPM.Helpers.Definicoes.Ler(System.String)">
-            <summary>
-            Lê o valor de uma definição.
-            </summary>
-            <param name="def">Nome da definição.</param>
-            <returns>Valor da definição.</returns>
-        </member>
-        <member name="M:ESPM.Helpers.Definicoes.Alterar(System.String,System.Int32)">
-            <summary>
-            Altera o valor de uma definição.
-            </summary>
-            <param name="def">Definição a alterar.</param>
-            <param name="val">Novo valor.</param>
-            <returns>Sucesso da operação.</returns>
         </member>
         <member name="T:ESPM.Helpers.GestorPedidos">
             <summary>
@@ -641,14 +620,6 @@
             </summary>
             <param name="emergencia">A emergência recebida.</param>
             <param name="autorizacao">A autorização utilizada pela aplicação.</param>
-            <returns></returns>
-        </member>
-        <member name="M:ESPM.Helpers.GestorPedidos.AtualizarPedido(ESPM.Models.Pedido,ESPM.Models.AtualizacaoViewModel)">
-            <summary>
-            Atualizar um pedido.
-            </summary>
-            <param name="pedido">Pedido a atualizar.</param>
-            <param name="atualizacao">Atualização com as informações.</param>
             <returns></returns>
         </member>
         <member name="M:ESPM.Helpers.GestorPedidos.CancelarPedido(ESPM.Models.Pedido)">
@@ -695,44 +666,6 @@
             <summary>
             Libertar recursos.
             </summary>
-        </member>
-        <member name="T:ESPM.Helpers.ValidacaoV">
-            <summary>
-            Validação de todos os requests recebidos, incluindo autorizações.
-            </summary>
-        </member>
-        <member name="F:ESPM.Helpers.ValidacaoV.Resultado">
-            <summary>
-            Guarda o resultado da validação.
-            </summary>
-        </member>
-        <member name="F:ESPM.Helpers.ValidacaoV.Mensagem">
-            <summary>
-            Lista de mensagens de erro para os tipos de resultados.
-            </summary>
-        </member>
-        <member name="M:ESPM.Helpers.ValidacaoV.#ctor(ESPM.Models.EmergenciaViewModel,ESPM.Models.Autorizacao,System.Net.Http.Headers.HttpRequestHeaders)">
-            <summary>
-            Construtor usado aquando da criação de um novo pedido.
-            </summary>
-            <param name="emergencia">A emergência a validar.</param>
-            <param name="autorizacao">A autorização da aplicação.</param>
-            <param name="headers">O header com o hash.</param>
-        </member>
-        <member name="M:ESPM.Helpers.ValidacaoV.#ctor(ESPM.Models.AtualizacaoViewModel,ESPM.Models.Pedido,System.Net.Http.Headers.HttpRequestHeaders)">
-            <summary>
-            Construtor usado aquando do envio de uma atualização.
-            </summary>
-            <param name="atualizacao">A nova localização.</param>
-            <param name="pedido">A autorização da aplicação.</param>
-            <param name="headers">O header com o hash.</param>
-        </member>
-        <member name="M:ESPM.Helpers.ValidacaoV.#ctor(ESPM.Models.Pedido,System.Net.Http.Headers.HttpRequestHeaders)">
-            <summary>
-            Construtor usado aquando do pedido de cancelamento.
-            </summary>
-            <param name="pedido">O pedido a adicionar a localização.</param>
-            <param name="headers">O header com o hash.</param>
         </member>
         <member name="T:ESPM.Models.AlteracaoDefinicao">
             <summary>
@@ -999,11 +932,6 @@
             Modelo dos pedidos enviados.
             </summary>
         </member>
-        <member name="P:ESPM.Models.EmergenciaViewModel.Aplicacao">
-            <summary>
-            ID da aplicação.
-            </summary>
-        </member>
         <member name="P:ESPM.Models.EmergenciaViewModel.Tempo">
             <summary>
             Momento em que o pedido foi enviado.
@@ -1044,37 +972,6 @@
             Inicializa as listas para evitar NullReferenceException.
             </summary>
         </member>
-        <member name="T:ESPM.Models.AtualizacaoViewModel">
-            <summary>
-            Pedido de atualização de uma emergência.
-            </summary>
-        </member>
-        <member name="P:ESPM.Models.AtualizacaoViewModel.Tempo">
-            <summary>
-            Momento em que a atualização foi enviada.
-            </summary>
-            <remarks>
-            Opcionalmente, caso seja enviada apenas 1 foto com a sua localização, este campo pode incluir o momento em que a foto foi tirada, de modo a não ser necessário repetir o mesmo tempo em ambos os campos.
-            </remarks>
-        </member>
-        <member name="P:ESPM.Models.AtualizacaoViewModel.Descricao">
-            <summary>
-            Descrição atualizada da situação.
-            </summary>
-            <remarks>
-            Deve ser uma atualização da descrição anterior e não uma nova descrição.
-            </remarks>
-        </member>
-        <member name="P:ESPM.Models.AtualizacaoViewModel.Localizacoes">
-            <summary>
-            Lista de novas localizações detetadas.
-            </summary>
-        </member>
-        <member name="M:ESPM.Models.AtualizacaoViewModel.#ctor">
-            <summary>
-            Inicializa as listas para evitar NullReferenceException.
-            </summary>
-        </member>
         <member name="T:ESPM.Models.LocalizacaoViewModel">
             <summary>
             Modelo das localizações enviadas.
@@ -1098,16 +995,6 @@
             Longitude da localização detetada.
             </summary>
         </member>
-        <member name="T:ESPM.Models.RecebidoViewModel">
-            <summary>
-            Resultado do pedido enviado e o seu ID.
-            </summary>
-        </member>
-        <member name="P:ESPM.Models.RecebidoViewModel.Id">
-            <summary>
-            ID do pedido criado.
-            </summary>
-        </member>
         <member name="T:ESPM.Models.EstadoAtualViewModel">
             <summary>
             Modelo do estado atual de um pedido.
@@ -1121,6 +1008,46 @@
         <member name="P:ESPM.Models.EstadoAtualViewModel.Modificado">
             <summary>
             Hora da última alteração do estado do pedido.
+            </summary>
+        </member>
+        <member name="T:ESPM.Models.RecebidoViewModel">
+            <summary>
+            Resultado do pedido enviado e o seu ID.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.RecebidoViewModel.Recebido">
+            <summary>
+            Momento em que o pedido foi recebido.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.RecebidoViewModel.Id">
+            <summary>
+            ID do pedido criado.
+            </summary>
+        </member>
+        <member name="T:ESPM.Models.AtualizadoViewModel">
+            <summary>
+            Resultado da atualização do pedido.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.AtualizadoViewModel.Recebido">
+            <summary>
+            Momento em que a atualização foi recebida.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.AtualizadoViewModel.Atualizado">
+            <summary>
+            Indica se alguma informação do pedido recebido era nova.
+            </summary>
+        </member>
+        <member name="T:ESPM.Models.CanceladoViewModel">
+            <summary>
+            Resultado da atualização do pedido.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.CanceladoViewModel.Recebido">
+            <summary>
+            Momento o pedido de cancelamento foi recebido.
             </summary>
         </member>
         <member name="T:ESPM.Models.Endereco">
@@ -1207,6 +1134,11 @@
         <member name="P:ESPM.Models.EstadoDePedido.Id">
             <summary>
             ID.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.EstadoDePedido.Avaliacao">
+            <summary>
+            Request de onde foi enviada o estado (apenas inicial ou anulado).
             </summary>
         </member>
         <member name="P:ESPM.Models.EstadoDePedido.Pedido">
@@ -1503,7 +1435,7 @@
             Idade da pessoa que precisa de ajuda.
             </summary>
         </member>
-        <member name="P:ESPM.Models.Pessoa.OutrosDetalhesPessoa">
+        <member name="P:ESPM.Models.Pessoa.OutrosDetalhes">
             <summary>
             Outras informações relevantes sobre a pessoa que precisa de ajuda.
             </summary>

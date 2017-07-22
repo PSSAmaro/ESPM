@@ -1,0 +1,80 @@
+﻿@model ESPM.Models.Definicao
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Definicao</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Maximo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Maximo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Valor)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Valor)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Apresentacao)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Apresentacao)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Descricao)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Descricao)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SignificadoZero)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SignificadoZero)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SignificadoOutro)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SignificadoOutro)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Listar)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Listar)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

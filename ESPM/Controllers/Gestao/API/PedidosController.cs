@@ -11,10 +11,9 @@ using System.Web.Http.Description;
 
 namespace ESPM.Controllers.Gestao.API
 {
-    // Isto se calhar vai acabar por ser trocado por um WebSocket, mas até lá...
     [ApiExplorerSettings(IgnoreApi = true)]
     [Authorize(Roles = "Operador")]
-    public class PedidoController : ApiController
+    public class PedidosController : ApiController
     {
         private GestorPedidos db = new GestorPedidos();
 

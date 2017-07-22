@@ -125,6 +125,17 @@ namespace ESPM.Models
                     SignificadoZero = "Não permitido",
                     SignificadoOutro = "ID do estado",
                     Listar = false
+                },
+                new Definicao()
+                {
+                    Nome = "Familias",
+                    Maximo = 0,
+                    Valor = 8,
+                    Apresentacao = "Número de famílias de estados",
+                    Descricao = "Define a quantidade de famílias de estados existentes.",
+                    SignificadoZero = "Não permitido",
+                    SignificadoOutro = "Número de famílias",
+                    Listar = false
                 }
             });
 
@@ -138,18 +149,20 @@ namespace ESPM.Models
             RoleManager.Create(new IdentityRole("Operador"));
             // Desautorizado = Antigos Admin/Operador, mantidos para questões de log, mas desautorizados
             RoleManager.Create(new IdentityRole("Desautorizado"));
-            // Aplicacao = Utilizadores responsáveis pelas (suas) aplicações, com acesso ao modo de teste
-            RoleManager.Create(new IdentityRole("Aplicacao"));
+            // Dev = Utilizadores de desenvolvimento, responsáveis pelas (suas) aplicações, com acesso ao modo de teste
+            RoleManager.Create(new IdentityRole("Dev"));
+            // ExDev = Antigos utilizadores de desenvolvimento, entretanto desautorizados
+            RoleManager.Create(new IdentityRole("ExDev"));
 
             // Criar utilizador (APENAS TESTE!!!)
             var user = new ApplicationUser()
             {
-                UserName = "Teste"
+                UserName = "teste@a.com"
             };
             UserManager.Create(user, "123456");
 
             // Adicionar utilizador à role Aplicacao
-            UserManager.AddToRole(user.Id, "Aplicacao");
+            UserManager.AddToRole(user.Id, "Dev");
 
             // Adicionar aplicação
             db.Aplicacoes.Add(new Aplicacao()
@@ -160,6 +173,7 @@ namespace ESPM.Models
                 {
                     new Autorizacao()
                     {
+                        Utilizador = user,
                         Validade = DateTime.Now.AddYears(1),
                         Teste = false,
                         Revogada = false

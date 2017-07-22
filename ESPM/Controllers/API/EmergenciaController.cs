@@ -281,6 +281,7 @@ namespace ESPM.Controllers.API
         /// </summary>
         /// <param name="id">ID do pedido de ajuda.</param>
         [Route("Imagem")]
+        [HttpPost]
         public virtual async Task<IHttpActionResult> Imagem(Guid id)
         {
             return Ok();

@@ -200,6 +200,15 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\Dev\DevAreaRegistration.cs" />
+    <Compile Include="Areas\Dev\Models\AutorizacaoViewModel.cs" />
+    <Compile Include="Areas\Gestao\Controllers\API\EstadosController.cs" />
+    <Compile Include="Areas\Gestao\Controllers\DefinicaosController.cs" />
+    <Compile Include="Areas\Gestao\Controllers\DefinicoesController.cs" />
+    <Compile Include="Areas\Gestao\Controllers\EstadosController.cs" />
+    <Compile Include="Areas\Gestao\GestaoAreaRegistration.cs" />
+    <Compile Include="Areas\Gestao\Models\DefinicaoViewModels.cs" />
+    <Compile Include="Areas\Gestao\Models\EstadoViewModels.cs" />
     <Compile Include="Areas\HelpPage\ApiDescriptionExtensions.cs" />
     <Compile Include="Areas\HelpPage\App_Start\HelpPageConfig.cs" />
     <Compile Include="Areas\HelpPage\Controllers\HelpController.cs" />
@@ -231,8 +240,10 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\API\EmergenciaController.cs" />
     <Compile Include="Controllers\API\TesteController.cs" />
+    <Compile Include="Areas\Dev\Controllers\API\AutorizacoesController.cs" />
     <Compile Include="Controllers\Gestao\API\AplicacaosController.cs" />
-    <Compile Include="Controllers\Gestao\API\PedidoController.cs" />
+    <Compile Include="Controllers\Gestao\API\AutorizacoesController.cs" />
+    <Compile Include="Controllers\Gestao\API\PedidosController.cs" />
     <Compile Include="Controllers\DemoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -285,6 +296,7 @@
     <Content Include="Scripts\angular-mocks.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\app\gestao-controller.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
@@ -311,7 +323,23 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
     <Content Include="Scripts\angular.min.js.map" />
+    <Content Include="Areas\Gestao\Views\web.config" />
+    <Content Include="Areas\Dev\Views\web.config" />
+    <Content Include="Areas\Gestao\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Gestao\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Gestao\Views\Definicaos\Create.cshtml" />
+    <Content Include="Areas\Gestao\Views\Definicaos\Delete.cshtml" />
+    <Content Include="Areas\Gestao\Views\Definicaos\Details.cshtml" />
+    <Content Include="Areas\Gestao\Views\Definicaos\Edit.cshtml" />
+    <Content Include="Areas\Gestao\Views\Definicaos\Index.cshtml" />
+    <Content Include="Areas\Gestao\Views\Definicoes\Index.cshtml" />
+    <Content Include="Areas\Gestao\Views\Estados\Create.cshtml" />
+    <Content Include="Areas\Gestao\Views\Estados\Delete.cshtml" />
+    <Content Include="Areas\Gestao\Views\Estados\Details.cshtml" />
+    <Content Include="Areas\Gestao\Views\Estados\Edit.cshtml" />
+    <Content Include="Areas\Gestao\Views\Estados\Index.cshtml" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\UMaESPM - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\app\demo-controller.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -362,6 +390,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Dev\Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

@@ -744,7 +744,12 @@
         </member>
         <member name="P:ESPM.Models.Autorizacao.Aplicacao">
             <summary>
-            Aplicação a que se refere a autorização.
+            Aplicação a que se refere a autorização se for uma autorização real.
+            </summary>
+        </member>
+        <member name="P:ESPM.Models.Autorizacao.Utilizador">
+            <summary>
+            Utilizador a quem pertence esta autorização.
             </summary>
         </member>
         <member name="P:ESPM.Models.Autorizacao.Validade">

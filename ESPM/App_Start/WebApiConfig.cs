@@ -19,13 +19,6 @@ namespace ESPM
 
             // Web API routes
             config.MapHttpAttributeRoutes();
-
-            // A API pública é definida no próprio controlador
-            config.Routes.MapHttpRoute(
-                name: "APIGestao",
-                routeTemplate: "Gestao/api/{controller}/{action}/{id}",
-                defaults: new { action = "Todos", id = RouteParameter.Optional }
-            );
         }
     }
 }

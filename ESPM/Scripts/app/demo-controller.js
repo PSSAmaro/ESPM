@@ -10,7 +10,7 @@ app.service('Mapa', function ($q) {
             position: posicao,
             map: this.mapa
         });
-        // Isto provavelmente não é recomendado com Angular e há outra maneira...
+        // Isto provavelmente não é recomendado com Angular e deve haver outra maneira...
         google.maps.event.addListener(this.mapa, 'click', clique);
     };
 });

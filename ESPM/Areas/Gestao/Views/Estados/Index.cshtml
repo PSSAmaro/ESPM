@@ -1,0 +1,59 @@
+﻿@{
+    ViewBag.Title = "Estados";
+}
+
+<h2>Estados</h2>
+
+<p>
+    @Html.ActionLink("Novo Estado", "Create")
+</p>
+<form name="EstadosForm" ng-app="GestaoESPM" ng-controller="EstadosCtrl">
+    <p ng-hide="carregado">{{mensagem}}</p>
+    <table ng-show="carregado" class="table">
+        <tr>
+            <th>
+                Nome
+            </th>
+            <th>
+                Ativo
+            </th>
+            <th>
+                Inicial
+            </th>
+            <th>
+                Cancelado
+            </th>
+            <th></th>
+        </tr>
+
+        <tr ng-repeat="estado in estados">
+            <td>
+                <img ng-src="{{estado.Imagem}}" alt="{{estado.Nome}}" />
+                {{estado.Nome}}
+            </td>
+            <td>
+                <input type="checkbox" ng-model="estado.Ativo" />
+            </td>
+            <td>
+                <input type="radio" ng-model="$parent.inicial" ng-value="estado.Id">
+            </td>
+            <td>
+                <input type="radio" ng-model="$parent.cancelado" ng-value="estado.Id">
+            </td>
+            <td>
+                <a href="/Gestao/Estados/Edit/{{estado.Id}}">Editar</a>
+            </td>
+        </tr>
+
+    </table>
+
+    <p ng-show="enviado">{{resultado}}</p>
+
+    <button ng-click="enviar()" class="btn btn-default">Enviar</button>
+
+</form>
+
+@section scripts {
+    @Scripts.Render("~/Scripts/angular.js")
+    @Scripts.Render("~/Scripts/app/gestao-controller.js")
+}

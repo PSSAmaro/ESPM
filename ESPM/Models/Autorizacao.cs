@@ -20,10 +20,15 @@ namespace ESPM.Models
         public Guid Id { get; set; }
 
         /// <summary>
-        /// Aplicação a que se refere a autorização.
+        /// Aplicação a que se refere a autorização se for uma autorização real.
+        /// </summary>
+        public virtual Aplicacao Aplicacao { get; set; }
+
+        /// <summary>
+        /// Utilizador a quem pertence esta autorização.
         /// </summary>
         [Required]
-        public Aplicacao Aplicacao { get; set; }
+        public virtual ApplicationUser Utilizador { get; set; }
 
         /// <summary>
         /// Validade da autorização.

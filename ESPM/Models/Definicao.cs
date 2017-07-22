@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -27,24 +28,28 @@ namespace ESPM.Models
         /// </summary>
         // Se não houver máximo, Maximo = 0
         [Required]
+        [DisplayName("Máximo")]
         public int Maximo { get; set; }
 
         /// <summary>
         /// Valor atual da definição.
         /// </summary>
         [Required]
+        [DisplayName("Estado")]
         public int Valor { get; set; }
 
         /// <summary>
         /// Nome de apresentação da definição.
         /// </summary>
         [Required]
+        [DisplayName("Definição")]
         public string Apresentacao { get; set; }
 
         /// <summary>
         /// Descrição da definição.
         /// </summary>
         [Required]
+        [DisplayName("Descrição")]
         public string Descricao { get; set; }
 
         /// <summary>
@@ -76,6 +81,32 @@ namespace ESPM.Models
         public Definicao()
         {
             Alteracoes = new List<AlteracaoDefinicao>();
+        }
+
+        // Lógica nos modelos devia ser evitado, mas as definições vão ter de ser especiais
+        // Devolve o novo valor, -1 se não for alterado, -2 se houver erro
+        public int Alterar(int v, ApplicationUser u)
+        {
+            // Verificar se o valor é diferente
+            if (Valor != v)
+            {
+                // Verificar se o valor é válido
+                if (v >= 0 && (Maximo == 0 || v <= Maximo))
+                {
+                    Alteracoes.Add(new AlteracaoDefinicao()
+                    {
+                        Utilizador = u,
+                        De = Valor,
+                        Para = v,
+                        Tempo = DateTime.Now
+                    });
+                    Valor = v;
+                    return Valor;
+                }
+                else
+                    return -2;
+            }
+            return -1;
         }
     }
 }

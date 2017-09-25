@@ -37,5 +37,7 @@ namespace ESPM.Models
         /// </summary>
         // Se não houver informação de tempo é o momento em que a informação foi recebida
         public DateTime Tempo { get; set; }
+
+        public string Nome { get; set; }
     }
 }

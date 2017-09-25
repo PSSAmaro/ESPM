@@ -1,0 +1,48 @@
+﻿@model ESPM.Models.Endereco
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Endereco</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Livre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Livre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Falsos)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Falsos)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Limite)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Limite)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

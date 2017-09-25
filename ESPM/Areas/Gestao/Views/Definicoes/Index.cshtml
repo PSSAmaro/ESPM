@@ -29,7 +29,7 @@
                 <td>
                     @if (item.Maximo == 0)
                     {
-                        @Html.TextBox(item.Nome, item.Valor, new { type = "number", min = 0 });
+                        @Html.TextBox(item.Nome, item.Valor, new { @class = "form-control", type = "number", min = 0 });
                     }
                     else if (item.Maximo == 1)
                     {
@@ -37,7 +37,7 @@
                     }
                     else
                     {
-                        @Html.TextBox(item.Nome, item.Valor, new { type = "number", min = 0, max = item.Maximo });
+                        @Html.TextBox(item.Nome, item.Valor, new { @class = "form-control", type = "number", min = 0, max = item.Maximo });
                     }
                 </td>
             </tr>
@@ -45,7 +45,7 @@
 
     </table>
 
-    <p class="@ViewBag.Classe">@ViewBag.Mensagem</p>
-
     <input type="submit" value="Guardar" class="btn btn-default" />
+
+    <span class="@ViewBag.Classe">@ViewBag.Mensagem</span>
 }

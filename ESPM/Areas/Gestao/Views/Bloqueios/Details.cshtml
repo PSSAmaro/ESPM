@@ -1,0 +1,42 @@
+﻿@model ESPM.Models.Endereco
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Endereco</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Livre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Livre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Falsos)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Falsos)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Limite)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Limite)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.IP }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,57 @@
+﻿@model IEnumerable<ESPM.Areas.Gestao.Models.ResumoPedidoViewModel>
+
+@{
+    ViewBag.Title = "Pedidos abertos";
+}
+
+<h2>Pedidos abertos</h2>
+
+<table class="table">
+    <tr>
+        <th></th>
+        <th>
+            Recebido às
+        </th>
+        <th>
+            Última modificação
+        </th>
+        <th>
+            Localização
+        </th>
+        <th>
+            Informação pessoal
+        </th>
+        <th>
+            Descrição
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            <img src="@item.Estado.Icone" alt="@item.Estado.Nome" />
+            @item.Estado.Nome
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Recebido)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Modificado)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Latitude), @Html.DisplayFor(modelItem => item.Longitude)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nome)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Contacto)
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "Edit", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

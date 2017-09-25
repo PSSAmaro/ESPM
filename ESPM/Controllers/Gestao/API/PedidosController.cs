@@ -1,4 +1,4 @@
-﻿using ESPM.Helpers;
+﻿/*using ESPM.Helpers;
 using ESPM.Models;
 using System;
 using System.Collections.Generic;
@@ -43,7 +43,7 @@ namespace ESPM.Controllers.Gestao.API
             if (pedido == null)
                 return NotFound();
 
-            return Ok(new PedidoViewModel(pedido));
+            return Ok();
         }
 
         public async Task<IHttpActionResult> Editar(Guid id)
@@ -73,3 +73,4 @@ namespace ESPM.Controllers.Gestao.API
         }
     }
 }
+*/

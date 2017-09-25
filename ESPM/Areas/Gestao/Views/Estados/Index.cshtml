@@ -4,10 +4,13 @@
 
 <h2>Estados</h2>
 
-<p>
-    @Html.ActionLink("Novo Estado", "Create")
-</p>
 <form name="EstadosForm" ng-app="GestaoESPM" ng-controller="EstadosCtrl">
+    <p>
+        <input type="text" class="form-control" ng-model="novonome" placeholder="Novo Estado" />
+        <button ng-click="novo()" class="btn btn-default">Adicionar Estado</button>
+        <span ng-class="classenovo">{{mensagemnovo}}</span>
+    </p>
+
     <p ng-hide="carregado">{{mensagem}}</p>
     <table ng-show="carregado" class="table">
         <tr>
@@ -41,15 +44,15 @@
                 <input type="radio" ng-model="$parent.cancelado" ng-value="estado.Id">
             </td>
             <td>
-                <a href="/Gestao/Estados/Edit/{{estado.Id}}">Editar</a>
+                <a href="/Gestao/Estados/Editar/{{estado.Id}}">Editar</a>
             </td>
         </tr>
 
     </table>
 
-    <p ng-show="enviado">{{resultado}}</p>
-
     <button ng-click="enviar()" class="btn btn-default">Enviar</button>
+
+    <span ng-class="classe">{{resultado}}</span>
 
 </form>
 

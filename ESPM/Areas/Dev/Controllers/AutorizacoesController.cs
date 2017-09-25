@@ -9,109 +9,110 @@ using System.Web;
 using System.Web.Mvc;
 using ESPM.Models;
 
-namespace ESPM.Areas.Gestao.Controllers
+namespace ESPM.Areas.Dev.Controllers
 {
-    public class DefinicaosController : Controller
+    public class AutorizacoesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Gestao/Definicaos
+        // GET: Dev/Autorizacoes
         public async Task<ActionResult> Index()
         {
-            return View(await db.Definicoes.ToListAsync());
+            return View(await db.Autorizacoes.ToListAsync());
         }
 
-        // GET: Gestao/Definicaos/Details/5
-        public async Task<ActionResult> Details(string id)
+        // GET: Dev/Autorizacoes/Details/5
+        public async Task<ActionResult> Details(Guid? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Definicao definicao = await db.Definicoes.FindAsync(id);
-            if (definicao == null)
+            Autorizacao autorizacao = await db.Autorizacoes.FindAsync(id);
+            if (autorizacao == null)
             {
                 return HttpNotFound();
             }
-            return View(definicao);
+            return View(autorizacao);
         }
 
-        // GET: Gestao/Definicaos/Create
+        // GET: Dev/Autorizacoes/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Gestao/Definicaos/Create
+        // POST: Dev/Autorizacoes/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Nome,Maximo,Valor,Apresentacao,Descricao,SignificadoZero,SignificadoOutro,Listar")] Definicao definicao)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Validade,Teste,Revogada")] Autorizacao autorizacao)
         {
             if (ModelState.IsValid)
             {
-                db.Definicoes.Add(definicao);
+                autorizacao.Id = Guid.NewGuid();
+                db.Autorizacoes.Add(autorizacao);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
-            return View(definicao);
+            return View(autorizacao);
         }
 
-        // GET: Gestao/Definicaos/Edit/5
-        public async Task<ActionResult> Edit(string id)
+        // GET: Dev/Autorizacoes/Edit/5
+        public async Task<ActionResult> Edit(Guid? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Definicao definicao = await db.Definicoes.FindAsync(id);
-            if (definicao == null)
+            Autorizacao autorizacao = await db.Autorizacoes.FindAsync(id);
+            if (autorizacao == null)
             {
                 return HttpNotFound();
             }
-            return View(definicao);
+            return View(autorizacao);
         }
 
-        // POST: Gestao/Definicaos/Edit/5
+        // POST: Dev/Autorizacoes/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Nome,Maximo,Valor,Apresentacao,Descricao,SignificadoZero,SignificadoOutro,Listar")] Definicao definicao)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Validade,Teste,Revogada")] Autorizacao autorizacao)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(definicao).State = EntityState.Modified;
+                db.Entry(autorizacao).State = EntityState.Modified;
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            return View(definicao);
+            return View(autorizacao);
         }
 
-        // GET: Gestao/Definicaos/Delete/5
-        public async Task<ActionResult> Delete(string id)
+        // GET: Dev/Autorizacoes/Delete/5
+        public async Task<ActionResult> Delete(Guid? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Definicao definicao = await db.Definicoes.FindAsync(id);
-            if (definicao == null)
+            Autorizacao autorizacao = await db.Autorizacoes.FindAsync(id);
+            if (autorizacao == null)
             {
                 return HttpNotFound();
             }
-            return View(definicao);
+            return View(autorizacao);
         }
 
-        // POST: Gestao/Definicaos/Delete/5
+        // POST: Dev/Autorizacoes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(string id)
+        public async Task<ActionResult> DeleteConfirmed(Guid id)
         {
-            Definicao definicao = await db.Definicoes.FindAsync(id);
-            db.Definicoes.Remove(definicao);
+            Autorizacao autorizacao = await db.Autorizacoes.FindAsync(id);
+            db.Autorizacoes.Remove(autorizacao);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }

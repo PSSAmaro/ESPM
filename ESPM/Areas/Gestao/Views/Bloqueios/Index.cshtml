@@ -1,0 +1,40 @@
+﻿@model IEnumerable<ESPM.Models.Endereco>
+
+@{
+    ViewBag.Title = "Endereços Bloqueados";
+}
+
+<h2>Endereços Bloqueados</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.IP)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Falsos)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Limite)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.IP)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Falsos)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Limite)
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "Edit", new { id=item.IP })
+        </td>
+    </tr>
+}
+
+</table>

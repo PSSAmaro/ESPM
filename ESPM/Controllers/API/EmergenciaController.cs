@@ -105,15 +105,17 @@ namespace ESPM.Controllers.API
             // Adicionar localizações se foram enviadas
             if (emergencia.Localizacoes.Count > 0)
             {
+                Localizacao l = new Localizacao();
                 foreach (LocalizacaoViewModel localizacao in emergencia.Localizacoes)
                 {
-                    pedido.Localizacoes.Add(new Localizacao()
+                    l = new Localizacao()
                     {
                         Avaliacao = avaliacao,
                         Tempo = localizacao.Tempo ?? enviado,
                         Latitude = localizacao.Latitude,
                         Longitude = localizacao.Longitude
-                    });
+                    };
+                    pedido.Localizacoes.Add(l);
                 }
             }
 

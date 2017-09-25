@@ -30,7 +30,7 @@ namespace ESPM.Areas.Gestao.Controllers.API
                     Id = e.Id,
                     Nome = e.Nome,
                     Ativo = e.Ativo,
-                    Imagem = "/Content/Imagens/Estados/" + e.Familia + ".png"
+                    Icone = "/Content/Imagens/Estados/" + e.Familia + ".png"
                 });
             }
 
@@ -43,30 +43,67 @@ namespace ESPM.Areas.Gestao.Controllers.API
         }
 
         [HttpPost]
+        public async Task<IHttpActionResult> Novo(NovoEstadoViewModel estado)
+        {
+            if (ModelState.IsValid)
+            {
+                Estado e = new Estado()
+                {
+                    Nome = estado.Nome,
+                    Familia = 0,
+                    Ativo = false
+                };
+                db.Estados.Add(e);
+                await db.SaveChangesAsync();
+                return Ok(new ResumoEstadoViewModel()
+                {
+                    Id = e.Id,
+                    Nome = e.Nome,
+                    Ativo = false,
+                    Icone = "/Content/Imagens/Estados/0.png"
+                });
+            }
+            return BadRequest();
+        }
+
+        [HttpPost]
         public async Task<IHttpActionResult> Editar(EditarEstadosViewModel estados)
         {
-            // Ativar/Desativar estados
-            foreach (Estado e in db.Estados)
-                e.Ativo = estados.Ativos.Contains(e.Id);
-
-            // Confirmar que os estados pretendidos existem
-            if (db.Estados.Count(e => e.Id == estados.Inicial) > 0 && db.Estados.Count(e => e.Id == estados.Cancelado) > 0)
+            if (ModelState.IsValid)
             {
-                // Alterar os estados inicial e cancelado
-                Definicao inicial = await db.Definicoes.FindAsync("EstadoInicial");
-                Definicao cancelado = await db.Definicoes.FindAsync("EstadoCancelado");
-                ApplicationUser utilizador = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(HttpContext.Current.User.Identity.GetUserId());
+                // Ativar/Desativar estados
+                foreach (Estado e in db.Estados)
+                    e.Ativo = estados.Ativos.Contains(e.Id);
 
-                if (inicial.Alterar(estados.Inicial, utilizador) == -2 || cancelado.Alterar(estados.Cancelado, utilizador) == -2)
+                // Confirmar que os estados pretendidos existem
+                if (db.Estados.Count(e => e.Id == estados.Inicial) > 0 && db.Estados.Count(e => e.Id == estados.Cancelado) > 0)
+                {
+                    // Alterar os estados inicial e cancelado
+                    Definicao inicial = await db.Definicoes.FindAsync("EstadoInicial");
+                    Definicao cancelado = await db.Definicoes.FindAsync("EstadoCancelado");
+                    ApplicationUser utilizador = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(HttpContext.Current.User.Identity.GetUserId());
+
+                    if (inicial.Alterar(estados.Inicial, utilizador) == -2 || cancelado.Alterar(estados.Cancelado, utilizador) == -2)
+                        return BadRequest();
+                }
+                else
                     return BadRequest();
+
+                // Guardar alterações
+                await db.SaveChangesAsync();
+
+                return Ok();
             }
-            else
-                return BadRequest();
+            return BadRequest();
+        }
 
-            // Guardar alterações
-            await db.SaveChangesAsync();
-
-            return Ok();
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

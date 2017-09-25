@@ -25,6 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -200,15 +201,20 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\Dev\Controllers\AutorizacoesController.cs" />
+    <Compile Include="Areas\Dev\Controllers\PedidosController.cs" />
     <Compile Include="Areas\Dev\DevAreaRegistration.cs" />
     <Compile Include="Areas\Dev\Models\AutorizacaoViewModel.cs" />
     <Compile Include="Areas\Gestao\Controllers\API\EstadosController.cs" />
-    <Compile Include="Areas\Gestao\Controllers\DefinicaosController.cs" />
+    <Compile Include="Areas\Gestao\Controllers\AutorizacoesController.cs" />
+    <Compile Include="Areas\Gestao\Controllers\BloqueiosController.cs" />
     <Compile Include="Areas\Gestao\Controllers\DefinicoesController.cs" />
     <Compile Include="Areas\Gestao\Controllers\EstadosController.cs" />
+    <Compile Include="Areas\Gestao\Controllers\PedidosController.cs" />
     <Compile Include="Areas\Gestao\GestaoAreaRegistration.cs" />
-    <Compile Include="Areas\Gestao\Models\DefinicaoViewModels.cs" />
+    <Compile Include="Areas\Gestao\Models\AutorizacaoViewModels.cs" />
     <Compile Include="Areas\Gestao\Models\EstadoViewModels.cs" />
+    <Compile Include="Areas\Gestao\Models\PedidoViewModels.cs" />
     <Compile Include="Areas\HelpPage\ApiDescriptionExtensions.cs" />
     <Compile Include="Areas\HelpPage\App_Start\HelpPageConfig.cs" />
     <Compile Include="Areas\HelpPage\Controllers\HelpController.cs" />
@@ -281,6 +287,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Demo.css" />
+    <Content Include="Content\Imagens\Estados\0.png" />
     <Content Include="Content\Imagens\Estados\1.png" />
     <Content Include="Content\Imagens\Estados\2.png" />
     <Content Include="Content\Imagens\Estados\3.png" />
@@ -305,8 +312,12 @@
     <Content Include="Areas\HelpPage\Views\_ViewStart.cshtml" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
     <Content Include="Areas\HelpPage\Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\HelpPage\Views\Help\ResourceModel.cshtml" />
-    <Content Include="Areas\HelpPage\Views\Help\Index.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\ResourceModel.cshtml">
+      <BrowseToURL>~/Documentacao/ResourceModel</BrowseToURL>
+    </Content>
+    <Content Include="Areas\HelpPage\Views\Help\Index.cshtml">
+      <BrowseToURL>~/Documentacao/Index</BrowseToURL>
+    </Content>
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\TextSample.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\SimpleTypeModelDescription.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\Samples.cshtml" />
@@ -321,23 +332,47 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ComplexTypeModelDescription.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
-    <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
+    <Content Include="Areas\HelpPage\Views\Help\Api.cshtml">
+      <BrowseToURL>~/Documentacao/Api</BrowseToURL>
+    </Content>
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="Areas\Gestao\Views\web.config" />
     <Content Include="Areas\Dev\Views\web.config" />
     <Content Include="Areas\Gestao\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Gestao\Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\Gestao\Views\Definicaos\Create.cshtml" />
-    <Content Include="Areas\Gestao\Views\Definicaos\Delete.cshtml" />
-    <Content Include="Areas\Gestao\Views\Definicaos\Details.cshtml" />
-    <Content Include="Areas\Gestao\Views\Definicaos\Edit.cshtml" />
-    <Content Include="Areas\Gestao\Views\Definicaos\Index.cshtml" />
     <Content Include="Areas\Gestao\Views\Definicoes\Index.cshtml" />
-    <Content Include="Areas\Gestao\Views\Estados\Create.cshtml" />
+    <Content Include="Areas\Gestao\Views\Estados\Criar.cshtml" />
     <Content Include="Areas\Gestao\Views\Estados\Delete.cshtml" />
     <Content Include="Areas\Gestao\Views\Estados\Details.cshtml" />
-    <Content Include="Areas\Gestao\Views\Estados\Edit.cshtml" />
+    <Content Include="Areas\Gestao\Views\Estados\Editar.cshtml" />
     <Content Include="Areas\Gestao\Views\Estados\Index.cshtml" />
+    <Content Include="Areas\Gestao\Views\Pedidos\Create.cshtml" />
+    <Content Include="Areas\Gestao\Views\Pedidos\Delete.cshtml" />
+    <Content Include="Areas\Gestao\Views\Pedidos\Details.cshtml" />
+    <Content Include="Areas\Gestao\Views\Pedidos\Edit.cshtml" />
+    <Content Include="Areas\Gestao\Views\Pedidos\Index.cshtml" />
+    <Content Include="Areas\Gestao\Views\Bloqueios\Create.cshtml" />
+    <Content Include="Areas\Gestao\Views\Bloqueios\Delete.cshtml" />
+    <Content Include="Areas\Gestao\Views\Bloqueios\Details.cshtml" />
+    <Content Include="Areas\Gestao\Views\Bloqueios\Edit.cshtml" />
+    <Content Include="Areas\Gestao\Views\Bloqueios\Index.cshtml" />
+    <Content Include="Areas\Dev\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Dev\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Dev\Views\Autorizacoes\Create.cshtml" />
+    <Content Include="Areas\Dev\Views\Autorizacoes\Delete.cshtml" />
+    <Content Include="Areas\Dev\Views\Autorizacoes\Details.cshtml" />
+    <Content Include="Areas\Dev\Views\Autorizacoes\Edit.cshtml" />
+    <Content Include="Areas\Dev\Views\Autorizacoes\Index.cshtml" />
+    <Content Include="Areas\Dev\Views\Pedidos\Create.cshtml" />
+    <Content Include="Areas\Dev\Views\Pedidos\Delete.cshtml" />
+    <Content Include="Areas\Dev\Views\Pedidos\Details.cshtml" />
+    <Content Include="Areas\Dev\Views\Pedidos\Edit.cshtml" />
+    <Content Include="Areas\Dev\Views\Pedidos\Index.cshtml" />
+    <Content Include="Areas\Gestao\Views\Autorizacoes\Create.cshtml" />
+    <Content Include="Areas\Gestao\Views\Autorizacoes\Delete.cshtml" />
+    <Content Include="Areas\Gestao\Views\Autorizacoes\Details.cshtml" />
+    <Content Include="Areas\Gestao\Views\Autorizacoes\Edit.cshtml" />
+    <Content Include="Areas\Gestao\Views\Autorizacoes\Index.cshtml" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\UMaESPM - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -390,7 +425,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Dev\Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

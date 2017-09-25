@@ -24,7 +24,7 @@ namespace ESPM.Areas.Gestao
             context.MapRoute(
                 "Gestao_default",
                 "Gestao/{controller}/{action}/{id}",
-                new { action = "Index", id = UrlParameter.Optional }
+                new { controller = "Pedidos", action = "Index", id = UrlParameter.Optional }
             );
         }
     }

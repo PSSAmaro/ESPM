@@ -97,7 +97,8 @@ namespace ESPM.Filters
             // O método Post não pede um pedido existente
             if (metodo == "Post")
                 return true;
-            if (db.Pedidos.Any(p => p.Id == (Guid)argumentos["id"]))
+            Guid id = (Guid)argumentos["id"];
+            if (db.Pedidos.Any(p => p.Id == id))
                 return true;
             return false;
         }

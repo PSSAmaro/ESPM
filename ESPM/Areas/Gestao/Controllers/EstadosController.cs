@@ -38,7 +38,7 @@ namespace ESPM.Areas.Gestao.Controllers
         }
 
         // GET: Gestao/Estados/Create
-        public ActionResult Create()
+        public ActionResult Criar()
         {
             return View();
         }
@@ -48,7 +48,7 @@ namespace ESPM.Areas.Gestao.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Nome,Familia,Ativo")] Estado estado)
+        public async Task<ActionResult> Criar([Bind(Include = "Id,Nome,Familia,Ativo")] Estado estado)
         {
             if (ModelState.IsValid)
             {
@@ -61,17 +61,52 @@ namespace ESPM.Areas.Gestao.Controllers
         }
 
         // GET: Gestao/Estados/Edit/5
-        public async Task<ActionResult> Edit(int? id)
+        public async Task<ActionResult> Editar(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Estado estado = await db.Estados.FindAsync(id);
-            if (estado == null)
-            {
+
+            Estado e = await db.Estados.FindAsync(id);
+            if (e == null)
                 return HttpNotFound();
+
+            Definicao inicial = await db.Definicoes.FindAsync("EstadoInicial");
+            Definicao cancelado = await db.Definicoes.FindAsync("EstadoCancelado");
+            Definicao familias = await db.Definicoes.FindAsync("Familias");
+
+            EstadoViewModel estado = new EstadoViewModel()
+            {
+                Id = e.Id,
+                Nome = e.Nome,
+                Ativo = e.Ativo,
+                Icone = e.Familia,
+                Inicial = inicial.Valor == e.Id,
+                Cancelado = cancelado.Valor == e.Id,
+                Familias = familias.Valor
+            };
+
+            foreach (TransicaoDeEstado t in e.Anteriores)
+            {
+                estado.Anteriores.Add(new ResumoEstadoViewModel()
+                {
+                    Id = t.De.Id,
+                    Nome = t.De.Nome,
+                    Ativo = t.De.Ativo,
+                    Icone = "/Content/Imagens/Estados/" + t.De.Familia + ".png"
+                });
             }
+
+            foreach (TransicaoDeEstado t in e.Seguintes)
+            {
+                estado.Seguintes.Add(new ResumoEstadoViewModel()
+                {
+                    Id = t.Para.Id,
+                    Nome = t.Para.Nome,
+                    Ativo = t.Para.Ativo,
+                    Icone = "/Content/Imagens/Estados/" + t.Para.Familia + ".png"
+                });
+            }
+
             return View(estado);
         }
 
@@ -80,7 +115,7 @@ namespace ESPM.Areas.Gestao.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Nome,Familia,Ativo")] Estado estado)
+        public async Task<ActionResult> Editar([Bind(Include = "Id,Nome,Familia,Ativo")] Estado estado)
         {
             if (ModelState.IsValid)
             {

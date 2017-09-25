@@ -54,7 +54,6 @@ namespace ESPM.Models
         /// <summary>
         /// Informação da pessoa que precisa de ajuda.
         /// </summary>
-        // Informação mais recente: InformacaoPessoa.OrderByDescending(d => d.Tempo).FirstOrDefault()
         public virtual List<Pessoa> InformacaoPessoa { get; set; }
 
         /// <summary>
@@ -76,7 +75,6 @@ namespace ESPM.Models
         /// <summary>
         /// Lista de estados pelos quais o pedido já passou.
         /// </summary>
-        // Estado atual: Estados.OrderByDescending(e => e.Tempo).FirstOrDefault()
         public virtual List<EstadoDePedido> Estados { get; set; }
 
         /// <summary>

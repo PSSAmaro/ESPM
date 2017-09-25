@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -27,9 +27,9 @@ namespace ESPM.Models
         // Só talvez
         public string Descricao { get; set; }
 
-        public EstadoViewModel Estado { get; set; }
+        public EstadohViewModel Estado { get; set; }
 
-        public List<EstadoViewModel> Seguintes { get; set; }
+        public List<EstadohViewModel> Seguintes { get; set; }
 
         public ResumoPedidoViewModel(Pedido pedido)
         {
@@ -38,15 +38,15 @@ namespace ESPM.Models
             if (pedido.Descricoes.Count > 0)
                 Descricao = pedido.Descricoes.OrderByDescending(d => d.Tempo).FirstOrDefault().Texto;
             Estado atual = pedido.Estados.OrderByDescending(e => e.Tempo).FirstOrDefault().Estado;
-            Estado = new EstadoViewModel(atual);
+            Estado = new EstadohViewModel(atual);
             if (atual.Seguintes.Count > 0)
-                Seguintes = atual.Seguintes.Select(t => new EstadoViewModel(t.Para)).ToList();
+                Seguintes = atual.Seguintes.Select(t => new EstadohViewModel(t.Para)).ToList();
             else
-                Seguintes = new List<EstadoViewModel>();
+                Seguintes = new List<EstadohViewModel>();
         }
     }
 
-    public class EstadoViewModel
+    public class EstadohViewModel
     {
         public int Id { get; set; }
 
@@ -54,7 +54,7 @@ namespace ESPM.Models
 
         public string Nome { get; set; }
 
-        public EstadoViewModel(Estado estado)
+        public EstadohViewModel(Estado estado)
         {
             Id = estado.Id;
             Familia = estado.Familia;
@@ -66,4 +66,4 @@ namespace ESPM.Models
     {
         public string Nome { get; set; }
     }
-}
+}*/

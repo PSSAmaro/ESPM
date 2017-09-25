@@ -1,0 +1,42 @@
+﻿@model ESPM.Models.Autorizacao
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Autorizacao</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Validade)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Validade)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Teste)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Teste)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Revogada)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Revogada)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -136,7 +136,7 @@ namespace ESPM.Helpers
             {
                 novas.Add(new Localizacao()
                 {
-                    Pedido = pedido,
+                    // Pedido = pedido,
                     // Usar o tempo recebido ou o atual
                     Tempo = (localizacao.Tempo == null ? DateTime.Now : (DateTime)localizacao.Tempo),
                     Avaliacao = new Avaliacao()

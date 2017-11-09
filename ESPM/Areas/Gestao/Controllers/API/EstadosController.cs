@@ -10,9 +10,12 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.Description;
 
 namespace ESPM.Areas.Gestao.Controllers.API
 {
+    [Authorize(Roles = "Admin")]
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class EstadosController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -25,13 +28,7 @@ namespace ESPM.Areas.Gestao.Controllers.API
             List<ResumoEstadoViewModel> estados = new List<ResumoEstadoViewModel>();
             foreach (Estado e in db.Estados)
             {
-                estados.Add(new ResumoEstadoViewModel()
-                {
-                    Id = e.Id,
-                    Nome = e.Nome,
-                    Ativo = e.Ativo,
-                    Icone = "/Content/Imagens/Estados/" + e.Familia + ".png"
-                });
+                estados.Add(new ResumoEstadoViewModel(e));
             }
 
             return Ok(new ListaEstadosViewModel()
@@ -55,13 +52,7 @@ namespace ESPM.Areas.Gestao.Controllers.API
                 };
                 db.Estados.Add(e);
                 await db.SaveChangesAsync();
-                return Ok(new ResumoEstadoViewModel()
-                {
-                    Id = e.Id,
-                    Nome = e.Nome,
-                    Ativo = false,
-                    Icone = "/Content/Imagens/Estados/0.png"
-                });
+                return Ok(new ResumoEstadoViewModel(e));
             }
             return BadRequest();
         }

@@ -45,8 +45,8 @@ namespace ESPM.Models
     /// <summary>
     /// Avaliação de um Request recebido e conteúdo do mesmo.
     /// </summary>
-    [Table("Avaliacoes")]
-    public class Avaliacao
+    [Table("AvaliacoesPedidos")]
+    public class AvaliacaoPedido
     {
         /// <summary>
         /// ID da avaliação.

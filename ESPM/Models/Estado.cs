@@ -38,6 +38,12 @@ namespace ESPM.Models
         public bool Ativo { get; set; }
 
         /// <summary>
+        /// Atualizado automaticamente pela página de gestão de estados. True se não existem estados seguintes.
+        /// </summary>
+        [Required]
+        public bool Final { get; set; }
+
+        /// <summary>
         /// Lista de estados dos quais é possível chegar a este estado.
         /// </summary>
         // Nome do estado anterior: Anteriores.De.Nome

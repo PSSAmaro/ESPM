@@ -1,0 +1,17 @@
+﻿.direita {
+    float: right;
+}
+
+.esquerda {
+    float: left;
+    min-width: 760px;
+}
+
+.fundo {
+    clear: both;
+}
+
+#map {
+    height: 250px;
+    width: 350px;
+}

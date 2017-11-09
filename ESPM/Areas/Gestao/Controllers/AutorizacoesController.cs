@@ -20,14 +20,15 @@ namespace ESPM.Areas.Gestao.Controllers
         public async Task<ActionResult> Index()
         {
             List<AutorizacaoViewModel> autorizacoes = new List<AutorizacaoViewModel>();
-            foreach (Autorizacao a in db.Autorizacoes.Where(a => !a.Revogada))
+            List<Autorizacao> aut = db.Autorizacoes.Where(a => !a.Revogada).ToList();
+            foreach (Autorizacao a in aut)
             {
                 autorizacoes.Add(new AutorizacaoViewModel()
                 {
                     Id = a.Id,
                     Validade = a.Validade,
-                    Utilizador = "-",
-                    Aplicacao = "Teste"
+                    Utilizador = a.Utilizador.UserName,
+                    Aplicacao = a.Aplicacao.Nome
                 });
             }
             return View(autorizacoes);
@@ -115,7 +116,13 @@ namespace ESPM.Areas.Gestao.Controllers
             {
                 return HttpNotFound();
             }
-            return View(autorizacao);
+            return View(new AutorizacaoViewModel()
+            {
+                Id = autorizacao.Id,
+                Validade = autorizacao.Validade,
+                Utilizador = autorizacao.Utilizador.UserName,
+                Aplicacao = autorizacao.Aplicacao.Nome
+            });
         }
 
         // POST: Gestao/Autorizacoes/Delete/5

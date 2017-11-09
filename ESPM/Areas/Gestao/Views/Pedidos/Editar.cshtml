@@ -1,0 +1,176 @@
+﻿@model ESPM.Areas.Gestao.Models.PedidoViewModel
+
+@{
+    ViewBag.Title = "Informação do pedido";
+}
+
+<h2>Informação do pedido</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="direita">
+            <div id="map"></div>
+            @if (Model.Imagem != null)
+            {
+                <img src="@Model.Imagem" width="350" />
+            }
+        </div>
+
+        <div class="esquerda">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Avaliacao, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-7">
+                    @Html.DisplayFor(modelItem => Model.Avaliacao)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Aplicacao, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-7">
+                    @Html.DisplayFor(modelItem => Model.Aplicacao)
+                    @if (Model.AvAplicacao)
+                {
+                        @:✔️
+                }
+                else
+                {
+                        @:⚠️
+                }
+                </div>
+            </div>
+
+            <h4>Informação pessoal</h4>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Nome, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Idade, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.Idade, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Idade, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Contacto, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.Contacto, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Contacto, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.OutrosDetalhesPessoa, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.OutrosDetalhesPessoa, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.OutrosDetalhesPessoa, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <h4>Descrição da ocorrência</h4>
+
+            <div class="form-group">
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.Descricao, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Descricao, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <h4>Alterar estado</h4>
+            <div class="form-group">
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model => model.Estado, new SelectList(Model.Proximos, "Id", "Nome"))
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
+            </div>
+            </div>
+
+            <div class="fundo">
+            <h3>Histórico de alterações</h3>
+            <table class="table">
+                <tr>
+                    <th>Data / Hora</th>
+                    <th>Operador</th>
+                    <th>Campo</th>
+                    <th>Valor</th>
+                </tr>
+                @foreach (var item in Model.Alteracoes)
+                {
+                    <tr>
+                        @if (item.Linhas != 0)
+                        {
+                            <td rowspan=@item.Linhas>@Html.DisplayFor(modelItem => item.Tempo)</td>
+                            <td rowspan=@item.Linhas>@Html.DisplayFor(modelItem => item.Operador)</td>
+                        }
+                        <td>@Html.DisplayFor(modelItem => item.Campo)</td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Valor)
+                        @if (item.Operador == null && item.Campo != "Estado")
+                        {
+                            if (item.Avaliacao)
+                            {
+                                @:✔️
+                            }
+                            else
+                            {
+                                @:⚠️
+                            }
+                        }
+                    </td>
+                </tr>
+                }
+            </table>
+            </div>
+        </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Styles.Render("~/Content/Pedido.css")
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        function initMap()
+        {
+            var locais = @Html.Raw(Json.Encode(Model.Localizacoes));
+            var mapa = new google.maps.Map(document.getElementById('map'), {
+                zoom: 10,
+                center: locais[locais.length - 1]
+            });
+            var marcador = new google.maps.Marker({
+                position: locais[locais.length - 1],
+                map: mapa
+            });
+            var percurso = new google.maps.Polyline({
+                path: locais,
+                geodesic: true,
+                strokeColor: '#FF0000',
+                strokeOpacity: 1.0,
+                strokeWeight: 2,
+                map: mapa
+            });
+        }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD201QiIbe8GqSopWLrfsAiVBJkxLpImyc&callback=initMap"></script>
+}

@@ -5,19 +5,20 @@
     <div id="esquerda">
         <div id="map"></div>
         <p>Localização atual: {{dados.Localizacoes[0].Latitude}}, {{dados.Localizacoes[0].Longitude}}</p>
+        <input name="imagem" type="file" lerimagem="dados.Imagens[0].Dados" />
     </div>
     <table>
         <tr>
             <td>Contacto:</td>
-            <td><input name="contacto" type="tel" ng-model="dados.Contacto"></td>
+            <td><input name="contacto" type="tel" ng-model="dados.Contacto" /></td>
         </tr>
         <tr>
             <td>Nome:</td>
-            <td><input name="nome" type="text" ng-model="dados.Nome"></td>
+            <td><input name="nome" type="text" ng-model="dados.Nome" /></td>
         </tr>
         <tr>
             <td>Idade:</td>
-            <td><input name="idade" type="number" ng-model="dados.Idade"> <span ng-hide="DemoForm.idade.$valid">Valor inválido</span></td>
+            <td><input name="idade" type="number" ng-model="dados.Idade" /> <span ng-hide="DemoForm.idade.$valid">Valor inválido</span></td>
         </tr>
         <tr>
             <td colspan=2>
@@ -31,7 +32,8 @@
         </tr>
         <tr>
             <td>
-                <button ng-click="enviar()">Enviar</button>
+                <button ng-click="enviado ? atualizar() : enviar()">{{botao}}</button>
+                <button ng-click="cancelar()" ng-disabled="!enviado">Cancelar</button>
             </td>
         </tr>
     </table>

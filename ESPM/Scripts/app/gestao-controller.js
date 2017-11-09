@@ -1,5 +1,34 @@
 ﻿var app = angular.module('GestaoESPM', []);
 
+app.controller('PedidosCtrl', function ($scope, $http, $interval) {
+    $scope.abertos = true;
+    $scope.mensagem = "A carregar";
+    $scope.carregado = false;
+    $scope.url = '/gestao/api/pedidos';
+    $scope.atualizar = function () {
+        $http.get($scope.url).then(function (result) {
+            $scope.pedidos = result.data;
+            $scope.carregado = true;
+        }, function (result) {
+            $scope.mensagem = "Erro ao carregar";
+        });
+    }
+    $scope.atualizar();
+    $scope.index = function () {
+        $scope.carregado = false;
+        $scope.abertos = true;
+        $scope.url = '/gestao/api/pedidos';
+        $scope.atualizar;
+    }
+    $scope.fechados = function () {
+        $scope.carregado = false;
+        $scope.abertos = false;
+        $scope.url = '/gestao/api/pedidos/fechados';
+        $scope.atualizar;
+    }
+    $scope.atualizacao = $interval($scope.atualizar, 3000);
+});
+
 app.controller('EstadosCtrl', function ($scope, $http) {
     $scope.mensagem = "A carregar";
     $scope.carregado = false;

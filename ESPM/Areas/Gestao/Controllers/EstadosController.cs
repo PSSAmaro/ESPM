@@ -87,24 +87,12 @@ namespace ESPM.Areas.Gestao.Controllers
 
             foreach (TransicaoDeEstado t in e.Anteriores)
             {
-                estado.Anteriores.Add(new ResumoEstadoViewModel()
-                {
-                    Id = t.De.Id,
-                    Nome = t.De.Nome,
-                    Ativo = t.De.Ativo,
-                    Icone = "/Content/Imagens/Estados/" + t.De.Familia + ".png"
-                });
+                estado.Anteriores.Add(new ResumoEstadoViewModel(t.De));
             }
 
             foreach (TransicaoDeEstado t in e.Seguintes)
             {
-                estado.Seguintes.Add(new ResumoEstadoViewModel()
-                {
-                    Id = t.Para.Id,
-                    Nome = t.Para.Nome,
-                    Ativo = t.Para.Ativo,
-                    Icone = "/Content/Imagens/Estados/" + t.Para.Familia + ".png"
-                });
+                estado.Seguintes.Add(new ResumoEstadoViewModel(t.Para));
             }
 
             return View(estado);

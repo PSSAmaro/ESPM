@@ -206,6 +206,7 @@
     <Compile Include="Areas\Dev\DevAreaRegistration.cs" />
     <Compile Include="Areas\Dev\Models\AutorizacaoViewModel.cs" />
     <Compile Include="Areas\Gestao\Controllers\API\EstadosController.cs" />
+    <Compile Include="Areas\Gestao\Controllers\API\PedidosController.cs" />
     <Compile Include="Areas\Gestao\Controllers\AutorizacoesController.cs" />
     <Compile Include="Areas\Gestao\Controllers\BloqueiosController.cs" />
     <Compile Include="Areas\Gestao\Controllers\DefinicoesController.cs" />
@@ -247,9 +248,6 @@
     <Compile Include="Controllers\API\EmergenciaController.cs" />
     <Compile Include="Controllers\API\TesteController.cs" />
     <Compile Include="Areas\Dev\Controllers\API\AutorizacoesController.cs" />
-    <Compile Include="Controllers\Gestao\API\AplicacaosController.cs" />
-    <Compile Include="Controllers\Gestao\API\AutorizacoesController.cs" />
-    <Compile Include="Controllers\Gestao\API\PedidosController.cs" />
     <Compile Include="Controllers\DemoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -258,26 +256,22 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\GestorPedidos.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AlteracaoDefinicao.cs" />
+    <Compile Include="Models\AlteracaoPedido.cs" />
     <Compile Include="Models\Aplicacao.cs" />
     <Compile Include="Models\Autorizacao.cs" />
     <Compile Include="Models\Avaliacao.cs" />
     <Compile Include="Models\DbInitializer.cs" />
     <Compile Include="Models\Definicao.cs" />
-    <Compile Include="Models\Descricao.cs" />
     <Compile Include="Models\EmergenciaViewModels.cs" />
     <Compile Include="Models\Endereco.cs" />
     <Compile Include="Models\Estado.cs" />
-    <Compile Include="Models\EstadoDePedido.cs" />
-    <Compile Include="Models\GestaoPedidosViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Imagem.cs" />
     <Compile Include="Models\Localizacao.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Pedido.cs" />
-    <Compile Include="Models\Pessoa.cs" />
     <Compile Include="Models\TransicaoDeEstado.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -296,6 +290,7 @@
     <Content Include="Content\Imagens\Estados\6.png" />
     <Content Include="Content\Imagens\Estados\7.png" />
     <Content Include="Content\Imagens\Estados\8.png" />
+    <Content Include="Content\Pedido.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -346,10 +341,7 @@
     <Content Include="Areas\Gestao\Views\Estados\Details.cshtml" />
     <Content Include="Areas\Gestao\Views\Estados\Editar.cshtml" />
     <Content Include="Areas\Gestao\Views\Estados\Index.cshtml" />
-    <Content Include="Areas\Gestao\Views\Pedidos\Create.cshtml" />
-    <Content Include="Areas\Gestao\Views\Pedidos\Delete.cshtml" />
-    <Content Include="Areas\Gestao\Views\Pedidos\Details.cshtml" />
-    <Content Include="Areas\Gestao\Views\Pedidos\Edit.cshtml" />
+    <Content Include="Areas\Gestao\Views\Pedidos\Editar.cshtml" />
     <Content Include="Areas\Gestao\Views\Pedidos\Index.cshtml" />
     <Content Include="Areas\Gestao\Views\Bloqueios\Create.cshtml" />
     <Content Include="Areas\Gestao\Views\Bloqueios\Delete.cshtml" />
@@ -374,7 +366,6 @@
     <Content Include="Areas\Gestao\Views\Autorizacoes\Edit.cshtml" />
     <Content Include="Areas\Gestao\Views\Autorizacoes\Index.cshtml" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
-    <None Include="Properties\PublishProfiles\UMaESPM - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\app\demo-controller.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />

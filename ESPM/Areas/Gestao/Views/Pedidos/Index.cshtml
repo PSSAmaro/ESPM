@@ -4,54 +4,62 @@
     ViewBag.Title = "Pedidos abertos";
 }
 
-<h2>Pedidos abertos</h2>
-
-<table class="table">
-    <tr>
-        <th></th>
-        <th>
-            Recebido às
-        </th>
-        <th>
-            Última modificação
-        </th>
-        <th>
-            Localização
-        </th>
-        <th>
-            Informação pessoal
-        </th>
-        <th>
-            Descrição
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            <img src="@item.Estado.Icone" alt="@item.Estado.Nome" />
-            @item.Estado.Nome
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Recebido)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Modificado)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Latitude), @Html.DisplayFor(modelItem => item.Longitude)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Nome)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Contacto)
-        </td>
-        <td>
-            @Html.ActionLink("Editar", "Edit", new { id=item.Id })
-        </td>
-    </tr>
-}
-
+<div ng-app="GestaoESPM" ng-controller="PedidosCtrl">
+    <h2>Pedidos {{abertos ? "abertos" : "fechados"}}</h2>
+    <p ng-show="abertos">Pedidos abertos | <a href="#" ng-click="fechados()">Pedidos fechados</a></p>
+    <p ng-hide="abertos"><a href="#" ng-click="index()">Pedidos abertos</a> | Pedidos fechados</p>
+    <p ng-hide="carregado">{{mensagem}}</p>
+    <table ng-show="carregado" class="table">
+        <tr>
+            <th></th>
+            <th>
+                Recebido às
+            </th>
+            <th>
+                Última modificação
+            </th>
+            <th>
+                Localização
+            </th>
+            <th>
+                Informação pessoal
+            </th>
+            <th>
+                Descrição
+            </th>
+            <th></th>
+        </tr>
+        <tr ng-repeat="pedido in pedidos">
+            <td>
+                <img ng-src="{{pedido.Estado.Icone}}" alt="{{pedido.Estado.Nome}}" />
+                {{pedido.Estado.Nome}}
+            </td>
+            <td>
+                {{pedido.Recebido}}
+            </td>
+            <td>
+                {{pedido.Modificado}}
+            </td>
+            <td>
+                {{pedido.Latitude}}, {{pedido.Longitude}}
+            </td>
+            <td>
+                <span ng-show="pedido.Nome"><b>Nome: </b> {{pedido.Nome}} <br /></span>
+                <span ng-show="pedido.Idade"><b>Idade: </b> {{pedido.Idade}} <br /></span>
+                <span ng-show="pedido.Contacto"><b>Nome: </b> {{pedido.Contacto}} <br /></span>
+                <span ng-show="pedido.OutrosDetalhes">{{pedido.OutrosDetalhes}}</span>
+            </td>
+            <td>
+                {{pedido.Descricao}}
+            </td>
+            <td>
+                <a href="/Gestao/Pedidos/Editar/{{pedido.Id}}">Editar</a>
+            </td>
+        </tr>
 </table>
+</div>
+
+@section scripts {
+    @Scripts.Render("~/Scripts/angular.js")
+    @Scripts.Render("~/Scripts/app/gestao-controller.js")
+}

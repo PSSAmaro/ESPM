@@ -63,16 +63,6 @@ namespace ESPM.Controllers.API
         }
 
         /// <summary>
-        /// Enviar imagens referentes a um pedido de ajuda.
-        /// </summary>
-        /// <param name="id">ID do pedido de ajuda.</param>
-        [Route("Imagem")]
-        public override async Task<IHttpActionResult> Imagem(Guid id)
-        {
-            return await base.Imagem(id);
-        }
-
-        /// <summary>
         /// Libertar recursos.
         /// </summary>
         protected override void Dispose(bool disposing)

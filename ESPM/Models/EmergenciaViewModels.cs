@@ -49,11 +49,17 @@ namespace ESPM.Models
         public List<LocalizacaoViewModel> Localizacoes { get; set; }
 
         /// <summary>
+        /// Lista de imagens enviadas.
+        /// </summary>
+        public List<ImagemViewModel> Imagens { get; set; }
+
+        /// <summary>
         /// Inicializa as listas para evitar NullReferenceException.
         /// </summary>
         public EmergenciaViewModel()
         {
             Localizacoes = new List<LocalizacaoViewModel>();
+            Imagens = new List<ImagemViewModel>();
         }
     }
 
@@ -66,9 +72,6 @@ namespace ESPM.Models
         /// <summary>
         /// Momento em que a localização foi detetada.
         /// </summary>
-        /// <remarks>
-        /// Se não for enviado nenhum tempo, é utilizado o tempo em que esta localização é recebido.
-        /// </remarks>
         public DateTime? Tempo { get; set; }
 
         /// <summary>
@@ -82,6 +85,26 @@ namespace ESPM.Models
         /// </summary>
         [Required]
         public float Longitude { get; set; }
+    }
+
+    [ModelName("Fotografia")]
+    public class ImagemViewModel
+    {
+        /// <summary>
+        /// Momento em que a fotografia foi tirada.
+        /// </summary>
+        public DateTime? Tempo { get; set; }
+
+        /// <summary>
+        /// Fotografia em base64.
+        /// </summary>
+        [Required]
+        public string Dados { get; set; }
+
+        /// <summary>
+        /// Descrição da fotografia.
+        /// </summary>
+        public string Descricao { get; set; }
     }
 
     /// <summary>

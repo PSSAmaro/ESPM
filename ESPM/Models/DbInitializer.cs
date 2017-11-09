@@ -154,26 +154,31 @@ namespace ESPM.Models
             // ExDev = Antigos utilizadores de desenvolvimento, entretanto desautorizados
             RoleManager.Create(new IdentityRole("ExDev"));
 
-            // Criar utilizador (APENAS TESTE!!!)
+            // Criar utilizadores (APENAS TESTE!!!)
             var user = new ApplicationUser()
             {
-                UserName = "teste@a.com"
+                UserName = "admin@espm.com"
             };
             UserManager.Create(user, "123456");
+            UserManager.AddToRole(user.Id, "Admin");
 
-            // Adicionar utilizador à role Aplicacao
-            UserManager.AddToRole(user.Id, "Dev");
+            var dev = new ApplicationUser()
+            {
+                UserName = "dev@espm.com"
+            };
+            UserManager.Create(dev, "123456");
+            UserManager.AddToRole(dev.Id, "Dev");
 
             // Adicionar aplicação
             db.Aplicacoes.Add(new Aplicacao()
             {
-                Utilizador = user,
+                Utilizador = dev,
                 Nome = "Aplicação Teste",
                 Autorizacoes = new List<Autorizacao>
                 {
                     new Autorizacao()
                     {
-                        Utilizador = user,
+                        Utilizador = dev,
                         Validade = DateTime.Now.AddYears(1),
                         Teste = false,
                         Revogada = false
@@ -187,89 +192,309 @@ namespace ESPM.Models
                 {
                     Nome = "Alerta",
                     Familia = 1,
-                    Ativo = true
+                    Ativo = true,
+                    Final = false
                 },
                 new Estado()
                 {
                     Nome = "Análise",
                     Familia = 1,
-                    Ativo = true
+                    Ativo = true,
+                    Final = false
                 },
                 new Estado()
                 {
                     Nome = "Em Despacho",
                     Familia = 1,
-                    Ativo = true
+                    Ativo = true,
+                    Final = false
                 },
                 new Estado()
                 {
                     Nome = "Despacho 1º Alerta",
                     Familia = 2,
-                    Ativo = true
+                    Ativo = true,
+                    Final = false
                 },
                 new Estado()
                 {
                     Nome = "Chegada ao TO",
                     Familia = 3,
-                    Ativo = true
+                    Ativo = true,
+                    Final = false
                 },
                 new Estado()
                 {
                     Nome = "Em Curso",
                     Familia = 3,
-                    Ativo = true
+                    Ativo = true,
+                    Final = false
                 },
                 new Estado()
                 {
                     Nome = "Resolução",
                     Familia = 4,
-                    Ativo = true
+                    Ativo = true,
+                    Final = false
                 },
                 new Estado()
                 {
                     Nome = "Conclusão",
                     Familia = 5,
-                    Ativo = true
+                    Ativo = true,
+                    Final = false
                 },
                 new Estado()
                 {
                     Nome = "Falso Alerta",
                     Familia = 6,
-                    Ativo = true
+                    Ativo = true,
+                    Final = true
                 },
                 new Estado()
                 {
                     Nome = "Falso Alarme",
                     Familia = 6,
-                    Ativo = true
+                    Ativo = true,
+                    Final = true
                 },
                 new Estado()
                 {
                     Nome = "Anulada",
                     Familia = 6,
-                    Ativo = true
+                    Ativo = true,
+                    Final = true
                 },
                 new Estado()
                 {
                     Nome = "Vigilância",
                     Familia = 7,
-                    Ativo = true
+                    Ativo = true,
+                    Final = false
                 },
                 new Estado()
                 {
                     Nome = "Encerrada",
                     Familia = 8,
-                    Ativo = true
+                    Ativo = true,
+                    Final = true
                 }
             };
 
             db.Estados.AddRange(Estados);
 
-            db.TransicoesDeEstado.Add(new TransicaoDeEstado
+            db.TransicoesDeEstado.AddRange(new List<TransicaoDeEstado>()
             {
-                De = Estados[0],
-                Para = Estados[1],
-                Ativa = true
+                new TransicaoDeEstado()
+                {
+                    De = Estados[0],
+                    Para = Estados[1],
+                    Ativa = true
+                },
+                new TransicaoDeEstado()
+                {
+                    De = Estados[0],
+                    Para = Estados[2],
+                    Ativa = true
+                },
+                new TransicaoDeEstado()
+                {
+                    De = Estados[0],
+                    Para = Estados[3],
+                    Ativa = true
+                },
+                new TransicaoDeEstado()
+                {
+                    De = Estados[0],
+                    Para = Estados[4],
+                    Ativa = true
+                },
+                new TransicaoDeEstado()
+                {
+                    De = Estados[0],
+                    Para = Estados[5],
+                    Ativa = true
+                },
+                new TransicaoDeEstado()
+                {
+                    De = Estados[0],
+                    Para = Estados[8],
+                    Ativa = true
+                },
+                new TransicaoDeEstado()
+                {
+                    De = Estados[0],
+                    Para = Estados[9],
+                    Ativa = true
+                },
+                new TransicaoDeEstado()
+                {
+                    De = Estados[1],
+                    Para = Estados[2],
+                    Ativa = true
+                },
+                new TransicaoDeEstado()
+                {
+                    De = Estados[1],
+                    Para = Estados[3],
+                    Ativa = true
+                },
+                new TransicaoDeEstado()
+                {
+                    De = Estados[1],
+                    Para = Estados[4],
+                    Ativa = true
+                },
+                new TransicaoDeEstado()
+                {
+                    De = Estados[1],
+                    Para = Estados[5],
+                    Ativa = true
+                },
+                new TransicaoDeEstado()
+                {
+                    De = Estados[1],
+                    Para = Estados[8],
+                    Ativa = true
+                },
+                new TransicaoDeEstado()
+                {
+                    De = Estados[1],
+                    Para = Estados[9],
+                    Ativa = true
+                },
+                new TransicaoDeEstado()
+                {
+                    De = Estados[2],
+                    Para = Estados[3],
+                    Ativa = true
+                },
+                new TransicaoDeEstado()
+                {
+                    De = Estados[2],
+                    Para = Estados[4],
+                    Ativa = true
+                },
+                new TransicaoDeEstado()
+                {
+                    De = Estados[2],
+                    Para = Estados[5],
+                    Ativa = true
+                },
+                new TransicaoDeEstado()
+                {
+                    De = Estados[2],
+                    Para = Estados[8],
+                    Ativa = true
+                },
+                new TransicaoDeEstado()
+                {
+                    De = Estados[2],
+                    Para = Estados[9],
+                    Ativa = true
+                },
+                new TransicaoDeEstado()
+                {
+                    De = Estados[3],
+                    Para = Estados[4],
+                    Ativa = true
+                },
+                new TransicaoDeEstado()
+                {
+                    De = Estados[3],
+                    Para = Estados[5],
+                    Ativa = true
+                },
+                new TransicaoDeEstado()
+                {
+                    De = Estados[3],
+                    Para = Estados[8],
+                    Ativa = true
+                },
+                new TransicaoDeEstado()
+                {
+                    De = Estados[3],
+                    Para = Estados[9],
+                    Ativa = true
+                },
+                new TransicaoDeEstado()
+                {
+                    De = Estados[4],
+                    Para = Estados[5],
+                    Ativa = true
+                },
+                new TransicaoDeEstado()
+                {
+                    De = Estados[4],
+                    Para = Estados[8],
+                    Ativa = true
+                },
+                new TransicaoDeEstado()
+                {
+                    De = Estados[4],
+                    Para = Estados[9],
+                    Ativa = true
+                },
+                new TransicaoDeEstado()
+                {
+                    De = Estados[5],
+                    Para = Estados[6],
+                    Ativa = true
+                },
+                new TransicaoDeEstado()
+                {
+                    De = Estados[5],
+                    Para = Estados[7],
+                    Ativa = true
+                },
+                new TransicaoDeEstado()
+                {
+                    De = Estados[5],
+                    Para = Estados[11],
+                    Ativa = true
+                },
+                new TransicaoDeEstado()
+                {
+                    De = Estados[5],
+                    Para = Estados[12],
+                    Ativa = true
+                },
+                new TransicaoDeEstado()
+                {
+                    De = Estados[6],
+                    Para = Estados[7],
+                    Ativa = true
+                },
+                new TransicaoDeEstado()
+                {
+                    De = Estados[6],
+                    Para = Estados[11],
+                    Ativa = true
+                },
+                new TransicaoDeEstado()
+                {
+                    De = Estados[6],
+                    Para = Estados[12],
+                    Ativa = true
+                },
+                new TransicaoDeEstado()
+                {
+                    De = Estados[7],
+                    Para = Estados[11],
+                    Ativa = true
+                },
+                new TransicaoDeEstado()
+                {
+                    De = Estados[7],
+                    Para = Estados[12],
+                    Ativa = true
+                },
+                new TransicaoDeEstado()
+                {
+                    De = Estados[11],
+                    Para = Estados[12],
+                    Ativa = true
+                }
             });
 
             db.SaveChanges();

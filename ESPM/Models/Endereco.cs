@@ -41,14 +41,14 @@ namespace ESPM.Models
         /// <summary>
         /// Lista de requests recebidos deste IP.
         /// </summary>
-        public virtual List<Avaliacao> Avaliacoes { get; set; }
+        public virtual List<AvaliacaoPedido> Avaliacoes { get; set; }
 
         /// <summary>
         /// Inicializa as listas para evitar NullReferenceException.
         /// </summary>
         public Endereco()
         {
-            Avaliacoes = new List<Avaliacao>();
+            Avaliacoes = new List<AvaliacaoPedido>();
         }
     }
 }

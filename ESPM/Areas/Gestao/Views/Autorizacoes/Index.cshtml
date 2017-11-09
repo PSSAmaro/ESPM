@@ -4,10 +4,10 @@
     ViewBag.Title = "Autorizações";
 }
 
-<h2>Autorizações</h2>
+<h2>Aplicações autorizadas</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Nova aplicação", "Create")
 </p>
 <table class="table">
     <tr>
@@ -35,9 +35,7 @@
             @Html.DisplayFor(modelItem => item.Aplicacao)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink("Bloquear", "Delete", new { id=item.Id })
         </td>
     </tr>
 }

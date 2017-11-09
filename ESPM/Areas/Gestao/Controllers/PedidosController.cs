@@ -9,165 +9,59 @@ using System.Web;
 using System.Web.Mvc;
 using ESPM.Models;
 using ESPM.Areas.Gestao.Models;
+using System.Threading;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.AspNet.Identity;
+using System.Data.Entity.Validation;
+using System.Diagnostics;
 
 namespace ESPM.Areas.Gestao.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class PedidosController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private ApplicationDbContext db = System.Web.HttpContext.Current.GetOwinContext().Get<ApplicationDbContext>();
 
-        // GET: Gestao/Pedidos
         public async Task<ActionResult> Index()
         {
             List<ResumoPedidoViewModel> pedidos = new List<ResumoPedidoViewModel>();
             // Filtrar para os abertos
-            foreach (Pedido p in db.Pedidos.ToList())
-            {
-                Estado estado = p.Estados.OrderByDescending(e => e.Tempo).FirstOrDefault().Estado;
-                Localizacao localizacao = p.Localizacoes.OrderByDescending(l => l.Tempo).FirstOrDefault();
-                Pessoa pessoa = p.InformacaoPessoa.OrderByDescending(i => i.Tempo).FirstOrDefault();
-                ResumoEstadoViewModel re = new ResumoEstadoViewModel()
-                {
-                    Id = estado.Id,
-                    Nome = estado.Nome,
-                    Ativo = estado.Ativo,
-                    Icone = "/Content/Imagens/Estados/" + estado.Familia + ".png"
-                };
-                pedidos.Add(new ResumoPedidoViewModel()
-                {
-                    Id = p.Id,
-                    Estado = re,
-                    Recebido = p.Tempo,
-                    Modificado = p.Modificado,
-                    Latitude = localizacao.Latitude,
-                    Longitude = localizacao.Longitude,
-                    Nome = pessoa.Nome,
-                    Contacto = pessoa.Contacto
-                });
-            }
+            foreach (Pedido p in db.Pedidos.ToList().Where(pd => !pd.EstadoAtual.Final))
+                pedidos.Add(new ResumoPedidoViewModel(p));
+
             return View(pedidos);
         }
 
-        // GET: Gestao/Pedidos/Details/5
-        public async Task<ActionResult> Details(Guid? id)
+        public async Task<ActionResult> Editar(Guid? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+
             Pedido pedido = await db.Pedidos.FindAsync(id);
             if (pedido == null)
-            {
                 return HttpNotFound();
-            }
-            ResumoPedidoViewModel p = new ResumoPedidoViewModel()
-            {
-                Nome = pedido.InformacaoPessoa.OrderByDescending(i => i.Tempo).FirstOrDefault().Nome,
-                Contacto = pedido.InformacaoPessoa.OrderByDescending(i => i.Tempo).FirstOrDefault().Contacto
-            };
-            return View(p);
+
+            return View(new PedidoViewModel(pedido));
         }
 
-        // GET: Gestao/Pedidos/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Gestao/Pedidos/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Tempo,Modificado")] Pedido pedido)
+        public async Task<ActionResult> Editar(PedidoEditadoViewModel pedido)
         {
             if (ModelState.IsValid)
             {
-                pedido.Id = Guid.NewGuid();
-                db.Pedidos.Add(pedido);
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
-
-            return View(pedido);
-        }
-
-        // GET: Gestao/Pedidos/Edit/5
-        public async Task<ActionResult> Edit(Guid? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Pedido pedido = await db.Pedidos.FindAsync(id);
-            if (pedido == null)
-            {
-                return HttpNotFound();
-            }
-            Estado estado = pedido.Estados.OrderByDescending(e => e.Tempo).FirstOrDefault().Estado;
-            Localizacao localizacao = pedido.Localizacoes.OrderByDescending(l => l.Tempo).FirstOrDefault();
-            Pessoa pessoa = pedido.InformacaoPessoa.OrderByDescending(i => i.Tempo).FirstOrDefault();
-            // Descricao descricao = pedido.Descricoes.OrderByDescending(d => d.Tempo).FirstOrDefault();
-            Descricao descricao = new Descricao();
-            ResumoEstadoViewModel re = new ResumoEstadoViewModel()
-            {
-                Id = estado.Id,
-                Nome = estado.Nome,
-                Ativo = estado.Ativo,
-                Icone = "/Content/Imagens/Estados/" + estado.Familia + ".png"
-            };
-            return View(new PedidoViewModel()
-            {
-                Id = pedido.Id,
-                Estado = re,
-                Latitude = localizacao.Latitude,
-                Longitude = localizacao.Longitude,
-                Nome = pessoa.Nome,
-                Contacto = pessoa.Contacto,
-                Descricao = descricao.Texto
-            });
-        }
-
-        // POST: Gestao/Pedidos/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Tempo,Modificado")] Pedido pedido)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(pedido).State = EntityState.Modified;
+                Pedido p = await db.Pedidos.FindAsync(pedido.Id);
+                ApplicationUser u = System.Web.HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(System.Web.HttpContext.Current.User.Identity.GetUserId());
+                p.SetEstado(await db.Estados.FindAsync(pedido.Estado), u);
+                p.SetNome(pedido.Nome, u);
+                p.SetContacto(pedido.Contacto, u);
+                p.SetIdade(pedido.Idade, u);
+                p.SetOD(pedido.OutrosDetalhes, u);
+                p.SetDescricao(pedido.Descricao, u);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
             return View(pedido);
-        }
-
-        // GET: Gestao/Pedidos/Delete/5
-        public async Task<ActionResult> Delete(Guid? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Pedido pedido = await db.Pedidos.FindAsync(id);
-            if (pedido == null)
-            {
-                return HttpNotFound();
-            }
-            return View(pedido);
-        }
-
-        // POST: Gestao/Pedidos/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(Guid id)
-        {
-            Pedido pedido = await db.Pedidos.FindAsync(id);
-            db.Pedidos.Remove(pedido);
-            await db.SaveChangesAsync();
-            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ESPM.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -42,6 +43,14 @@ namespace ESPM.Areas.Gestao.Models
         public bool Ativo { get; set; }
 
         public string Icone { get; set; }
+
+        public ResumoEstadoViewModel(Estado estado)
+        {
+            Id = estado.Id;
+            Nome = estado.Nome;
+            Ativo = estado.Ativo;
+            Icone = "/Content/Imagens/Estados/" + estado.Familia + ".png";
+        }
     }
 
     public class ListaEstadosViewModel

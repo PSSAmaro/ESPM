@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.IO;
 using System.Linq;
 using System.Web;
 
@@ -16,15 +17,8 @@ namespace ESPM.Models
         /// <summary>
         /// ID.
         /// </summary>
-        // Assumindo que é possível gerar o URL da imagem a partir apenas destas informações...
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
-
-        /// <summary>
-        /// Request de onde foi enviada a imagem.
-        /// </summary>
-        [Required]
-        public virtual Avaliacao Avaliacao { get; set; }
 
         /// <summary>
         /// Pedido a que pertence esta imagem.
@@ -35,9 +29,39 @@ namespace ESPM.Models
         /// <summary>
         /// Momento em que esta fotografia foi tirada.
         /// </summary>
-        // Se não houver informação de tempo é o momento em que a informação foi recebida
-        public DateTime Tempo { get; set; }
+        public DateTime Tempo { get; private set; }
 
-        public string Nome { get; set; }
+        /// <summary>
+        /// URL da imagem.
+        /// </summary>
+        public string Url { get; private set; }
+
+        /// <summary>
+        /// Descrição da imagem
+        /// </summary>
+        public string Descricao { get; private set; }
+
+        public Imagem(ImagemViewModel imagem)
+        {
+            // Se calhar arranjar um campo público que devolva diretamente a imagem (e se calhar guardar não devia ser feito aqui, mas...)
+
+            Tempo = imagem.Tempo ?? DateTime.Now;
+            // É PRECISO MUDAR A PRÓXIMA LINHA PARA GARANTIR QUE NÃO HÁ NOMES REPETIDOS E CONFIRMAR O TIPO
+            Url = Tempo.Ticks.ToString() + ".jpg";
+            Descricao = imagem.Descricao;
+
+            // Guardar a imagem
+            // FALTA CONFIRMAR A EXTENSÃO
+            string caminho = Path.Combine(HttpContext.Current.Server.MapPath("~/Content/Imagens"), Url);
+            int inicio = imagem.Dados.IndexOf(",");
+            string sub;
+            if (inicio == -1)
+                sub = imagem.Dados;
+            else
+                sub = imagem.Dados.Substring(inicio + 1);
+            File.WriteAllBytes(caminho, Convert.FromBase64String(sub));
+        }
+
+        public Imagem() { }
     }
 }

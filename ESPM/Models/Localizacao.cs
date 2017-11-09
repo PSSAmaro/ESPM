@@ -21,12 +21,6 @@ namespace ESPM.Models
         public int Id { get; set; }
 
         /// <summary>
-        /// Request de onde foi enviada a localização.
-        /// </summary>
-        [Required]
-        public virtual Avaliacao Avaliacao { get; set; }
-
-        /// <summary>
         /// Pedido a que se refere esta localização.
         /// </summary>
         [Required]
@@ -36,18 +30,32 @@ namespace ESPM.Models
         /// Momento em que esta localização foi detetada.
         /// </summary>
         // Se não houver informação de tempo é o momento em que a informação foi recebida
-        public DateTime Tempo { get; set; }
+        public DateTime Tempo { get; private set; }
 
         /// <summary>
         /// Latitude detetada.
         /// </summary>
         [Required]
-        public float? Latitude { get; set; }
+        public float Latitude { get; private set; }
 
         /// <summary>
         /// Longitude detetada.
         /// </summary>
         [Required]
-        public float? Longitude { get; set; }
+        public float Longitude { get; private set; }
+
+        /// <summary>
+        /// Erro em metros. Atualmente ignorado.
+        /// </summary>
+        public int? Erro { get; private set; }
+
+        public Localizacao(LocalizacaoViewModel localizacao)
+        {
+            Tempo = localizacao.Tempo ?? DateTime.Now;
+            Latitude = localizacao.Latitude;
+            Longitude = localizacao.Longitude;
+        }
+
+        public Localizacao() { }
     }
 }

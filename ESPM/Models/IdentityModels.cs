@@ -20,6 +20,21 @@ namespace ESPM.Models
         public virtual List<Aplicacao> Aplicacoes { get; set; }
 
         /// <summary>
+        /// Lista de autorizações deste utilizador. (Role = Aplicacao)
+        /// </summary>
+        public virtual List<Autorizacao> Autorizacoes { get; set; }
+
+        /// <summary>
+        /// Lista de alterações que este utilizador fez às definições. (Role = Admin)
+        /// </summary>
+        public virtual List<AlteracaoDefinicao> AlteracoesDefinicoes { get; set; }
+
+        /// <summary>
+        /// Lista de alterações que este utilizador fez aos pedidos de ajuda. (Role = Operador)
+        /// </summary>
+        public virtual List<AlteracaoPedido> AlteracoesPedidos { get; set; }
+
+        /// <summary>
         /// Criar identidade.
         /// </summary>
         /// <param name="manager">Gestor de utilizadores.</param>
@@ -39,14 +54,14 @@ namespace ESPM.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         /// <summary>
-        /// Definições do sistema.
-        /// </summary>
-        public DbSet<Definicao> Definicoes { get; set; }
-
-        /// <summary>
         /// Alterações às definições do sistema.
         /// </summary>
         public DbSet<AlteracaoDefinicao> AlteracoesDefinicoes { get; set; }
+
+        /// <summary>
+        /// Alterações efetuadas aos pedidos recebidos.
+        /// </summary>
+        public DbSet<AlteracaoPedido> AlteracoesPedidos { get; set; }
 
         /// <summary>
         /// Aplicações autorizadas.
@@ -61,12 +76,12 @@ namespace ESPM.Models
         /// <summary>
         /// Avaliações dos Requests.
         /// </summary>
-        public DbSet<Avaliacao> Avaliacoes { get; set; }
+        public DbSet<AvaliacaoPedido> Avaliacoes { get; set; }
 
         /// <summary>
-        /// Descrições de pedidos.
+        /// Definições do sistema.
         /// </summary>
-        public DbSet<Descricao> Descricoes { get; set; }
+        public DbSet<Definicao> Definicoes { get; set; }
 
         /// <summary>
         /// Endereços IP que enviaram pedidos.
@@ -77,16 +92,6 @@ namespace ESPM.Models
         /// Estados possíveis para os pedidos.
         /// </summary>
         public DbSet<Estado> Estados { get; set; }
-
-        /// <summary>
-        /// Estados dos pedidos.
-        /// </summary>
-        public DbSet<EstadoDePedido> EstadosDePedido { get; set; }
-
-        /// <summary>
-        /// Imagens dos pedidos.
-        /// </summary>
-        public DbSet<Imagem> Imagens { get; set; }
 
         /// <summary>
         /// Localizações dos pedidos.
@@ -126,10 +131,16 @@ namespace ESPM.Models
         /// <param name="modelBuilder">Construtor do modelo.</param>
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
             modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
 
-            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<ApplicationUser>().ToTable("Utilizadores");
+            modelBuilder.Entity<IdentityRole>().ToTable("Funcoes");
+            modelBuilder.Entity<IdentityUserRole>().ToTable("FuncoesDeUtilizadores");
+            modelBuilder.Entity<IdentityUserLogin>().ToTable("LoginsDeUtilizadores");
+            modelBuilder.Entity<IdentityUserClaim>().ToTable("ClaimsDeUtilizadores");
         }
     }
 }
